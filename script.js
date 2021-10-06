@@ -1,3 +1,14 @@
+/* 
+                To-Do
+
+    [ ] Try switching row/column/diagonal functions into game module.
+    [ ] Figure out object of row/column/diagonal functions, loop through for results check.
+
+
+*/
+
+
+
 const gameboard = (() => {
     let board = ['', '', '',
                  '', '', '',
