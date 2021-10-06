@@ -14,14 +14,18 @@ const gameboard = (() => {
                  '', '', '',
                  '', '', ''];
     
-    const row1 = () => [0,1,2].map(x => board[x]);
-    const row2 = () => [3,4,5].map(x => board[x]);
-    const row3 = () => [6,7,8].map(x => board[x]);
-    const column1 = () => [0,3,6].map(x => board[x]);
-    const column2 = () => [1,4,7].map(x => board[x]);
-    const column3 = () => [2,5,8].map(x => board[x]);
-    const diagonal1 = () => [0,4,8].map(x => board[x]);
-    const diagonal2 = () => [2,4,6].map(x => board[x]);
+    const resultCheckSectors = {
+
+        row1: () => [0,1,2].map(x => board[x]),
+        row2:() => [3,4,5].map(x => board[x]),
+        row3: () => [6,7,8].map(x => board[x]),
+        column1: () => [0,3,6].map(x => board[x]),
+        column2: () => [1,4,7].map(x => board[x]),
+        column3: () => [2,5,8].map(x => board[x]),
+        diagonal1: () => [0,4,8].map(x => board[x]),
+        diagonal2: () => [2,4,6].map(x => board[x]),
+    }
+    
 
     const getBoard = () => board;
     function setBoard(index, marker) {
@@ -29,7 +33,8 @@ const gameboard = (() => {
     }
 
     return { 
-        row1, row2, row3, column1, column2,column3, diagonal1, diagonal2,
+        // row1, row2, row3, column1, column2,column3, diagonal1, diagonal2,
+        resultCheckSectors,
         getBoard: getBoard,
         setBoard: setBoard
     }
@@ -45,9 +50,38 @@ const game = (() => {
     
     
 
-    function checkResults() {
+    const checkResults = () => {
+        // Object.keys(gameboard.resultCheckSectors).forEach(key => {
+            
+        // });
         
+        for (let key in gameboard.resultCheckSectors) {
+            
+            // if ( gameboard.resultCheckSectors[`${key}`]() == [`x`, 'x', 'x'] || [`o`, 'o', 'o']) {
+            //     let finalResult = gameboard.resultCheckSectors[`${key}`];
+            //     return finalResult
+            // }
+            // return finalResult'
+            if (gameboard.resultCheckSectors[`${key}`]().join(``) === `xxx`) {
+                if (whoseTurn % 2 === 0) {
+                    console.log(`playerOne wins!`)
+                } else if (whoseTurn % 2 !== 0) {
+                    console.log(`playerTwo wins!`)
+                }
+            } else if (gameboard.resultCheckSectors[`${key}`]().join(``) === `ooo`) {
+                if (whoseTurn % 2 === 0) {
+                    console.log(`playerOne wins!`)
+                } else if (whoseTurn % 2 !== 0) {
+                    console.log(`playerTwo wins!`)
+                }
+            } else {
+                console.log(`no matches`);
+            }
+        }
+        // console.log(finalResult);
+
     }
+
     return { 
         checkResults,
         getTurn,
@@ -77,8 +111,9 @@ const displayController = (() => {
                 } else if (boardSpace.textContent == ``) {
                     boardSpace.textContent = playerTwo.marker;
                 }
-
+                
                 gameboard.setBoard(i, boardSpace.textContent);
+                game.checkResults();
                 game.setTurn();
             })
         } 
