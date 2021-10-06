@@ -1,0 +1,26 @@
+#gameboard-container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (150px)[3];
+      grid-template-rows: repeat(3, 150px);
+  -ms-grid-columns: (150px)[3];
+      grid-template-columns: repeat(3, 150px);
+}
+
+.board-space {
+  height: 150px;
+  width: 150px;
+  background: white;
+  border: solid black 3px;
+  font-size: 5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+/*# sourceMappingURL=style.css.map */
