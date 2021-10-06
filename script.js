@@ -62,18 +62,22 @@ const game = (() => {
             //     return finalResult
             // }
             // return finalResult'
-            if (gameboard.resultCheckSectors[`${key}`]().join(``) === `xxx`) {
+            if (gameboard.resultCheckSectors[`${key}`]().join(``) === `xxx` ||
+                gameboard.resultCheckSectors[`${key}`]().join(``) === `ooo`) {
                 if (whoseTurn % 2 === 0) {
                     console.log(`playerOne wins!`)
                 } else if (whoseTurn % 2 !== 0) {
                     console.log(`playerTwo wins!`)
                 }
-            } else if (gameboard.resultCheckSectors[`${key}`]().join(``) === `ooo`) {
-                if (whoseTurn % 2 === 0) {
-                    console.log(`playerOne wins!`)
-                } else if (whoseTurn % 2 !== 0) {
-                    console.log(`playerTwo wins!`)
-                }
+                
+            // improve this logic, it isn't catching the case of a win in the last turn
+            } else if (whoseTurn === 8 && (
+                gameboard.resultCheckSectors[`${key}`]().join(``) !== `xxx` ||
+                gameboard.resultCheckSectors[`${key}`]().join(``) !== `ooo`))
+            {
+                console.log(`it's a tie!`);
+                break;
+                
             } else {
                 console.log(`no matches`);
             }
