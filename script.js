@@ -8,8 +8,10 @@
         win message in body.
         --- returning finalResult from game module gets a referenceError: finalResult is not defined..
             figure this out!!!
-    [ ] game.checkResult function isn't detecting correctly after creating successful minimax ai
-        figure out WHY this is happening before throwing solutions @ it all slap-dash. 
+    [x] game.checkResult function isn't detecting correctly after creating successful minimax ai
+        figure out WHY this is happening before throwing solutions @ it all slap-dash.
+    [ ] minimax function isn't working, only returning first possible value instead of using recursion
+
  
 */
 
@@ -30,8 +32,8 @@ let humanMarker = playerOne.marker;
 
 const gameboard = (() => {
     let board = [0, 1, 2,
-        3, 4, 5,
-        6, 7, 8];
+                3, 4, 5,
+                6, 7, 8];
 
     const resultCheckSectors = {
 
@@ -86,49 +88,44 @@ const game = (() => {
     }
 
     const computerOpponent = () => {
-        // randomSectorSelect = gameboard.getRemainingSectors(currentBoard)[Math.floor(Math.random() * gameboard.getRemainingSectors(currentBoard).length)]
-        // console.log(randomSectorSelect);
-        // randomEmptyIndex = gameboard.getBoard()[randomSectorSelect];
-        // console.log(randomEmptyIndex)
+       
 
         // i think that the index displayed for the best move might be adjusted 1 higher or 1 lower,
         // some of the results are coming back undefined.
-        console.log(minimax(gameboard.board, computerMarker));
-        let compChoice = minimax(gameboard.board, computerMarker).index;
+        let compChoice = minimax(gameboard.board, computerMarker);
         console.log(compChoice)
         let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
+        console.log(compChoiceSelector)
         compChoiceSelector.textContent = playerTwo.marker;
         console.log(gameboard.board);
         gameboard.setBoard(compChoice, playerTwo.marker);
-        checkResults();
+        console.log(checkResults());
+        
         setTurn();
-        console.log(whoseTurn)
-        // console.log(minimax(currentBoard, computerMarker))
         console.log(`work`);
     }
 
-    const checkResults = () => {
+    let finalResult = null;
 
+
+    const checkResults = (currBdst, currMark) => {
         for (let key in gameboard.resultCheckSectors) {
             
-            let finalResult;
-            if (gameboard.resultCheckSectors[`${key}`]().join(``) == `xxx` ||
-                gameboard.resultCheckSectors[`${key}`]().join(``) == `ooo`) {
-                if (getTurn() % 2 === 0) {
-                    return finalResult = `playerOne wins!`
-                } else if (getTurn() % 2 !== 0) {
-                    return finalResult = `playerTwo wins!`
+            if ((gameboard.resultCheckSectors[`${key}`]().join(`,`) == `x,x,x`) ||
+                (gameboard.resultCheckSectors[`${key}`]().join(`,`) == `o,o,o`)) {
+                if ((getTurn() % 2) == 0) {
+                    return `playerOne wins!`
+                } else if ((getTurn() % 2) != 0) {
+                    return `playerTwo wins!`
                 }
 
                 // improve this logic, it isn't catching the case of a win in the last turn
-            } else if ((whoseTurn === 8) &&
+            } else if ((getTurn() === 8) &&
                 (gameboard.resultCheckSectors[`${key}`]().join(``) != `xxx`) &&
                 (gameboard.resultCheckSectors[`${key}`]().join(``) != `ooo`)) {
-                return finalResult = `it's a tie!`
-            } else {
-                return finalResult = `no matches`
+                return `it's a tie!`
+            
             }
-        
         }
 
     }
@@ -138,13 +135,15 @@ const game = (() => {
         const emptyCellsStore = gameboard.getRemainingSectors(currBdst);
 
 
-        if (checkResults() === `playerOne wins!`) {
+        if (checkResults() == `playerOne wins!`) {
             return { score: -1 };
-        } else if (checkResults() === `playerTwo wins!`) {
+        } else if (checkResults() == `playerTwo wins!`) {
             return { score: 1 };
         } else if (emptyCellsStore.length === 0) {
             return { score: 0 };
         }
+
+
 
         const testHistory = [];
 
@@ -171,7 +170,7 @@ const game = (() => {
             testHistory.push(currentTest);
         }
 
-        let bestNextMove = null;
+        let bestNextMove;
 
         if (currMark === computerMarker) {
             let bestScore = -Infinity;
@@ -190,16 +189,14 @@ const game = (() => {
                 }
             }
         }
-
-
-        return testHistory[bestNextMove];
+        return testHistory
     }
 
 
     return {
         checkResults,
         computerOpponent,
-        // finalResult,
+        finalResult,
         getTurn,
         setTurn
     }
@@ -224,8 +221,11 @@ const displayController = (() => {
                 if (game.getTurn() % 2 == 0 && boardSpace.textContent !== `x` && boardSpace.textContent !== `o` && playerTwo.name == `computer`) {
                     boardSpace.textContent = playerOne.marker;
                     gameboard.setBoard(i, boardSpace.textContent);
-                    gameboard.board;
                     game.checkResults();
+                    console.log(game.checkResults());
+                    if (game.checkResults() != undefined) {
+                        alert(game.checkResults())
+                    }
                     game.setTurn();
                     game.computerOpponent();
                     console.log(gameboard.board);
