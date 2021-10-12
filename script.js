@@ -83,24 +83,20 @@ const game = (() => {
     let computerMarker = playerTwo.marker;
     let humanMarker = playerOne.marker;
 
-    function choiceController() {
-
-    }
-
+  
     const computerOpponent = () => {
        
 
         // i think that the index displayed for the best move might be adjusted 1 higher or 1 lower,
         // some of the results are coming back undefined.
-        let compChoice = minimax(gameboard.board, computerMarker);
+        let compChoice = minimax(gameboard.board, computerMarker).index;
         console.log(compChoice)
         let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
         console.log(compChoiceSelector)
         compChoiceSelector.textContent = playerTwo.marker;
         console.log(gameboard.board);
         gameboard.setBoard(compChoice, playerTwo.marker);
-        console.log(checkResults());
-        
+        checkResults(computerMarker);        
         setTurn();
         console.log(`work`);
     }
@@ -108,23 +104,12 @@ const game = (() => {
     let finalResult = null;
 
 
-    const checkResults = (currBdst, currMark) => {
+    function checkResults(currMark) {
         for (let key in gameboard.resultCheckSectors) {
             
-            if ((gameboard.resultCheckSectors[`${key}`]().join(`,`) == `x,x,x`) ||
-                (gameboard.resultCheckSectors[`${key}`]().join(`,`) == `o,o,o`)) {
-                if ((getTurn() % 2) == 0) {
-                    return `playerOne wins!`
-                } else if ((getTurn() % 2) != 0) {
-                    return `playerTwo wins!`
-                }
+            if (gameboard.resultCheckSectors[`${key}`]().join(`,`) === `${currMark},${currMark},${currMark}`) {
+                return true
 
-                // improve this logic, it isn't catching the case of a win in the last turn
-            } else if ((getTurn() === 8) &&
-                (gameboard.resultCheckSectors[`${key}`]().join(``) != `xxx`) &&
-                (gameboard.resultCheckSectors[`${key}`]().join(``) != `ooo`)) {
-                return `it's a tie!`
-            
             }
         }
 
@@ -135,9 +120,9 @@ const game = (() => {
         const emptyCellsStore = gameboard.getRemainingSectors(currBdst);
 
 
-        if (checkResults() == `playerOne wins!`) {
+        if (checkResults(humanMarker)) {
             return { score: -1 };
-        } else if (checkResults() == `playerTwo wins!`) {
+        } else if (checkResults(computerMarker)) {
             return { score: 1 };
         } else if (emptyCellsStore.length === 0) {
             return { score: 0 };
@@ -189,7 +174,7 @@ const game = (() => {
                 }
             }
         }
-        return testHistory
+        return testHistory[bestNextMove]
     }
 
 
@@ -221,11 +206,8 @@ const displayController = (() => {
                 if (game.getTurn() % 2 == 0 && boardSpace.textContent !== `x` && boardSpace.textContent !== `o` && playerTwo.name == `computer`) {
                     boardSpace.textContent = playerOne.marker;
                     gameboard.setBoard(i, boardSpace.textContent);
-                    game.checkResults();
-                    console.log(game.checkResults());
-                    if (game.checkResults() != undefined) {
-                        alert(game.checkResults())
-                    }
+                    game.checkResults(humanMarker);
+                
                     game.setTurn();
                     game.computerOpponent();
                     console.log(gameboard.board);
