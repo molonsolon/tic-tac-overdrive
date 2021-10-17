@@ -1,3 +1,41 @@
+html {
+  height: 100vh;
+  overflow: hidden;
+  font-size: 10px;
+}
+
+#intro-screen {
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 15vh;
+}
+
+#intro-title {
+  font-size: .2rem;
+}
+
+#enter-btn {
+  height: 5%;
+  min-width: 11%;
+  max-width: 14%;
+}
+
+#start-game-btn {
+  margin-left: -400px;
+}
+
 #gameboard-container {
   display: -ms-grid;
   display: grid;
@@ -5,6 +43,16 @@
       grid-template-rows: repeat(3, 150px);
   -ms-grid-columns: (150px)[3];
       grid-template-columns: repeat(3, 150px);
+  margin-top: 1000px;
+}
+
+#game-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .board-space {

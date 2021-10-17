@@ -10,7 +10,7 @@
             figure this out!!!
     [x] game.checkResult function isn't detecting correctly after creating successful minimax ai
         figure out WHY this is happening before throwing solutions @ it all slap-dash.
-    [ ] minimax function isn't working, only returning first possible value instead of using recursion
+    [x] minimax function isn't working, only returning first possible value instead of using recursion
 
  
 */
@@ -29,6 +29,13 @@ let playerTwo = Player(2, `computer`, `o`)
 
 let computerMarker = playerTwo.marker;
 let humanMarker = playerOne.marker;
+
+const introAnimation = gsap.timeline();
+    introAnimation
+    .to("#intro-title", {duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out"  } )
+    .from("#enter-btn", {duration: 1, x: 1000});
+    
+
 
 const gameboard = (() => {
     let board = [0, 1, 2,
@@ -101,7 +108,6 @@ const game = (() => {
         console.log(`work`);
     }
 
-    let finalResult = null;
 
 
     function checkResults(currMark) {
@@ -181,7 +187,6 @@ const game = (() => {
     return {
         checkResults,
         computerOpponent,
-        finalResult,
         getTurn,
         setTurn
     }
