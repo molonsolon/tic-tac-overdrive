@@ -1,21 +1,55 @@
 html {
     height: 100vh; 
+    width: 100vw;
     overflow: hidden; 
     font-size: 10px;  
 }
 
-#intro-screen {
+#app-container {
+    display: grid;
+    grid-template-columns: 100vw 100vw 100vw;
+    grid-template-rows: 100vh;
+    gap: 50vw;
     height: 100vh;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    margin-left: 200vw;
+    
+
+}
+
+#intro-screen {
     display: flex;
+    position: absolute;
+    width: 100vw;
     flex-direction:column;
     align-items: center;
     justify-content: center;
-    gap: 15vh
+    gap: 15vh;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    
+    // display: flex;
+    // flex-direction: column;
+    // gap: 5vh;
 }
+
+
+// #intro-container {
+    
+//     width: 100vw;
+//     height: 100vh;
+//     margin-left: 50%;
+//     margin-top: 50%;
+// }
 
 #intro-title {
     font-size: .2rem;
-
+    // height: auto;
+    // width: 5vw;
 }
 
 #enter-btn {
@@ -24,9 +58,70 @@ html {
     max-width: 14%;
 }
 
-#start-game-btn {
-    margin-left: -400px;
+ 
+
+#player-select-form {
+    display: grid;
+    
+    width: 100vw;
+    grid-template-areas: "one submit two";
+    grid-template-rows: 100vh;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    
 }
+
+#player-one-container {
+    display: grid;
+    grid-area: one;
+    width: auto;
+    
+    
+
+}
+
+
+
+#player-two-container {
+    display: grid;
+    grid-area: two;
+}
+
+#start-game-container {
+    display: grid;
+    grid-area: submit;
+    margin-top: 75vh;
+    height: 7vh;
+    width: 10vw;
+    
+}
+
+#start-btn {
+   
+}
+
+.player-select {
+    display: grid;
+    grid-template-rows: 15vh 15vh 15vh;
+    grid-template-columns: 15vw 15vw;
+    align-items: center;
+}
+
+.player-select > label {
+    margin-left: -7vw;
+    margin-bottom: -3%;
+    font-size: 2rem;
+}
+
+.player-name {
+    display: grid;
+    grid-column: 1 / span 2;
+    height: 7vh;
+    font-size: 2.5rem;
+}
+
+
 
 #gameboard-container {
     display: grid;

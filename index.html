@@ -10,35 +10,56 @@
 
 </head>
 <body>
-    <div id="intro-screen">
-        <h1 id="intro-title">Tic-Tac-Toe!</h1>
-        <button id="enter-btn">Enter</button>
-    </div>
-
-    <div id="player-selection">
-        <div id="player-one-selection">
-            
+    <div id="app-container">
+        <div id="intro-container">
+            <div id="intro-screen">
+                <h1 id="intro-title">Tic-Tac-Toe!</h1>
+                <button id="enter-btn">Enter</button>
+            </div>
         </div>
-        <div id="player-two-selection">
+        
+        <form id="player-select-form">
+            <div id="player-one-container">
+                <div class="player-select">
+                    <input type="text" placeholder="Name" class="player-name">
+                    <input type="radio" id="marker-x" name="marker-x" value="x">
+                    <label for="marker=x">X</label>
+                    <input type="radio" id="marker-o" name="marker-o" value="o">
+                    <label for="marker-o">O</label>  
+                </div>
+            </div>
+            <div id="player-two-container">
+                <div class="player-select">
+                    <input type="text" placeholder="Name" class="player-name">                                       
+                    <input type="radio" id="marker-x" name="marker-x" value="x">
+                    <label for="marker=x">X</label>
+                    <input type="radio" id="marker-o" name="marker-o" value="o">
+                    <label for="marker-o">O</label>  
+                </div>
+            </div>
+            <div id="start-game-container">
+                <button id="start-btn">Begin</button>
+            </div>    
+        </form>
 
-        </div>
-        <button id="start-game-btn">Begin</button>
-    </div>
-    
-    
-    <div id="game-container">
-        <div id="gameboard-container">
-            <!-- <div id="0" class="board-space"></div>
-            <div id="1" class="board-space"></div>
-            <div id="2" class="board-space"></div>
-            <div id="3" class="board-space"></div>
-            <div id="4" class="board-space"></div>
-            <div id="5" class="board-space"></div>
-            <div id="6" class="board-space"></div>
-            <div id="7" class="board-space"></div>
-            <div id="8" class="board-space"></div> -->
+        
+        
+        
+        <div id="game-container">
+            <div id="gameboard-container">
+                <!-- <div id="0" class="board-space"></div>
+                <div id="1" class="board-space"></div>
+                <div id="2" class="board-space"></div>
+                <div id="3" class="board-space"></div>
+                <div id="4" class="board-space"></div>
+                <div id="5" class="board-space"></div>
+                <div id="6" class="board-space"></div>
+                <div id="7" class="board-space"></div>
+                <div id="8" class="board-space"></div> -->
+            </div>
         </div>
     </div>    
+    
     <script src="script.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/CSSRulePlugin.min.js"></script>

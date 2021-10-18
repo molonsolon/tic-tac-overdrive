@@ -34,7 +34,7 @@ const introAnimation = gsap.timeline();
     introAnimation
     .to("#intro-title", {duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out"  } )
     .from("#enter-btn", {duration: 1, x: 1000});
-    
+
 
 
 const gameboard = (() => {
@@ -239,14 +239,36 @@ const displayController = (() => {
         }
     };
 
+    
+
+    function menuController() {
+        const enterBtn = document.querySelector(`#enter-btn`);
+        
+        enterBtn.addEventListener(`click`, () =>{
+            const introToPlayerSelect = gsap.timeline();
+            const w = window.innerWidth / 2;
+            const h = window.innerHeight / 2;
+            introToPlayerSelect
+                .to("#enter-btn", {duration: 1, xPercent: -150}, 0)
+                .to("#intro-screen", {duration: .8, xPercent: -150}, .3)
+                .to("#player-select-form", {duration: 1, xPercent: -150, yPercent: 0}, 1);
+            
+        });
+    }
+    
+
     return {
         board: getBoard,
-        displayBoard: displayBoard
+        displayBoard,
+        menuController,
     }
 })();
 
 
-
+function toPX(value) {
+        return parseFloat(value) / 100 * (/vh/gi.test(value) ? window.innerHeight : window.innerWidth);
+    }
 
 displayController.displayBoard();
+displayController.menuController();
 
