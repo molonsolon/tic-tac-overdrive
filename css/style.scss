@@ -32,19 +32,11 @@ html {
     margin-left: auto;
     margin-right: auto;
     
-    // display: flex;
-    // flex-direction: column;
-    // gap: 5vh;
+
 }
 
 
-// #intro-container {
-    
-//     width: 100vw;
-//     height: 100vh;
-//     margin-left: 50%;
-//     margin-top: 50%;
-// }
+
 
 #intro-title {
     font-size: .2rem;
@@ -103,9 +95,17 @@ html {
 
 .player-select {
     display: grid;
-    grid-template-rows: 15vh 15vh 15vh;
+    grid-template-rows: 25vh 15vh 15vh 15vh;
     grid-template-columns: 15vw 15vw;
     align-items: center;
+    
+    
+}
+
+.player-icon {
+    display: grid;
+    grid-column: 1 / span 2;
+    grid-row: 1  / span 2;
 }
 
 .player-select > label {
@@ -114,12 +114,26 @@ html {
     font-size: 2rem;
 }
 
+.player-select > img {
+    max-height: 30vh;
+    min-height: 20vh;
+    width: auto;
+    justify-self: left;
+    margin-top: -50%;
+    border: 3px solid black;
+    border-radius: 3px;
+
+}
+
 .player-name {
     display: grid;
     grid-column: 1 / span 2;
+    grid-row: 2;
     height: 7vh;
     font-size: 2.5rem;
 }
+
+
 
 
 

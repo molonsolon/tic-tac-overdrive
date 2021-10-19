@@ -93,7 +93,32 @@ const game = (() => {
   
     const computerOpponent = () => {
        
+        /* 
+            random selector
+            
+            let randomCompChoice = gameboard.getBoard()[Math.floor(Math.random() * gameboard.getBoard().length)]
 
+            difficulties -- 
+
+            unbeatable - 100% choose best choice
+
+            - no change from current logic. Use minimax 100% of time.
+
+            hard - 75% choose best choice
+            
+            let aiR = Math.random() * 100;
+
+            if (aiR > 75) {
+                compChoice = randomChoice
+            } else {
+                compChoice = minimax(gameboard.board, computerMarker).index;
+            }
+
+            medium - 50% choose best choice
+             -- same logic will apply for medium and easy, just swap aiR w/ respect percentages
+            easy - 25% choose best choice
+
+        */
         // i think that the index displayed for the best move might be adjusted 1 higher or 1 lower,
         // some of the results are coming back undefined.
         let compChoice = minimax(gameboard.board, computerMarker).index;
@@ -108,6 +133,10 @@ const game = (() => {
         console.log(`work`);
     }
 
+
+    const computerChoiceMM = () => {
+        
+    }
 
 
     function checkResults(currMark) {
@@ -243,17 +272,30 @@ const displayController = (() => {
 
     function menuController() {
         const enterBtn = document.querySelector(`#enter-btn`);
-        
+        const startGameBtn = document.querySelector(`#start-btn`);
+        const playerSelectForm = document.querySelector(`#player-select-form`);
+
         enterBtn.addEventListener(`click`, () =>{
             const introToPlayerSelect = gsap.timeline();
-            const w = window.innerWidth / 2;
-            const h = window.innerHeight / 2;
+            
             introToPlayerSelect
                 .to("#enter-btn", {duration: 1, xPercent: -150}, 0)
                 .to("#intro-screen", {duration: .8, xPercent: -150}, .3)
                 .to("#player-select-form", {duration: 1, xPercent: -150, yPercent: 0}, 1);
             
         });
+
+        playerSelectForm.addEventListener(`submit`, function(event) {event.preventDefault();});
+
+        startGameBtn.addEventListener(`click`, () => {
+            const startGameAnimation = gsap.timeline();
+
+
+            startGameAnimation
+                .to("#player-select-form", {duration: 1, xPercent: -300}, 0)
+                .to("#game-container", {duration: 1, xPercent: -300, yPercent: -35, ease: "bounce"}, 1);
+
+        })
     }
     
 
@@ -265,9 +307,7 @@ const displayController = (() => {
 })();
 
 
-function toPX(value) {
-        return parseFloat(value) / 100 * (/vh/gi.test(value) ? window.innerHeight : window.innerWidth);
-    }
+
 
 displayController.displayBoard();
 displayController.menuController();

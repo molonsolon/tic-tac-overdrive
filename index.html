@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
 
 
 </head>
@@ -19,8 +19,11 @@
         </div>
         
         <form id="player-select-form">
+            
             <div id="player-one-container">
+
                 <div class="player-select">
+                    <img class="player-icon" src="/images/player-icon.png" alt="cowboy at computer">
                     <input type="text" placeholder="Name" class="player-name">
                     <input type="radio" id="marker-x" name="marker-x" value="x">
                     <label for="marker=x">X</label>
@@ -28,8 +31,10 @@
                     <label for="marker-o">O</label>  
                 </div>
             </div>
+
             <div id="player-two-container">
                 <div class="player-select">
+                    <img class="player-icon" src="/images/ai-icon.png" alt="grim reaper with computer for a head">
                     <input type="text" placeholder="Name" class="player-name">                                       
                     <input type="radio" id="marker-x" name="marker-x" value="x">
                     <label for="marker=x">X</label>
@@ -38,7 +43,7 @@
                 </div>
             </div>
             <div id="start-game-container">
-                <button id="start-btn">Begin</button>
+                <button id="start-btn" type="submit">Begin</button>
             </div>    
         </form>
 
@@ -60,7 +65,7 @@
         </div>
     </div>    
     
-    <script src="script.js" defer></script>
+    <script src="/scripts/script.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/CSSRulePlugin.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/Draggable.min.js"></script>
