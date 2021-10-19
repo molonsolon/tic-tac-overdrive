@@ -96,7 +96,6 @@ const game = (() => {
         /* 
             random selector
             
-            let randomCompChoice = gameboard.getBoard()[Math.floor(Math.random() * gameboard.getBoard().length)]
 
             difficulties -- 
 
@@ -121,21 +120,21 @@ const game = (() => {
         */
         // i think that the index displayed for the best move might be adjusted 1 higher or 1 lower,
         // some of the results are coming back undefined.
-        let compChoice = minimax(gameboard.board, computerMarker).index;
-        console.log(compChoice)
-        let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
-        console.log(compChoiceSelector)
-        compChoiceSelector.textContent = playerTwo.marker;
-        console.log(gameboard.board);
-        gameboard.setBoard(compChoice, playerTwo.marker);
-        checkResults(computerMarker);        
-        setTurn();
-        console.log(`work`);
+
     }
 
-
-    const computerChoiceMM = () => {
+    const compChoiceR = () => {
+        let randomCompChoice = gameboard.getBoard()[Math.floor(Math.random() * gameboard.getBoard().length)];
         
+    }
+
+    const compChoiceMM = () => {
+        let compChoice = minimax(gameboard.board, computerMarker).index;
+        let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
+        compChoiceSelector.textContent = playerTwo.marker;
+        gameboard.setBoard(compChjjjoice, playerTwo.marker);
+        checkResults(computerMarker);        
+        setTurn();
     }
 
 
