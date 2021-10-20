@@ -90,53 +90,65 @@ const game = (() => {
     let computerMarker = playerTwo.marker;
     let humanMarker = playerOne.marker;
 
+    const compMM = () => {
+        return minimax(currentBoard, computerMarker).index;
+    }
+
+    const compR = () => {
+        return gameboard.getRemainingSectors(currentBoard)[Math.floor(Math.random() * gameboard.getRemainingSectors(currentBoard).length)];
+    }
   
     const computerOpponent = () => {
-       
-        /* 
-            random selector
-            
-
-            difficulties -- 
-
-            unbeatable - 100% choose best choice
-
-            - no change from current logic. Use minimax 100% of time.
-
-            hard - 75% choose best choice
-            
-            let aiR = Math.random() * 100;
-
-            if (aiR > 75) {
-                compChoice = randomChoice
-            } else {
-                compChoice = minimax(gameboard.board, computerMarker).index;
-            }
-
-            medium - 50% choose best choice
-             -- same logic will apply for medium and easy, just swap aiR w/ respect percentages
-            easy - 25% choose best choice
-
-        */
-        // i think that the index displayed for the best move might be adjusted 1 higher or 1 lower,
-        // some of the results are coming back undefined.
-
-    }
-
-    const compChoiceR = () => {
-        let randomCompChoice = gameboard.getBoard()[Math.floor(Math.random() * gameboard.getBoard().length)];
-        
-    }
-
-    const compChoiceMM = () => {
-        let compChoice = minimax(gameboard.board, computerMarker).index;
+        compChoice = compChoiceLogic();
         let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
         compChoiceSelector.textContent = playerTwo.marker;
-        gameboard.setBoard(compChjjjoice, playerTwo.marker);
+        gameboard.setBoard(compChoice, playerTwo.marker);
         checkResults(computerMarker);        
         setTurn();
     }
 
+    
+
+    const compChoiceLogic = () => {
+        
+        let compDifficulty = `new on the job`;
+        
+        
+        
+        
+        if (compDifficulty === `unbeatable`) {
+            return compMM();
+        } else if (compDifficulty !== `unbeatable`) {
+            let rNum = Math.random() * 100;
+            console.log(rNum);
+            if (compDifficulty === `highly skilled`) {
+                if (rNum < 75) {
+                    return compMM()
+                } else {
+                    return compR()
+                }
+            } else if (compDifficulty === `in training`) {
+                if (rNum < 50) {
+                    return compMM();
+                } else {
+                    return compR();
+                }
+            } else if (compDifficulty === `new on the job`) {
+                if (rNum < 25) {
+                    
+                    return compMM()
+                } else {
+                    return compR()
+                }
+            }
+        }
+        
+        
+        
+    }
+
+
+    
 
     function checkResults(currMark) {
         for (let key in gameboard.resultCheckSectors) {
@@ -165,11 +177,6 @@ const game = (() => {
 
 
         const testHistory = [];
-
-        // seems that error is being caused by the minimax reading the same board state
-        // solution is to actively update board state then revert it at the end. This is 
-        // done by example effectively because board is a public variable that doesn't need
-        // a public function to change it. 
 
         for (let i = 0; i < emptyCellsStore.length; i++) {
             const currentTest = [];
@@ -216,16 +223,25 @@ const game = (() => {
         checkResults,
         computerOpponent,
         getTurn,
-        setTurn
+        setTurn,
+        compMM
     }
 })();
+
+
 
 const displayController = (() => {
     const getBoard = gameboard.getBoard();
     const gameboardContainer = document.querySelector(`#gameboard-container`);
-
+    
     function displayBoard() {
-
+        
+        function currPlayerTurn(currPlayer, currSpace, index) {
+            currSpace.textContent = currPlayer.marker;
+            gameboard.setBoard(index, currPlayer.marker);
+            game.checkResults(currPlayer.marker);
+            game.setTurn()
+        }
         // const boardSpace = document.getElementById(`${i}`);
 
         for (let i = 0; i < gameboard.board.length; i++) {
@@ -235,32 +251,22 @@ const displayController = (() => {
             gameboardContainer.appendChild(boardSpace);
 
             boardSpace.addEventListener(`click`, () => {
-
-                if (game.getTurn() % 2 == 0 && boardSpace.textContent !== `x` && boardSpace.textContent !== `o` && playerTwo.name == `computer`) {
-                    boardSpace.textContent = playerOne.marker;
-                    gameboard.setBoard(i, boardSpace.textContent);
-                    game.checkResults(humanMarker);
-                
-                    game.setTurn();
-                    game.computerOpponent();
-                    console.log(gameboard.board);
-                    
-                    
-
-                } else if (game.getTurn() % 2 == 0 && boardSpace.textContent !== `x` && boardSpace.textContent !== `o`) {
-                    boardSpace.textContent = playerOne.marker;
-                    gameboard.setBoard(i, boardSpace.textContent);
-                    game.checkResults();
-                    game.setTurn();
-
-
-                } else if (boardSpace.textContent !== `x` && boardSpace.textContent !== `o`) {
-                    boardSpace.textContent = playerTwo.marker;
-                    gameboard.setBoard(i, boardSpace.textContent);
-                    game.checkResults();
-                    game.setTurn();
-
+                if (boardSpace.textContent !== `x` && boardSpace.textContent !== `o` ) {
+                    if (game.getTurn() % 2 == 0 && playerTwo.name == `computer`) {
+                        currPlayerTurn(playerOne, boardSpace, i)
+                        game.computerOpponent();
+                        
+                        
+    
+                    } else if (game.getTurn() % 2 == 0) {
+                        currPlayerTurn(playerOne, boardSpace, i);
+    
+    
+                    } else {
+                       currPlayerTurn(playerTwo, boardSpace, i);
+                    }
                 }
+                
 
 
             })
