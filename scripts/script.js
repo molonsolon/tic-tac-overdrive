@@ -15,32 +15,28 @@
  
 */
 
-const Player = (player1Or2, name, marker) => {
+const Player = (number, name, marker) => {
     return {
-        player1Or2,
+        number,
         name,
         marker,
 
     }
 };
 
-let playerOne = Player(1, `joey`, `x`)
-let playerTwo = Player(2, `computer`, `o`)
 
-let computerMarker = playerTwo.marker;
-let humanMarker = playerOne.marker;
 
 const introAnimation = gsap.timeline();
-    introAnimation
-    .to("#intro-title", {duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out"  } )
-    .from("#enter-btn", {duration: 1, x: 1000});
+introAnimation
+    .to("#intro-title", { duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out" })
+    .from("#enter-btn", { duration: 1, x: 1000 });
 
 
 
 const gameboard = (() => {
     let board = [0, 1, 2,
-                3, 4, 5,
-                6, 7, 8];
+        3, 4, 5,
+        6, 7, 8];
 
     const resultCheckSectors = {
 
@@ -60,7 +56,7 @@ const gameboard = (() => {
     }
 
     const getBoard = () => board;
-    
+
     function setBoard(index, marker) {
         board.splice(index, 1, marker);
     }
@@ -75,84 +71,98 @@ const gameboard = (() => {
     }
 })();
 
-let currentBoard = gameboard.getBoard()
 
 
 const game = (() => {
 
     let whoseTurn = 0;
+    let playerOne;
+    let playerTwo;
+    
+    function setPlayer(player) {
+        if (player.number === 1) {
+            return playerOne = player; 
+        } else {
+            return playerTwo = player;
+        }
+    }
+
+
     const getTurn = () => whoseTurn;
     const setTurn = () => whoseTurn++;
+    
+    function getPlayerName(playerNumber) {
+        if (playerNumber === 1) {
+            return playerOne.name
+        } else {
+            return playerTwo.name
+        }
+    }
 
 
-    let currentBoard = gameboard.getBoard()
-
-    let computerMarker = playerTwo.marker;
-    let humanMarker = playerOne.marker;
 
     const compMM = () => {
-        return minimax(currentBoard, computerMarker).index;
+        return minimax(gameboard.getBoard(), playerTwo.marker).index;
     }
 
     const compR = () => {
-        return gameboard.getRemainingSectors(currentBoard)[Math.floor(Math.random() * gameboard.getRemainingSectors(currentBoard).length)];
+        return gameboard.getRemainingSectors(gameboard.getBoard())[Math.floor(Math.random() * gameboard.getRemainingSectors(gameboard.getBoard()).length)];
     }
-  
+
     const computerOpponent = () => {
         compChoice = compChoiceLogic();
         let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
         compChoiceSelector.textContent = playerTwo.marker;
         gameboard.setBoard(compChoice, playerTwo.marker);
-        checkResults(computerMarker);        
+        checkResults(playerTwo.marker);
         setTurn();
     }
 
-    
-
     const compChoiceLogic = () => {
-        
-        let compDifficulty = `new on the job`;
-        
-        
-        
-        
+
+        let compDifficulty = `unbeatable`;
+
         if (compDifficulty === `unbeatable`) {
+
             return compMM();
         } else if (compDifficulty !== `unbeatable`) {
             let rNum = Math.random() * 100;
-            console.log(rNum);
+
             if (compDifficulty === `highly skilled`) {
                 if (rNum < 75) {
+
                     return compMM()
                 } else {
+
                     return compR()
                 }
             } else if (compDifficulty === `in training`) {
+
                 if (rNum < 50) {
+
                     return compMM();
                 } else {
+
                     return compR();
                 }
             } else if (compDifficulty === `new on the job`) {
                 if (rNum < 25) {
-                    
+
                     return compMM()
                 } else {
+
                     return compR()
                 }
             }
         }
-        
-        
-        
     }
 
 
-    
+
 
     function checkResults(currMark) {
         for (let key in gameboard.resultCheckSectors) {
-            
+
             if (gameboard.resultCheckSectors[`${key}`]().join(`,`) === `${currMark},${currMark},${currMark}`) {
                 return true
 
@@ -164,17 +174,15 @@ const game = (() => {
 
     function minimax(currBdst, currMark) {
         const emptyCellsStore = gameboard.getRemainingSectors(currBdst);
+        let score;
 
-
-        if (checkResults(humanMarker)) {
+        if (checkResults(playerOne.marker)) {
             return { score: -1 };
-        } else if (checkResults(computerMarker)) {
+        } else if (checkResults(playerTwo.marker)) {
             return { score: 1 };
         } else if (emptyCellsStore.length === 0) {
             return { score: 0 };
         }
-
-
 
         const testHistory = [];
 
@@ -183,12 +191,12 @@ const game = (() => {
             currentTest.index = currBdst[emptyCellsStore[i]];
             currBdst[emptyCellsStore[i]] = currMark;
 
-            if (currMark === computerMarker) {
-                const result = minimax(currBdst, humanMarker);
+            if (currMark === playerTwo.marker) {
+                const result = minimax(currBdst, playerOne.marker);
                 currentTest.score = result.score;
 
             } else {
-                const result = minimax(currBdst, computerMarker);
+                const result = minimax(currBdst, playerTwo.marker);
                 currentTest.score = result.score;
             }
 
@@ -198,7 +206,7 @@ const game = (() => {
 
         let bestNextMove;
 
-        if (currMark === computerMarker) {
+        if (currMark === playerTwo.marker) {
             let bestScore = -Infinity;
             for (let i = 0; i < testHistory.length; i++) {
                 if (testHistory[i].score > bestScore) {
@@ -224,7 +232,9 @@ const game = (() => {
         computerOpponent,
         getTurn,
         setTurn,
-        compMM
+        compMM,
+        getPlayerName,
+        setPlayer,
     }
 })();
 
@@ -233,16 +243,18 @@ const game = (() => {
 const displayController = (() => {
     const getBoard = gameboard.getBoard();
     const gameboardContainer = document.querySelector(`#gameboard-container`);
+    const enterBtn = document.querySelector(`#enter-btn`);
+    const startGameBtn = document.querySelector(`#start-btn`);
+    const playerSelectForm = document.querySelector(`#player-select-form`);
     
     function displayBoard() {
-        
+
         function currPlayerTurn(currPlayer, currSpace, index) {
             currSpace.textContent = currPlayer.marker;
             gameboard.setBoard(index, currPlayer.marker);
             game.checkResults(currPlayer.marker);
             game.setTurn()
         }
-        // const boardSpace = document.getElementById(`${i}`);
 
         for (let i = 0; i < gameboard.board.length; i++) {
             const boardSpace = document.createElement(`div`);
@@ -251,58 +263,87 @@ const displayController = (() => {
             gameboardContainer.appendChild(boardSpace);
 
             boardSpace.addEventListener(`click`, () => {
-                if (boardSpace.textContent !== `x` && boardSpace.textContent !== `o` ) {
-                    if (game.getTurn() % 2 == 0 && playerTwo.name == `computer`) {
+                if (boardSpace.textContent !== `x` && boardSpace.textContent !== `o`) {
+                    if (game.getTurn() % 2 == 0 && game.playerTwo.name == `computer`) {
                         currPlayerTurn(playerOne, boardSpace, i)
                         game.computerOpponent();
-                        
-                        
-    
+
+
+
                     } else if (game.getTurn() % 2 == 0) {
                         currPlayerTurn(playerOne, boardSpace, i);
-    
-    
+
+
                     } else {
-                       currPlayerTurn(playerTwo, boardSpace, i);
+                        currPlayerTurn(playerTwo, boardSpace, i);
                     }
                 }
-                
+
 
 
             })
         }
     };
 
-    
+
 
     function menuController() {
-        const enterBtn = document.querySelector(`#enter-btn`);
-        const startGameBtn = document.querySelector(`#start-btn`);
-        const playerSelectForm = document.querySelector(`#player-select-form`);
 
-        enterBtn.addEventListener(`click`, () =>{
+
+        enterBtn.addEventListener(`click`, () => {
             const introToPlayerSelect = gsap.timeline();
-            
+
             introToPlayerSelect
-                .to("#enter-btn", {duration: 1, xPercent: -150}, 0)
-                .to("#intro-screen", {duration: .8, xPercent: -150}, .3)
-                .to("#player-select-form", {duration: 1, xPercent: -150, yPercent: 0}, 1);
-            
+                .to("#enter-btn", { duration: 1, xPercent: -150 }, 0)
+                .to("#intro-screen", { duration: .8, xPercent: -150 }, .3)
+                .to("#player-select-form", { duration: 1, xPercent: -150, yPercent: 0 }, 1);
+
         });
 
-        playerSelectForm.addEventListener(`submit`, function(event) {event.preventDefault();});
+        // form control
+
+        function setPlayerMarker(radioGroup) {
+            let e = document.getElementsByClassName(radioGroup);
+
+            for (let i = 0; i < e.length; i++) {
+                if (e[i].checked) {
+                    return e[i].value;
+                }
+            }
+        }
+
+       
+        
+        playerSelectForm.addEventListener(`submit`, function (event) { 
+            event.preventDefault(); 
+            PlayerOneMarker = setPlayerMarker(`player-one-radio`);
+            console.log(playerOneMarker)
+            PlayerTwoMarker = setPlayerMarker(`player-two-radio`);
+            playerOneName = document.querySelector(`#player-one-name`).value;
+            playerTwoName = document.querySelector(`#player-two-name`).value;
+
+            playerOne = Player(1, playerOneName, playerOneMarker);
+            playerTwo= Player(2, playertwoName, playerTwoMarker);
+
+            game.setPlayer(playerOne);
+            game.setPlayer(playerTwo);
+
+        });
+
+
+
 
         startGameBtn.addEventListener(`click`, () => {
             const startGameAnimation = gsap.timeline();
 
 
             startGameAnimation
-                .to("#player-select-form", {duration: 1, xPercent: -300}, 0)
-                .to("#game-container", {duration: 1, xPercent: -300, yPercent: -35, ease: "bounce"}, 1);
+                .to("#player-select-form", { duration: 1, xPercent: -300 }, 0)
+                .to("#game-container", { duration: 1, xPercent: -300, yPercent: -35, ease: "bounce" }, 1);
 
         })
     }
-    
+
 
     return {
         board: getBoard,

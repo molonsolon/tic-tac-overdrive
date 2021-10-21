@@ -131,7 +131,7 @@ html {
 
 .player-select > img {
   max-height: 30vh;
-  min-height: 20vh;
+  min-height: 10vh;
   width: auto;
   -ms-grid-column-align: left;
       justify-self: left;
@@ -140,7 +140,8 @@ html {
   border-radius: 3px;
 }
 
-.player-name {
+#player-one-name,
+#player-two-name {
   display: -ms-grid;
   display: grid;
   -ms-grid-column: 1;
