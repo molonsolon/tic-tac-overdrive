@@ -11,6 +11,7 @@
     [x] game.checkResult function isn't detecting correctly after creating successful minimax ai
         figure out WHY this is happening before throwing solutions @ it all slap-dash.
     [x] minimax function isn't working, only returning first possible value instead of using recursion
+    [ ] figure out playerOne and PlayerTwo
 
  
 */
@@ -24,12 +25,6 @@ const Player = (number, name, marker) => {
     }
 };
 
-
-
-const introAnimation = gsap.timeline();
-introAnimation
-    .to("#intro-title", { duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out" })
-    .from("#enter-btn", { duration: 1, x: 1000 });
 
 
 
@@ -81,9 +76,11 @@ const game = (() => {
     
     function setPlayer(player) {
         if (player.number === 1) {
-            playerOne = player; 
+            playerOne = player
+            return playerOne; 
         } else if (player.number === 2) {
             playerTwo = player;
+            return playerTwo;
         }
     }
 
@@ -179,6 +176,7 @@ const game = (() => {
 
 
     function minimax(currBdst, currMark) {
+        
         const emptyCellsStore = gameboard.getRemainingSectors(currBdst);
         let score;
 
@@ -323,6 +321,12 @@ const displayController = (() => {
         // form control
 
         
+        const introAnimation = gsap.timeline();
+            introAnimation
+            .to("#intro-title", { duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out" })
+            .from("#enter-btn", { duration: 1, x: 1000 });
+
+
 
        
         
