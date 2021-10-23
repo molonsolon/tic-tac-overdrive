@@ -8,6 +8,7 @@
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
 
 
+
 </head>
 <body>
     <div id="app-container">
@@ -34,7 +35,11 @@
 
             <div id="player-two-container">
                 <div class="player-select">
-                    <img class="player-icon" src="/images/ai-icon.png" alt="grim reaper with computer for a head">
+                    <img class="player-icon" src="/images/player-two-icon.png" alt="grim reaper with computer for a head">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="player-two-switch">
+                        <label class="custom-control-label" for="player-two-switch">Player or Computer?</label>
+                    </div>
                     <input type="text" placeholder="Name" id="player-two-name">                                       
                     <input type="radio" class="player-two-radio" name="marker-x" value="x">
                     <label for="marker=x">X</label>
@@ -52,20 +57,14 @@
         
         <div id="game-container">
             <div id="gameboard-container">
-                <!-- <div id="0" class="board-space"></div>
-                <div id="1" class="board-space"></div>
-                <div id="2" class="board-space"></div>
-                <div id="3" class="board-space"></div>
-                <div id="4" class="board-space"></div>
-                <div id="5" class="board-space"></div>
-                <div id="6" class="board-space"></div>
-                <div id="7" class="board-space"></div>
-                <div id="8" class="board-space"></div> -->
+
             </div>
         </div>
     </div>    
     
     <script src="/scripts/script.js" defer></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/CSSRulePlugin.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/Draggable.min.js"></script>

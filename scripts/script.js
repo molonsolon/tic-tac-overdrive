@@ -84,10 +84,6 @@ const game = (() => {
         }
     }
 
-
-    const getTurn = () => whoseTurn;
-    const setTurn = () => whoseTurn++;
-    
     function getPlayerName(playerNumber) {
         if (playerNumber === 1) {
             return playerOne.name
@@ -103,6 +99,11 @@ const game = (() => {
             return playerTwo.marker
         }
     }
+
+    const getTurn = () => whoseTurn;
+    const setTurn = () => whoseTurn++;
+    
+
 
     const compMM = () => {
         return minimax(gameboard.getBoard(), playerTwo.marker).index;
@@ -314,17 +315,17 @@ const displayController = (() => {
             introToPlayerSelect
                 .to("#enter-btn", { duration: 1, xPercent: -150 }, 0)
                 .to("#intro-screen", { duration: .8, xPercent: -150 }, .3)
-                .to("#player-select-form", { duration: 1, xPercent: -150, yPercent: 0 }, 1);
+                .to("#player-select-form", { duration: 1, xPercent: -150.2, yPercent: 0 }, 1);
 
         });
 
         // form control
 
         
-        const introAnimation = gsap.timeline();
-            introAnimation
-            .to("#intro-title", { duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out" })
-            .from("#enter-btn", { duration: 1, x: 1000 });
+        // const introAnimation = gsap.timeline();
+        //     introAnimation
+        //     .to("#intro-title", { duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out" })
+        //     .from("#enter-btn", { duration: 1, x: 1000 });
 
 
 
