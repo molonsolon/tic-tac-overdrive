@@ -81,9 +81,9 @@ const game = (() => {
     
     function setPlayer(player) {
         if (player.number === 1) {
-            return playerOne = player; 
-        } else {
-            return playerTwo = player;
+            playerOne = player; 
+        } else if (player.number === 2) {
+            playerTwo = player;
         }
     }
 
@@ -99,7 +99,13 @@ const game = (() => {
         }
     }
 
-
+    function getPlayerMarker(playerNumber) {
+        if (playerNumber === 1) {
+            return playerOne.marker
+        } else {
+            return playerTwo.marker
+        }
+    }
 
     const compMM = () => {
         return minimax(gameboard.getBoard(), playerTwo.marker).index;
@@ -235,6 +241,9 @@ const game = (() => {
         compMM,
         getPlayerName,
         setPlayer,
+        playerOne,
+        playerTwo,
+        getPlayerMarker,
     }
 })();
 
@@ -264,13 +273,13 @@ const displayController = (() => {
 
             boardSpace.addEventListener(`click`, () => {
                 if (boardSpace.textContent !== `x` && boardSpace.textContent !== `o`) {
-                    if (game.getTurn() % 2 == 0 && game.playerTwo.name == `computer`) {
+                    if (game.getTurn() % 2 === 0 && game.getPlayerName(2) === `computer`) {
                         currPlayerTurn(playerOne, boardSpace, i)
                         game.computerOpponent();
 
 
 
-                    } else if (game.getTurn() % 2 == 0) {
+                    } else if (game.getTurn() % 2 === 0) {
                         currPlayerTurn(playerOne, boardSpace, i);
 
 
@@ -285,7 +294,18 @@ const displayController = (() => {
         }
     };
 
-
+    function setPlayerMarker(radioGroup) {
+                let e = document.getElementsByClassName(radioGroup);
+                console.log(e);
+                for (const es of e) {
+                    if (es.checked) {
+                        console.log(es.checked)
+                        return es.value;
+                    } else {
+                        continue
+                    }
+                }
+            }
 
     function menuController() {
 
@@ -302,31 +322,27 @@ const displayController = (() => {
 
         // form control
 
-        function setPlayerMarker(radioGroup) {
-            let e = document.getElementsByClassName(radioGroup);
-
-            for (let i = 0; i < e.length; i++) {
-                if (e[i].checked) {
-                    return e[i].value;
-                }
-            }
-        }
+        
 
        
         
         playerSelectForm.addEventListener(`submit`, function (event) { 
             event.preventDefault(); 
-            PlayerOneMarker = setPlayerMarker(`player-one-radio`);
-            console.log(playerOneMarker)
-            PlayerTwoMarker = setPlayerMarker(`player-two-radio`);
+            playerOneMarker = setPlayerMarker(`player-one-radio`);
+            console.log(setPlayerMarker(`player-one-radio`))
+            playerTwoMarker = setPlayerMarker(`player-two-radio`);
             playerOneName = document.querySelector(`#player-one-name`).value;
             playerTwoName = document.querySelector(`#player-two-name`).value;
 
             playerOne = Player(1, playerOneName, playerOneMarker);
-            playerTwo= Player(2, playertwoName, playerTwoMarker);
+            
+            playerTwo = Player(2, playerTwoName, playerTwoMarker);
 
             game.setPlayer(playerOne);
+            
             game.setPlayer(playerTwo);
+
+            
 
         });
 
@@ -349,7 +365,9 @@ const displayController = (() => {
         board: getBoard,
         displayBoard,
         menuController,
-    }
+        setPlayerMarker,
+         
+        }
 })();
 
 
