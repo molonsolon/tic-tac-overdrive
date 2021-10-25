@@ -11,58 +11,72 @@
     [x] game.checkResult function isn't detecting correctly after creating successful minimax ai
         figure out WHY this is happening before throwing solutions @ it all slap-dash.
     [x] minimax function isn't working, only returning first possible value instead of using recursion
-    [ ] figure out playerOne and PlayerTwo
-
+    [ ] game win / lose / draw announcements (render animated announcements on true checkwin function call)
+        [ ] work out draw logic as it's not written into check results yet.
+    [ ] play again / main menu button under results announcement;
+    [ ] form validation + lock other radio buttons when choice is made.
+    [ ] game difficulty selector  
+    [ ] Purely aesthetic UI completion (backgrounds, animations, music, sound effects)
+    [x] Put get player info functions in Player factory possibly?
  
 */
 
 const Player = (number, name, marker) => {
+
+    const getNumber = () => number;
+    const getName = () => name;
+    const getMarker = () => marker;
+    
+    
     return {
-        number,
-        name,
-        marker,
+        getNumber,
+        getName,
+        getMarker,
 
     }
 };
 
 
 
-
 const gameboard = (() => {
-    let board = [0, 1, 2,
-        3, 4, 5,
-        6, 7, 8];
+    
+    let _board = [0, 1, 2,
+                  3, 4, 5,
+                  6, 7, 8];
 
-    const resultCheckSectors = {
+    
+    const _resultCheckSectors = {
 
-        row1: () => [0, 1, 2].map(x => board[x]),
-        row2: () => [3, 4, 5].map(x => board[x]),
-        row3: () => [6, 7, 8].map(x => board[x]),
-        column1: () => [0, 3, 6].map(x => board[x]),
-        column2: () => [1, 4, 7].map(x => board[x]),
-        column3: () => [2, 5, 8].map(x => board[x]),
-        diagonal1: () => [0, 4, 8].map(x => board[x]),
-        diagonal2: () => [2, 4, 6].map(x => board[x]),
+        row1: () => [0, 1, 2].map(x => _board[x]),
+        row2: () => [3, 4, 5].map(x => _board[x]),
+        row3: () => [6, 7, 8].map(x => _board[x]),
+        column1: () => [0, 3, 6].map(x => _board[x]),
+        column2: () => [1, 4, 7].map(x => _board[x]),
+        column3: () => [2, 5, 8].map(x => _board[x]),
+        diagonal1: () => [0, 4, 8].map(x => _board[x]),
+        diagonal2: () => [2, 4, 6].map(x => _board[x]),
     }
 
+    const getBoard = () => _board;
 
-    function getRemainingSectors(currBdst) {
-        return currBdst.filter(i => i != `o` && i != `x`);
+    const getResultCheckSectors = () => _resultCheckSectors;
+
+    function getRemainingSectors(boardState) {
+        return boardState.filter(i => i != `o` && i != `x`);
     }
-
-    const getBoard = () => board;
 
     function setBoard(index, marker) {
-        board.splice(index, 1, marker);
+        _board.splice(index, 1, marker);
     }
 
 
     return {
-        resultCheckSectors,
+        
+        getResultCheckSectors,
         getRemainingSectors,
-        getBoard: getBoard,
-        setBoard: setBoard,
-        board,
+        getBoard,
+        setBoard,
+    
     }
 })();
 
@@ -70,15 +84,16 @@ const gameboard = (() => {
 
 const game = (() => {
 
-    let whoseTurn = 0;
+    let _whoseTurn = 0;
     let playerOne;
     let playerTwo;
-    
+    let result = null;
+
     function setPlayer(player) {
-        if (player.number === 1) {
+        if (player.getNumber() === 1) {
             playerOne = player
             return playerOne; 
-        } else if (player.number === 2) {
+        } else if (player.getNumber() === 2) {
             playerTwo = player;
             return playerTwo;
         }
@@ -86,76 +101,78 @@ const game = (() => {
 
     function getPlayerName(playerNumber) {
         if (playerNumber === 1) {
-            return playerOne.name
+            return playerOne.getName()
         } else {
-            return playerTwo.name
+            return playerTwo.getName()
         }
     }
 
     function getPlayerMarker(playerNumber) {
         if (playerNumber === 1) {
-            return playerOne.marker
+            return playerOne.getMarker();
         } else {
-            return playerTwo.marker
+            return playerTwo.getmarker();
         }
     }
 
-    const getTurn = () => whoseTurn;
-    const setTurn = () => whoseTurn++;
+    const getTurn = () => _whoseTurn;
+    const setTurn = () => _whoseTurn++;
     
 
 
-    const compMM = () => {
-        return minimax(gameboard.getBoard(), playerTwo.marker).index;
+    const _compMM = () => {
+        return minimax(gameboard.getBoard(), playerTwo.getMarker()).index;
     }
 
-    const compR = () => {
+    const _compR = () => {
         return gameboard.getRemainingSectors(gameboard.getBoard())[Math.floor(Math.random() * gameboard.getRemainingSectors(gameboard.getBoard()).length)];
     }
 
     const computerOpponent = () => {
-        compChoice = compChoiceLogic();
+        compChoice = _compChoiceLogic();
         let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
-        compChoiceSelector.textContent = playerTwo.marker;
-        gameboard.setBoard(compChoice, playerTwo.marker);
-        checkResults(playerTwo.marker);
+        compChoiceSelector.textContent = playerTwo.getMarker();
+        gameboard.setBoard(compChoice, playerTwo.getMarker());
+        if (checkResults(playerTwo.getMarker())) {
+            alert(`computer win!`)
+        }
         setTurn();
     }
 
-    const compChoiceLogic = () => {
+    const _compChoiceLogic = () => {
 
-        let compDifficulty = `unbeatable`;
+        let compDifficulty = `in training`;
 
         if (compDifficulty === `unbeatable`) {
 
-            return compMM();
+            return _compMM();
         } else if (compDifficulty !== `unbeatable`) {
             let rNum = Math.random() * 100;
 
             if (compDifficulty === `highly skilled`) {
                 if (rNum < 75) {
 
-                    return compMM()
+                    return _compMM()
                 } else {
 
-                    return compR()
+                    return _compR()
                 }
             } else if (compDifficulty === `in training`) {
 
                 if (rNum < 50) {
-
-                    return compMM();
+                    
+                    return _compMM();
                 } else {
 
-                    return compR();
+                    return _compR();
                 }
             } else if (compDifficulty === `new on the job`) {
                 if (rNum < 25) {
 
-                    return compMM()
+                    return _compMM()
                 } else {
 
-                    return compR()
+                    return _compR()
                 }
             }
         }
@@ -164,54 +181,68 @@ const game = (() => {
 
 
 
-    function checkResults(currMark) {
-        for (let key in gameboard.resultCheckSectors) {
+    function checkResults(playerMarker) {
+        for (let key in gameboard.getResultCheckSectors()) {
 
-            if (gameboard.resultCheckSectors[`${key}`]().join(`,`) === `${currMark},${currMark},${currMark}`) {
+            if (gameboard.getResultCheckSectors()[`${key}`]().join(`,`) === `${playerMarker},${playerMarker},${playerMarker}`) {
+                
                 return true
 
-            }
+            } 
         }
 
     }
 
+    const finalWinCheck = () => {
+        if (checkResults(playerOne.getMarker())) {
+            alert(`player 1 win`);
+            
+            
+        } else if (checkResults(playerTwo.getMarker())) {
+            if (playerTwo.getName() === `computer`) {
+                alert(`computer win`)
+            } else {
+                alert(`player 2 win`)
+            }
+        }
+    }
 
-    function minimax(currBdst, currMark) {
+    function minimax(boardState, playerMarker) {
         
-        const emptyCellsStore = gameboard.getRemainingSectors(currBdst);
+        const getEmptySectors = gameboard.getRemainingSectors(boardState);
         let score;
 
-        if (checkResults(playerOne.marker)) {
+        if (checkResults(playerOne.getMarker())) {
             return { score: -1 };
-        } else if (checkResults(playerTwo.marker)) {
+        } else if (checkResults(playerTwo.getMarker())) {
             return { score: 1 };
-        } else if (emptyCellsStore.length === 0) {
+        } else if (getEmptySectors.length === 0) {
             return { score: 0 };
         }
 
         const testHistory = [];
 
-        for (let i = 0; i < emptyCellsStore.length; i++) {
+        for (let i = 0; i < getEmptySectors.length; i++) {
             const currentTest = [];
-            currentTest.index = currBdst[emptyCellsStore[i]];
-            currBdst[emptyCellsStore[i]] = currMark;
+            currentTest.index = boardState[getEmptySectors[i]];
+            boardState[getEmptySectors[i]] = playerMarker;
 
-            if (currMark === playerTwo.marker) {
-                const result = minimax(currBdst, playerOne.marker);
+            if (playerMarker === playerTwo.getMarker()) {
+                const result = minimax(boardState, playerOne.getMarker());
                 currentTest.score = result.score;
 
             } else {
-                const result = minimax(currBdst, playerTwo.marker);
+                const result = minimax(boardState, playerTwo.getMarker());
                 currentTest.score = result.score;
             }
 
-            currBdst[emptyCellsStore[i]] = currentTest.index;
+            boardState[getEmptySectors[i]] = currentTest.index;
             testHistory.push(currentTest);
         }
 
         let bestNextMove;
 
-        if (currMark === playerTwo.marker) {
+        if (playerMarker === playerTwo.getMarker()) {
             let bestScore = -Infinity;
             for (let i = 0; i < testHistory.length; i++) {
                 if (testHistory[i].score > bestScore) {
@@ -237,34 +268,38 @@ const game = (() => {
         computerOpponent,
         getTurn,
         setTurn,
-        compMM,
         getPlayerName,
+        getPlayerMarker,
         setPlayer,
         playerOne,
         playerTwo,
-        getPlayerMarker,
+        finalWinCheck,
     }
 })();
 
 
 
 const displayController = (() => {
-    const getBoard = gameboard.getBoard();
     const gameboardContainer = document.querySelector(`#gameboard-container`);
     const enterBtn = document.querySelector(`#enter-btn`);
     const startGameBtn = document.querySelector(`#start-btn`);
     const playerSelectForm = document.querySelector(`#player-select-form`);
+    const computerSwitch = document.querySelectorAll(`.switch-radio`);
+    const playerTwoIcon = document.querySelector(`#player-two-icon`);
+    const playerOneName = document.querySelector(`#player-one-name`);
+    const playerTwoName = document.querySelector(`#player-two-name`);
     
     function displayBoard() {
 
-        function currPlayerTurn(currPlayer, currSpace, index) {
-            currSpace.textContent = currPlayer.marker;
-            gameboard.setBoard(index, currPlayer.marker);
-            game.checkResults(currPlayer.marker);
+        function playTurn(playerNumber, turnSpace, index) {
+            let playerMarker = game.getPlayerMarker(playerNumber)
+            turnSpace.textContent = playerMarker;
+            gameboard.setBoard(index, playerMarker);
+            game.finalWinCheck();
             game.setTurn()
         }
 
-        for (let i = 0; i < gameboard.board.length; i++) {
+        for (let i = 0; i < gameboard.getBoard().length; i++) {
             const boardSpace = document.createElement(`div`);
             boardSpace.classList.add(`board-space`);
             boardSpace.setAttribute(`id`, `sector-${i}`);
@@ -273,17 +308,17 @@ const displayController = (() => {
             boardSpace.addEventListener(`click`, () => {
                 if (boardSpace.textContent !== `x` && boardSpace.textContent !== `o`) {
                     if (game.getTurn() % 2 === 0 && game.getPlayerName(2) === `computer`) {
-                        currPlayerTurn(playerOne, boardSpace, i)
+                        playTurn(1, boardSpace, i)
                         game.computerOpponent();
 
 
 
                     } else if (game.getTurn() % 2 === 0) {
-                        currPlayerTurn(playerOne, boardSpace, i);
+                        playTurn(1, boardSpace, i);
 
 
                     } else {
-                        currPlayerTurn(playerTwo, boardSpace, i);
+                        playTurn(2, boardSpace, i);
                     }
                 }
 
@@ -294,19 +329,22 @@ const displayController = (() => {
     };
 
     function setPlayerMarker(radioGroup) {
-                let e = document.getElementsByClassName(radioGroup);
-                console.log(e);
-                for (const es of e) {
-                    if (es.checked) {
-                        console.log(es.checked)
-                        return es.value;
-                    } else {
-                        continue
-                    }
-                }
+        let element = document.getElementsByClassName(radioGroup);
+        
+        for (const elements of element) {
+            if (elements.checked) {
+                console.log(elements.checked)
+                return elements.value;
+            } else {
+            continue
             }
+        }
+    };
+
+
 
     function menuController() {
+
 
 
         enterBtn.addEventListener(`click`, () => {
@@ -327,21 +365,51 @@ const displayController = (() => {
         //     .to("#intro-title", { duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out" })
         //     .from("#enter-btn", { duration: 1, x: 1000 });
 
+        const playerToggle = () => {
+            let value;
+            console.log(`run`)
+            for (const elements of computerSwitch) {
+                if (elements.checked) {
+                    console.log(elements.checked)
+                    value = elements.value;
 
+                    if (value === `player`) {
+                        playerTwoIcon.src = "/images/player-two-icon.png";
+                        playerTwoName.value = ``;
+                        playerTwoName.disabled = false;
+                    } else if (value === `computer`) {
+                        playerTwoIcon.src ="/images/ai-icon.png"
+                        playerTwoName.value = `computer`;
+                        playerTwoName.disabled = true;
+                    }
+                } else {
+                continue
+                }
+            }
+        }
+
+
+       computerSwitch.forEach(function(element) {
+           element.addEventListener(`change`, () => playerToggle())
+           console.log(element)
+
+       })
+           
+            
+            
 
        
         
         playerSelectForm.addEventListener(`submit`, function (event) { 
             event.preventDefault(); 
             playerOneMarker = setPlayerMarker(`player-one-radio`);
-            console.log(setPlayerMarker(`player-one-radio`))
             playerTwoMarker = setPlayerMarker(`player-two-radio`);
-            playerOneName = document.querySelector(`#player-one-name`).value;
-            playerTwoName = document.querySelector(`#player-two-name`).value;
+            p1Name = playerOneName.value;
+            p2Name = playerTwoName.value
 
-            playerOne = Player(1, playerOneName, playerOneMarker);
+            playerOne = Player(1, p1Name, playerOneMarker);
             
-            playerTwo = Player(2, playerTwoName, playerTwoMarker);
+            playerTwo = Player(2, p2Name, playerTwoMarker);
 
             game.setPlayer(playerOne);
             
@@ -367,11 +435,10 @@ const displayController = (() => {
 
 
     return {
-        board: getBoard,
+        
         displayBoard,
         menuController,
         setPlayerMarker,
-         
         }
 })();
 

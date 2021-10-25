@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 
 </head>
@@ -26,25 +26,37 @@
                 <div class="player-select">
                     <img class="player-icon" src="/images/player-icon.png" alt="cowboy at computer">
                     <input type="text" placeholder="Name" id="player-one-name">
-                        <input type="radio" class="player-one-radio" name="marker-x" value="x">
-                        <label for="marker=x">X</label>
-                        <input type="radio" class="player-one-radio" name="marker-o" value="o">
-                        <label for="marker-o">O</label>  
+                    <div class="form-check player-one-radio-group">
+                        <input type="radio" class="form-check-input player-one-radio btn-check" id="1option1" name="1markers" value="x">
+                        <label for="1option1" class="form-check-label btn btn-secondary">X</label>
+                    </div>  
+                    <div class="form-check player-one-radio-group">
+                        <input type="radio" class=" form-check-input player-one-radio btn-check" id="1option2" name="1markers" value="o">
+                        <label for="1option2" class="form-check-label btn btn-secondary">O</label>  
+                    </div>
                 </div>
             </div>
 
             <div id="player-two-container">
                 <div class="player-select">
-                    <img class="player-icon" src="/images/player-two-icon.png" alt="grim reaper with computer for a head">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="player-two-switch">
-                        <label class="custom-control-label" for="player-two-switch">Player or Computer?</label>
+                    <img class="player-icon" id="player-two-icon" src="/images/player-two-icon.png" alt="grim reaper with computer for a head">
+                    <div class="form-check" id="player-two-switch">
+                        <input type="radio" class="form-check-input btn-check switch-radio" name="toggle" id="playerToggle" value="player" checked>
+                        <label class="form-check-label btn btn-secondary" for="playerToggle">Player</label>
+                        <input type="radio" class="form-check-input btn-check switch-radio" name="toggle" id="computerToggle" value="computer">
+                        <label class="form-check-label btn btn-secondary" for="computerToggle">Computer</label>
+
                     </div>
                     <input type="text" placeholder="Name" id="player-two-name">                                       
-                    <input type="radio" class="player-two-radio" name="marker-x" value="x">
-                    <label for="marker=x">X</label>
-                    <input type="radio" class="player-two-radio" name="marker-o" value="o">
-                    <label for="marker-o">O</label>  
+                    <div class="form-check player-two-radio-group">
+                        <input type="radio" class="form-check-input player-two-radio btn-check" id="option1" name="markers" value="x">
+                        <label class="form-check-label p2-label btn btn-secondary" for="option1">X</label>
+                    </div>
+                    <div class="form-check player-two-radio-group">
+                        <input type="radio" class="form-check-input player-two-radio btn-check" id="option2" name="markers" value="o">
+                        <label class="form-check-label p2-label btn btn-secondary" for="option2">O</label> 
+                    </div>
+                      
                 </div>
             </div>
             <div id="start-game-container">

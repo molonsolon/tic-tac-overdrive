@@ -1,3 +1,24 @@
+@media (max-width: 600px) {
+  #player-two-container > .player-select {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-rows: 5vh 20vh 10vh 5vh;
+        grid-template-rows: 5vh 20vh 10vh 5vh;
+    grid-row-gap: 5vh;
+    margin-top: -10vh;
+  }
+  #player-one-container > .player-select {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-rows: 5vh 10vh 10vh 5vh;
+        grid-template-rows: 5vh 10vh 10vh 5vh;
+    grid-row-gap: 5vh;
+  }
+  .player-select > img {
+    width: 180px;
+  }
+}
+
 html {
   height: 100vh;
   width: 100vw;
@@ -60,12 +81,12 @@ html {
 #player-select-form {
   display: -ms-grid;
   display: grid;
-  width: 100vw;
+  width: 100%;
       grid-template-areas: "one submit two";
   -ms-grid-rows: 100vh;
       grid-template-rows: 100vh;
-  -ms-grid-columns: 1fr 1fr 1fr;
-      grid-template-columns: 1fr 1fr 1fr;
+  -ms-grid-columns: (33.3%)[3];
+      grid-template-columns: repeat(3, 33.3%);
   justify-items: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -78,7 +99,23 @@ html {
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   grid-area: one;
-  width: auto;
+}
+
+#player-one-container .player-select .player-one-radio-group,
+#player-one-container .player-select .form-check-label {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-column-align: left;
+      justify-self: left;
+  margin-left: -0.75rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-grid-row: 4;
+  grid-row: 4;
 }
 
 #player-two-container {
@@ -87,6 +124,20 @@ html {
   -ms-grid-row: 1;
   -ms-grid-column: 3;
   grid-area: two;
+}
+
+#player-two-container .player-select .player-two-radio-group,
+#player-two-container .player-select .p2-label {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-column-align: right;
+      justify-self: right;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 #start-game-container {
@@ -103,13 +154,14 @@ html {
 .player-select {
   display: -ms-grid;
   display: grid;
-  -ms-grid-rows: 25vh 15vh 15vh 15vh;
-      grid-template-rows: 25vh 15vh 15vh 15vh;
+  -ms-grid-rows: 5vh 40vh 10vh 5vh;
+      grid-template-rows: 5vh 40vh 10vh 5vh;
   -ms-grid-columns: 15vw 15vw;
       grid-template-columns: 15vw 15vw;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  row-gap: 3vh;
 }
 
 .player-icon {
@@ -118,26 +170,31 @@ html {
   -ms-grid-column: 1;
   -ms-grid-column-span: 2;
   grid-column: 1 / span 2;
-  -ms-grid-row: 1;
-  -ms-grid-row-span: 2;
-  grid-row: 1  / span 2;
+  -ms-grid-row: 2;
+  grid-row: 2;
 }
 
-.player-select > label {
-  margin-left: -7vw;
-  margin-bottom: -3%;
+.form-check-label {
   font-size: 2rem;
+  width: 10vw;
+  height: 10vh;
 }
 
 .player-select > img {
-  max-height: 30vh;
-  min-height: 10vh;
-  width: auto;
+  max-width: 380px;
+  height: auto;
   -ms-grid-column-align: left;
       justify-self: left;
-  margin-top: -50%;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
   border: 3px solid black;
   border-radius: 3px;
+  margin-top: -8vh;
+}
+
+#player-two-icon {
+  -ms-grid-column-align: right;
+      justify-self: right;
 }
 
 #player-one-name,
@@ -147,10 +204,44 @@ html {
   -ms-grid-column: 1;
   -ms-grid-column-span: 2;
   grid-column: 1 / span 2;
-  -ms-grid-row: 2;
-  grid-row: 2;
+  -ms-grid-row: 3;
+  grid-row: 3;
   height: 7vh;
   font-size: 2.5rem;
+  width: 25vw;
+}
+
+#player-two-name {
+  -ms-grid-column-align: right;
+      justify-self: right;
+}
+
+#player-two-switch {
+  -ms-grid-row: 1;
+  grid-row: 1;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1 / span 2;
+  font-size: 1.5rem;
+  -ms-grid-column-align: right;
+      justify-self: right;
+}
+
+#player-two-switch .form-check-input {
+  margin-right: 5vw;
+}
+
+#player-two-switch .form-check-label {
+  width: 10vw;
+}
+
+#game-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 #gameboard-container {
@@ -163,21 +254,24 @@ html {
   margin-top: 1000px;
 }
 
-#game-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
 .board-space {
   height: 150px;
   width: 150px;
   background: white;
   border: solid black 3px;
   font-size: 5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.win-announce {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

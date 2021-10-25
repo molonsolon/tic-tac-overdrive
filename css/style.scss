@@ -1,3 +1,66 @@
+$xs: "480px";
+$sm: "600px";
+$md: "799px";
+$lg: "1010px";
+$xl: "1280px";
+
+$media-expressions: (screen: "screen",
+                     handheld: "handheld",
+                     retina2x:
+                     ("(-webkit-min-device-pixel-ratio: 2)",
+                     "(min-resolution: 192dpi)")) !default;
+
+@mixin media-min($size) {
+  @media (min-width: $size) {
+    @content;
+  }
+}
+@mixin media-max($size) {
+  @media (max-width: $size) {
+    @content;
+  }
+}
+
+@include media-max($sm) {
+    
+    #player-two-container > .player-select {
+        display: grid;
+        grid-template-rows: 5vh 20vh 10vh 5vh ;
+        grid-row-gap: 5vh;
+        margin-top: -10vh;
+    }
+
+    #player-one-container > .player-select {
+        display: grid;
+        grid-template-rows: 5vh 10vh 10vh 5vh ;
+        grid-row-gap: 5vh;
+        
+    
+    }
+
+
+    .player-select > img {
+    
+        width: 180px;
+        }
+    
+//    #player-two-switch {
+//         grid-row: 1;
+//         grid-column: 1 / span 2;
+        
+//         font-size: 1.5rem;
+//         justify-self: right;
+//         .form-check-input {
+//             margin-right: 5vw;
+//         }
+    
+
+//     }
+
+}
+
+
+
 html {
     height: 100vh; 
     width: 100vw;
@@ -55,10 +118,10 @@ html {
 #player-select-form {
     display: grid;
     
-    width: 100vw;
+    width: 100%;
     grid-template-areas: "one submit two";
     grid-template-rows: 100vh;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 33.3%);
     justify-items: center;
     align-items: center;
     
@@ -67,17 +130,45 @@ html {
 #player-one-container {
     display: grid;
     grid-area: one;
-    width: auto;
+    
     
     
 
 }
 
+#player-one-container {
+    .player-select {
+        .player-one-radio-group,
+        .form-check-label {
+            display: grid;
+            justify-self: left;
+            margin-left: -0.75rem;
+            align-items: center;
+            justify-content: center;
+            grid-row: 4;
+        }
+        
+    }
+}
 
 
 #player-two-container {
     display: grid;
     grid-area: two;
+}
+
+
+#player-two-container {
+    .player-select {
+        .player-two-radio-group,
+        .p2-label {
+            display: grid;
+            justify-self: right;
+            align-items: center;
+            justify-content: center;
+            
+        }
+    }
 }
 
 #start-game-container {
@@ -87,57 +178,94 @@ html {
     height: 7vh;
     width: 10vw;
     
+    
 }
 
-#start-btn {
-   
-}
 
 .player-select {
     display: grid;
-    grid-template-rows: 25vh 15vh 15vh 15vh;
+    grid-template-rows: 5vh 40vh 10vh 5vh ;
     grid-template-columns: 15vw 15vw;
     align-items: center;
-    
+    row-gap: 3vh;
     
 }
+
 
 .player-icon {
     display: grid;
     grid-column: 1 / span 2;
-    grid-row: 1  / span 2;
+    grid-row: 2;
 }
 
-.player-select > label {
-    margin-left: -7vw;
-    margin-bottom: -3%;
+.form-check-label {
+    
     font-size: 2rem;
+    width: 10vw;
+    height: 10vh;
+    
 }
+
+
 
 .player-select > img {
-    max-height: 30vh;
-    min-height: 10vh;
-    width: auto;
+    
+    
+    max-width: 380px;
+    height: auto;
+    
     justify-self: left;
-    margin-top: -50%;
+    align-self: flex-end;
     border: 3px solid black;
     border-radius: 3px;
-
+    margin-top: -8vh;
 }
+
+#player-two-icon {
+    justify-self: right;
+}
+
+
 
 #player-one-name,
 #player-two-name {
     display: grid;
     grid-column: 1 / span 2;
-    grid-row: 2;
+    grid-row: 3;
     height: 7vh;
     font-size: 2.5rem;
+    width: 25vw;
     
 }
 
 
 
+#player-two-name {
+    justify-self: right;
+}
 
+
+#player-two-switch {
+    grid-row: 1;
+    grid-column: 1 / span 2;
+    font-size: 1.5rem;
+    justify-self: right;
+    .form-check-input {
+        margin-right: 5vw;
+    }
+
+    .form-check-label {
+        width: 10vw;
+    }
+}
+ 
+
+
+#game-container {
+    display: flex;
+    justify-content: center;
+    
+}
 
 #gameboard-container {
     display: grid;
@@ -146,18 +274,18 @@ html {
     margin-top: 1000px;
 }
 
-#game-container {
-    display: flex;
-    justify-content: center;
-    
-}
-
 .board-space {
     height: 150px;
     width: 150px;
     background: white;
     border: solid black 3px;
     font-size: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.win-announce {
     display: flex;
     align-items: center;
     justify-content: center;
