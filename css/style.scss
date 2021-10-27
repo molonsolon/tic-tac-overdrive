@@ -105,6 +105,7 @@ html {
     font-size: .2rem;
     // height: auto;
     // width: 5vw;
+    color: white;
 }
 
 #enter-btn {
@@ -113,11 +114,20 @@ html {
     max-width: 14%;
 }
 
+.doodle {
+    z-index: -100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+}
  
 
 #player-select-form {
     display: grid;
-    
+    z-index: 1;
     width: 100%;
     grid-template-areas: "one submit two";
     grid-template-rows: 100vh;
@@ -250,12 +260,14 @@ html {
     grid-column: 1 / span 2;
     font-size: 1.5rem;
     justify-self: right;
+    align-content: center;
     .form-check-input {
         margin-right: 5vw;
     }
 
     .form-check-label {
         width: 10vw;
+        align-items: center;
     }
 }
  

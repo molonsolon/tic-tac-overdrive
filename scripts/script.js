@@ -360,10 +360,10 @@ const displayController = (() => {
         // form control
 
         
-        // const introAnimation = gsap.timeline();
-        //     introAnimation
-        //     .to("#intro-title", { duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out" })
-        //     .from("#enter-btn", { duration: 1, x: 1000 });
+        const introAnimation = gsap.timeline();
+            introAnimation
+            .to("#intro-title", { duration: 1.5, rotate: 720, perspective: 500, scale: 50, ease: "back.out" })
+            .from("#enter-btn", { duration: 1, x: 1000 });
 
         const playerToggle = () => {
             let value;

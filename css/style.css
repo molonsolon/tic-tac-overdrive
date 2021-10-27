@@ -70,6 +70,7 @@ html {
 
 #intro-title {
   font-size: .2rem;
+  color: white;
 }
 
 #enter-btn {
@@ -78,9 +79,19 @@ html {
   max-width: 14%;
 }
 
+.doodle {
+  z-index: -100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
 #player-select-form {
   display: -ms-grid;
   display: grid;
+  z-index: 1;
   width: 100%;
       grid-template-areas: "one submit two";
   -ms-grid-rows: 100vh;
@@ -225,6 +236,8 @@ html {
   font-size: 1.5rem;
   -ms-grid-column-align: right;
       justify-self: right;
+  -ms-flex-line-pack: center;
+      align-content: center;
 }
 
 #player-two-switch .form-check-input {
@@ -233,6 +246,9 @@ html {
 
 #player-two-switch .form-check-label {
   width: 10vw;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 #game-container {
