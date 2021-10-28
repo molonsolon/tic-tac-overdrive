@@ -105,13 +105,24 @@ html {
     font-size: .2rem;
     // height: auto;
     // width: 5vw;
-    color: white;
+    color: rgba(255, 255, 255, 0.671);
+    outline: red;
+    font-family: 'Exo 2', sans-serif;
 }
 
 #enter-btn {
-    height: 5%;
-    min-width: 11%;
+    height: 7vh;
+    min-width: 15vw;
     max-width: 14%;
+    font-size: 2rem;
+    font-family: 'Kanit', sans-serif;
+    color: white;
+    border-radius: 2%;
+    border-style: solid;
+    border-color: white;
+    border-width: 1px;
+    background-color: rgba(89, 0, 255, 0.363);
+
 }
 
 .doodle {
@@ -216,14 +227,23 @@ html {
     
 }
 
-
+#start-btn {
+    color: white;
+    border-radius: 2%;
+    border-style: solid;
+    border-color: white;
+    border-width: 1px;
+    background-color: rgba(89, 0, 255, 0.363);
+    font-size: 2rem;
+    font-family: 'Kanit', sans-serif;
+}
 
 .player-select > img {
     
     
     max-width: 380px;
     height: auto;
-    
+    opacity: 90%;
     justify-self: left;
     align-self: flex-end;
     border: 3px solid black;
