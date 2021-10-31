@@ -26,6 +26,15 @@ html {
   font-size: 10px;
 }
 
+css-doodle {
+  z-index: -100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
 #app-container {
   display: -ms-grid;
   display: grid;
@@ -68,14 +77,14 @@ html {
   margin-right: auto;
 }
 
-#intro-title {
+.g-h1 {
   font-size: .2rem;
   color: rgba(255, 255, 255, 0.671);
   outline: red;
   font-family: 'Exo 2', sans-serif;
 }
 
-#enter-btn {
+.g-btn_label {
   height: 7vh;
   min-width: 15vw;
   max-width: 14%;
@@ -87,15 +96,27 @@ html {
   border-color: white;
   border-width: 1px;
   background-color: rgba(89, 0, 255, 0.363);
+  text-align: center;
 }
 
-.doodle {
-  z-index: -100;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+.g-btn_label:hover {
+  background-color: rgba(89, 0, 255, 0.5);
+}
+
+.g-btn_container label {
+  padding-top: 1.5vh;
+}
+
+.g-btn_container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.g-btn_container input:checked ~ .g-btn_label {
+  background-color: rgba(89, 0, 255, 0.9);
 }
 
 #player-select-form {
@@ -122,21 +143,18 @@ html {
   grid-area: one;
 }
 
-#player-one-container .player-select .player-one-radio-group,
-#player-one-container .player-select .form-check-label {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-column-align: left;
-      justify-self: left;
-  margin-left: -0.75rem;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+#player-one-container .player-select .p1-x {
   -ms-grid-row: 4;
   grid-row: 4;
+  -ms-grid-column: 1;
+  grid-column: 1;
+}
+
+#player-one-container .player-select .p1-o {
+  -ms-grid-row: 4;
+  grid-row: 4;
+  -ms-grid-column: 2;
+  grid-column: 2;
 }
 
 #player-two-container {
@@ -145,20 +163,6 @@ html {
   -ms-grid-row: 1;
   -ms-grid-column: 3;
   grid-area: two;
-}
-
-#player-two-container .player-select .player-two-radio-group,
-#player-two-container .player-select .p2-label {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-column-align: right;
-      justify-self: right;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
 }
 
 #start-game-container {
@@ -185,7 +189,7 @@ html {
   row-gap: 3vh;
 }
 
-.player-icon {
+.player-select > img {
   display: -ms-grid;
   display: grid;
   -ms-grid-column: 1;
@@ -193,39 +197,18 @@ html {
   grid-column: 1 / span 2;
   -ms-grid-row: 2;
   grid-row: 2;
-}
-
-.form-check-label {
-  font-size: 2rem;
-  width: 10vw;
-  height: 10vh;
-}
-
-#start-btn {
-  color: white;
-  border-radius: 2%;
-  border-style: solid;
-  border-color: white;
-  border-width: 1px;
-  background-color: rgba(89, 0, 255, 0.363);
-  font-size: 2rem;
-  font-family: 'Kanit', sans-serif;
-}
-
-.player-select > img {
   max-width: 380px;
   height: auto;
   opacity: 90%;
   -ms-grid-column-align: left;
       justify-self: left;
-  -ms-flex-item-align: end;
-      align-self: flex-end;
+  align-self: flex-end;
   border: 3px solid black;
   border-radius: 3px;
   margin-top: -8vh;
 }
 
-#player-two-icon {
+#player-two-container img {
   -ms-grid-column-align: right;
       justify-self: right;
 }
@@ -247,30 +230,6 @@ html {
 #player-two-name {
   -ms-grid-column-align: right;
       justify-self: right;
-}
-
-#player-two-switch {
-  -ms-grid-row: 1;
-  grid-row: 1;
-  -ms-grid-column: 1;
-  -ms-grid-column-span: 2;
-  grid-column: 1 / span 2;
-  font-size: 1.5rem;
-  -ms-grid-column-align: right;
-      justify-self: right;
-  -ms-flex-line-pack: center;
-      align-content: center;
-}
-
-#player-two-switch .form-check-input {
-  margin-right: 5vw;
-}
-
-#player-two-switch .form-check-label {
-  width: 10vw;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
 #game-container {

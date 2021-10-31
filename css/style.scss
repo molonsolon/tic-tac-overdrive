@@ -44,18 +44,6 @@ $media-expressions: (screen: "screen",
         width: 180px;
         }
     
-//    #player-two-switch {
-//         grid-row: 1;
-//         grid-column: 1 / span 2;
-        
-//         font-size: 1.5rem;
-//         justify-self: right;
-//         .form-check-input {
-//             margin-right: 5vw;
-//         }
-    
-
-//     }
 
 }
 
@@ -68,6 +56,16 @@ html {
     font-size: 10px;  
 }
 
+css-doodle {
+    z-index: -100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+}
+
 #app-container {
     display: grid;
     grid-template-columns: 100vw 100vw 100vw;
@@ -78,8 +76,6 @@ html {
     justify-content: center;
     align-items: center;
     margin-left: 200vw;
-    
-
 }
 
 #intro-screen {
@@ -99,9 +95,7 @@ html {
 }
 
 
-
-
-#intro-title {
+.g-h1 {
     font-size: .2rem;
     // height: auto;
     // width: 5vw;
@@ -110,7 +104,7 @@ html {
     font-family: 'Exo 2', sans-serif;
 }
 
-#enter-btn {
+.g-btn_label {
     height: 7vh;
     min-width: 15vw;
     max-width: 14%;
@@ -122,19 +116,31 @@ html {
     border-color: white;
     border-width: 1px;
     background-color: rgba(89, 0, 255, 0.363);
+    text-align: center;
 
 }
 
-.doodle {
-    z-index: -100;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+.g-btn_label:hover {
+    background-color: rgba(89, 0, 255, 0.5);
 
 }
- 
+
+.g-btn_container label {
+    padding-top: 1.5vh;
+}
+.g-btn_container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.g-btn_container input:checked ~ .g-btn_label {
+    background-color: rgba(89, 0, 255, 0.9);
+
+}
+
 
 #player-select-form {
     display: grid;
@@ -151,45 +157,23 @@ html {
 #player-one-container {
     display: grid;
     grid-area: one;
-    
-    
-    
-
-}
-
-#player-one-container {
     .player-select {
-        .player-one-radio-group,
-        .form-check-label {
-            display: grid;
-            justify-self: left;
-            margin-left: -0.75rem;
-            align-items: center;
-            justify-content: center;
+        .p1-x {
             grid-row: 4;
+            grid-column: 1;
         }
-        
+        .p1-o {
+            grid-row: 4;
+            grid-column: 2;
+        }
     }
 }
+
 
 
 #player-two-container {
     display: grid;
     grid-area: two;
-}
-
-
-#player-two-container {
-    .player-select {
-        .player-two-radio-group,
-        .p2-label {
-            display: grid;
-            justify-self: right;
-            align-items: center;
-            justify-content: center;
-            
-        }
-    }
 }
 
 #start-game-container {
@@ -209,38 +193,15 @@ html {
     grid-template-columns: 15vw 15vw;
     align-items: center;
     row-gap: 3vh;
-    
 }
 
 
-.player-icon {
-    display: grid;
-    grid-column: 1 / span 2;
-    grid-row: 2;
-}
-
-.form-check-label {
-    
-    font-size: 2rem;
-    width: 10vw;
-    height: 10vh;
-    
-}
-
-#start-btn {
-    color: white;
-    border-radius: 2%;
-    border-style: solid;
-    border-color: white;
-    border-width: 1px;
-    background-color: rgba(89, 0, 255, 0.363);
-    font-size: 2rem;
-    font-family: 'Kanit', sans-serif;
-}
 
 .player-select > img {
     
-    
+    display: grid;
+    grid-column: 1 / span 2;
+    grid-row: 2;
     max-width: 380px;
     height: auto;
     opacity: 90%;
@@ -251,7 +212,7 @@ html {
     margin-top: -8vh;
 }
 
-#player-two-icon {
+#player-two-container img {
     justify-self: right;
 }
 
@@ -275,21 +236,6 @@ html {
 }
 
 
-#player-two-switch {
-    grid-row: 1;
-    grid-column: 1 / span 2;
-    font-size: 1.5rem;
-    justify-self: right;
-    align-content: center;
-    .form-check-input {
-        margin-right: 5vw;
-    }
-
-    .form-check-label {
-        width: 10vw;
-        align-items: center;
-    }
-}
  
 
 
