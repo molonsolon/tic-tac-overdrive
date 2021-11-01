@@ -97,9 +97,7 @@ css-doodle {
 
 .g-h1 {
     font-size: .2rem;
-
-    color: rgba(255, 255, 255, 0.671);
-    outline: red;
+    color: rgba(255, 255, 255, 0.85);
     font-family: 'Exo 2', sans-serif;
 }
 
@@ -182,7 +180,7 @@ css-doodle {
     margin-top: 75vh;
     height: 7vh;
     width: 10vw;
-    
+    justify-content: center;
     
 }
 
@@ -242,7 +240,22 @@ css-doodle {
 }
 
 
- 
+#difficulty-selector {
+    width: 20vw;
+    height: 7vh;
+    margin-top: -8vh;
+
+}
+
+#start-btn {
+    justify-self: center;
+}
+
+.selector-label {
+    font-size: 2rem;
+    color: white;
+    margin-top: -11vh;
+}
 
 
 #game-container {
@@ -262,7 +275,7 @@ css-doodle {
     height: 150px;
     width: 150px;
     border: solid black 3px;
-    background: hsl(99, 75, 75);
+    background: hsla(97, 100%, 59%, .85);
     font-size: 5rem;
     display: flex;
     align-items: center;
