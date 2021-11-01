@@ -88,7 +88,7 @@ css-doodle {
   height: 7vh;
   min-width: 15vw;
   max-width: 14%;
-  font-size: 2rem;
+  font-size: 2.8rem;
   font-family: 'Kanit', sans-serif;
   color: white;
   border-radius: 2%;
@@ -187,6 +187,8 @@ css-doodle {
       -ms-flex-align: center;
           align-items: center;
   row-gap: 3vh;
+  -webkit-column-gap: .8vw;
+          column-gap: .8vw;
 }
 
 .player-select > img {
@@ -223,8 +225,12 @@ css-doodle {
   -ms-grid-row: 3;
   grid-row: 3;
   height: 7vh;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   width: 25vw;
+  background-color: rgba(65, 153, 6, 0.61);
+  color: white;
+  border: 3px greenyellow solid;
+  border-radius: 3px;
 }
 
 #player-two-name {
@@ -254,8 +260,8 @@ css-doodle {
 .board-space {
   height: 150px;
   width: 150px;
-  background: white;
   border: solid black 3px;
+  background: #b1ef8f;
   font-size: 5rem;
   display: -webkit-box;
   display: -ms-flexbox;

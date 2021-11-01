@@ -11,12 +11,15 @@
     [x] game.checkResult function isn't detecting correctly after creating successful minimax ai
         figure out WHY this is happening before throwing solutions @ it all slap-dash.
     [x] minimax function isn't working, only returning first possible value instead of using recursion
+    [ ] score keeping UI
     [ ] game win / lose / draw announcements (render animated announcements on true checkwin function call)
         [ ] work out draw logic as it's not written into check results yet.
     [ ] play again / main menu button under results announcement;
     [ ] form validation + lock other radio buttons when choice is made.
     [ ] game difficulty selector  
     [ ] Purely aesthetic UI completion (backgrounds, animations, music, sound effects)
+        [ ] animate background of gameboard to cycle through each color of my Hyperdrive
+            pallete on coolors.co (fast loop), adjust opacity!
     [x] Put get player info functions in Player factory possibly?
  
 */
@@ -111,7 +114,7 @@ const game = (() => {
         if (playerNumber === 1) {
             return playerOne.getMarker();
         } else {
-            return playerTwo.getmarker();
+            return playerTwo.getMarker();
         }
     }
 
@@ -424,13 +427,29 @@ const displayController = (() => {
 
         startGameBtn.addEventListener(`click`, () => {
             const startGameAnimation = gsap.timeline();
+            const boardAnimation = gsap.timeline({
+                repeat: -1,
+            });
 
+            boardAnimation.timeScale(20);
 
             startGameAnimation
                 .to("#player-select-form", { duration: 1, xPercent: -300 }, 0)
                 .to("#game-container", { duration: 1, xPercent: -300, yPercent: -35, ease: "bounce" }, 1);
+            
+            boardAnimation
+                .to(".board-space", {duration: 1, background: "hsl(84, 58, 71)"})
+                .to(".board-space", {duration: 1, background: "hsl(65, 44, 67)"})
+                .to(".board-space", {duration: 1, background: "hsl(45, 51, 67)"})
+                .to(".board-space", {duration: 1, background: "hsl(32, 64, 69)"})
+                .to(".board-space", {duration: 1, background: "hsl(22, 78, 70)"})
+                .to(".board-space", {duration: 1, background: "hsl(15, 93, 71)"});
 
         })
+    }
+
+    function animationController() {
+
     }
 
 

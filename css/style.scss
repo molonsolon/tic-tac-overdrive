@@ -97,8 +97,7 @@ css-doodle {
 
 .g-h1 {
     font-size: .2rem;
-    // height: auto;
-    // width: 5vw;
+
     color: rgba(255, 255, 255, 0.671);
     outline: red;
     font-family: 'Exo 2', sans-serif;
@@ -108,7 +107,7 @@ css-doodle {
     height: 7vh;
     min-width: 15vw;
     max-width: 14%;
-    font-size: 2rem;
+    font-size: 2.8rem;
     font-family: 'Kanit', sans-serif;
     color: white;
     border-radius: 2%;
@@ -152,6 +151,7 @@ css-doodle {
     justify-items: center;
     align-items: center;
     
+    
 }
 
 #player-one-container {
@@ -193,6 +193,7 @@ css-doodle {
     grid-template-columns: 15vw 15vw;
     align-items: center;
     row-gap: 3vh;
+    column-gap: .8vw;
 }
 
 
@@ -224,8 +225,13 @@ css-doodle {
     grid-column: 1 / span 2;
     grid-row: 3;
     height: 7vh;
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     width: 25vw;
+    background-color:rgba(65, 153, 6, 0.61);
+    color: white;
+    border: 3px greenyellow solid;
+    border-radius: 3px;
+    
     
 }
 
@@ -255,8 +261,8 @@ css-doodle {
 .board-space {
     height: 150px;
     width: 150px;
-    background: white;
     border: solid black 3px;
+    background: hsl(99, 75, 75);
     font-size: 5rem;
     display: flex;
     align-items: center;
