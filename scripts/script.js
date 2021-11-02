@@ -468,6 +468,17 @@ const displayController = (() => {
 
 
         startGameBtn.addEventListener(`click`, () => {
+            const gameTheme = new Audio(`audio/lightwave - game -theme.wav`);
+            if (typeof gameTheme.loop === 'boolean') {
+                gameTheme.loop = true;
+            }
+            else {
+                gameTheme.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+            }, false);
+}
+            gameTheme.play();
             const startGameAnimation = gsap.timeline();
             const boardSpaceAnimation = gsap.timeline({
                 repeat: -1,
