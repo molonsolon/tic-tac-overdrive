@@ -13,28 +13,34 @@
     [x] minimax function isn't working, only returning first possible value instead of using recursion
     [ ] score keeping UI
     [ ] game win / lose / draw announcements (render animated announcements on true checkwin function call)
-        [ ] work out draw logic as it's not written into check results yet.
+        [x] work out draw logic as it's not written into check results yet.
     [ ] play again / main menu button under results announcement;
     [ ] form validation + lock other radio buttons when choice is made.
-    [ ] game difficulty selector  
+    [x] game difficulty selector  
     [ ] Purely aesthetic UI completion (backgrounds, animations, music, sound effects)
         [x] animate background of gameboard to cycle through each color of my Hyperdrive
             pallete on coolors.co (fast loop), adjust opacity!
+        [ ] change font + UI to have more sharp angles
     [x] Put get player info functions in Player factory possibly?
  
 */
 
-const Player = (number, name, marker) => {
+gsap.registerPlugin(TextPlugin);
 
+const Player = (number, name, marker) => {
+    let _score = 0;
     const getNumber = () => number;
     const getName = () => name;
     const getMarker = () => marker;
-
+    const getScore = () => _score;
+    const setScore = () => _score++;
 
     return {
         getNumber,
         getName,
         getMarker,
+        getScore,
+        setScore,
 
     }
 };
@@ -72,6 +78,17 @@ const gameboard = (() => {
         _board.splice(index, 1, marker);
     }
 
+    const clearBoard = () =>  {
+        _board = [0, 1, 2,
+                  3, 4, 5,
+                  6, 7, 8];
+        const boardSpaces = document.querySelectorAll(`.board-space`);
+        for (let i = 0; i < boardSpaces.length; i++) {
+            boardSpaces[i].textContent = ``;
+            console.log(`board cleared`)
+        }
+    }
+
 
     return {
 
@@ -79,6 +96,7 @@ const gameboard = (() => {
         getRemainingSectors,
         getBoard,
         setBoard,
+        clearBoard,
 
     }
 })();
@@ -126,8 +144,7 @@ const game = (() => {
 
     const getTurn = () => _whoseTurn;
     const setTurn = () => _whoseTurn++;
-
-
+    const resetTurns = () => _whoseTurn = 0;
 
     const _compMM = () => {
         return minimax(gameboard.getBoard(), playerTwo.getMarker()).index;
@@ -142,9 +159,7 @@ const game = (() => {
         let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
         compChoiceSelector.textContent = playerTwo.getMarker();
         gameboard.setBoard(compChoice, playerTwo.getMarker());
-        if (checkResults(playerTwo.getMarker())) {
-            alert(`computer win!`)
-        }
+        finalWinCheck();
         setTurn();
     }
 
@@ -196,22 +211,47 @@ const game = (() => {
 
                 return true
 
+            } else {
+                return false
             }
         }
 
     }
 
+    const tieCheck = (value) => typeof value ===`string`;
+
     const finalWinCheck = () => {
-        if (checkResults(playerOne.getMarker())) {
+        if (checkResults(playerOne.getMarker()) && _whoseTurn % 2 === 0) {
             alert(`player 1 win`);
+            displayController.showRestartBtn();
+            playerOne.setScore();
 
-
-        } else if (checkResults(playerTwo.getMarker())) {
+        } else if (checkResults(playerTwo.getMarker()) && _whoseTurn % 2 !== 0 && checkResults(playerOne.getMarker()) === false) {
             if (playerTwo.getName() === `computer`) {
                 alert(`computer win`)
+                displayController.showRestartBtn();
+                playerTwo.setScore();
             } else {
                 alert(`player 2 win`)
+                displayController.showRestartBtn();
+                playerTwo.setScore();
             }
+        } else if (gameboard.getBoard().every(tieCheck)) {
+            alert(`it's a tie!`);
+            displayController.showRestartBtn();
+        } else if ((playerOne.getScore() === 4 || playerTwo.getScore() === 4) && gameboard.getBoard().every(tieCheck) === false) {
+            if (playerOne.getScore() === 4) {
+                alert(`player 1 wins the match!`)
+            } else if (playerTwo.getScore() === 4) {
+                if(playerTwo.getName() === `computer`) {
+                    alert(`computer wins the match!`)
+                } else {
+                    alert(`player 2 wins the match!`)
+                }
+            }
+        } else {
+            
+            return false
         }
     }
 
@@ -277,6 +317,7 @@ const game = (() => {
         computerOpponent,
         getTurn,
         setTurn,
+        resetTurns,
         getPlayerName,
         getPlayerMarker,
         setPlayer,
@@ -300,6 +341,12 @@ const displayController = (() => {
     const playerTwoName = document.querySelector(`#player-two-name`);
     const startGameContainer = document.querySelector(`#start-game-container`)
     let difficulty;
+    const appContainer = document.querySelector(`#app-container`)
+    const restartBtn = document.querySelector(`#restart-btn`);
+
+    const showRestartBtn = () => {
+        restartBtn.style.visibility = "visible";
+    }
 
     const getDifficulty = () => difficulty;
 
@@ -310,6 +357,7 @@ const displayController = (() => {
             turnSpace.textContent = playerMarker;
             gameboard.setBoard(index, playerMarker);
             game.finalWinCheck();
+            
             game.setTurn()
         }
 
@@ -400,7 +448,7 @@ const displayController = (() => {
                         playerTwoName.value = `computer`;
                         playerTwoName.disabled = true;
                         difficultySelectorLabel = document.createElement(`p`);
-                        difficultySelectorLabel.textContent = `Computer Difficulty`;
+                        difficultySelectorLabel.textContent = `Difficulty`;
                         difficultySelectorLabel.classList.add(`selector-label`)
                         difficultySelector = document.createElement(`button`);
                         difficultySelector.setAttribute(`id`, `difficulty-selector`);
@@ -439,7 +487,11 @@ const displayController = (() => {
 
         })
 
-        
+        restartBtn.addEventListener(`click`, () => {
+            gameboard.clearBoard();
+            game.resetTurns();
+            restartBtn.style.visibility = `hidden`;
+        })
 
 
 
@@ -468,18 +520,24 @@ const displayController = (() => {
 
 
         startGameBtn.addEventListener(`click`, () => {
-            const gameTheme = new Audio(`audio/lightwave - game -theme.wav`);
-            if (typeof gameTheme.loop === 'boolean') {
-                gameTheme.loop = true;
-            }
-            else {
-                gameTheme.addEventListener('ended', function() {
-                this.currentTime = 0;
-                this.play();
-            }, false);
-}
-            gameTheme.play();
-            const startGameAnimation = gsap.timeline();
+             
+            
+            function playGameTheme() {
+                const gameTheme = new Audio(`audio/lightwave - game -theme.wav`);
+                if (typeof gameTheme.loop === 'boolean') {
+                    gameTheme.loop = true;
+                    gameTheme.play();
+                }
+                else {
+                    gameTheme.addEventListener('ended', function() {
+                        this.currentTime = 0;
+                        this.play();
+                        }, false);
+                }
+            };
+            const playerSelectExit = gsap.timeline();
+            const boardEnter = gsap.timeline()
+            const countdownAnimation = gsap.timeline();
             const boardSpaceAnimation = gsap.timeline({
                 repeat: -1,
                 repeatDelay: 0,
@@ -509,12 +567,25 @@ const displayController = (() => {
             
 
 
-            startGameAnimation
-                .to("#player-select-form", { duration: 1, xPercent: -300 }, 0)
-                .to("#player-select-form", { autoAlpha: 0 }, 3)
+            playerSelectExit
+                .to("#player-select-form", { duration: 1, xPercent: -300 })
+                .to("#player-select-form", { autoAlpha: 0 });
 
-                .to("#game-container", { duration: 1, xPercent: -300, yPercent: -35, ease: "bounce" }, 1);
-
+            countdownAnimation
+                .to("#game-container", { duration: 1, xPercent: -300, yPercent: -35 })
+                .to(".countdown-timer", { duration: 2,
+                    text: { 
+                        value: "3 2 1 Begin", 
+                        delimiter: " "
+                    }
+                })
+                .to(".countdown-timer", {duration: 0, autoAlpha: 0})
+            
+            boardEnter
+                .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
+                .call(playGameTheme, null, 3 + (spaceDuration / 4));
+            
+            
             boardSpaceAnimation
                 .to(".board-space", { background: "hsla(82, 100%, 55%, .85)" }, 0.61538)
                 .to(".board-space", { background: "hsla(43, 100%, 53%, .85)" })
@@ -550,9 +621,9 @@ const displayController = (() => {
         displayBoard,
         menuController,
         setPlayerMarker,
+        showRestartBtn,
     }
 })();
-
 
 
 

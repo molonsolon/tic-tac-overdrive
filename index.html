@@ -98,12 +98,12 @@
                     <img id="player-two-icon" src="/images/player-two-icon.png"
                         alt="grim reaper with computer for a head">
                     
-                    <div class="g-btn_container">
+                    <div class="g-btn_container player-toggle">
                         <input type="radio" class="switch-radio" name="toggle"
                             id="playerToggle" value="player" checked>
                         <label class="g-btn_label" for="playerToggle">Player</label>
                     </div>
-                    <div class="g-btn_container" >  
+                    <div class="g-btn_container player-toggle" >  
                         <input type="radio" class="switch-radio" name="toggle"
                             id="computerToggle" value="computer">
                         <label class="g-btn_label" for="computerToggle">Computer</label>
@@ -123,6 +123,7 @@
 
                 </div>
             </div>
+
             <div id="start-game-container">
                 <button id="start-btn" class="g-btn_label" type="submit">Begin</button>
             </div>
@@ -130,11 +131,11 @@
 
 
 
-
         <div id="game-container">
-            <div id="gameboard-container">
+            <div class="countdown-timer"></div>
 
-            </div>
+            <div id="gameboard-container"></div>
+            <button id="restart-btn" class="g-btn_label">Restart</button>
         </div>
     </div>
 
