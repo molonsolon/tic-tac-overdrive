@@ -160,6 +160,7 @@ const game = (() => {
         compChoiceSelector.textContent = playerTwo.getMarker();
         gameboard.setBoard(compChoice, playerTwo.getMarker());
         finalWinCheck();
+        console.log(`checked computer win`)
         setTurn();
     }
 
@@ -210,23 +211,23 @@ const game = (() => {
             if (gameboard.getResultCheckSectors()[`${key}`]().join(`,`) === `${playerMarker},${playerMarker},${playerMarker}`) {
 
                 return true
-
-            } else {
-                return false
             }
+
         }
 
     }
 
     const tieCheck = (value) => typeof value ===`string`;
 
+    // game is checking for win in the wrong place somewhere, if p1 wins and p2 wins in 
+    // the next turn, p2 is marker as winner. 
     const finalWinCheck = () => {
         if (checkResults(playerOne.getMarker()) && _whoseTurn % 2 === 0) {
             alert(`player 1 win`);
             displayController.showRestartBtn();
             playerOne.setScore();
 
-        } else if (checkResults(playerTwo.getMarker()) && _whoseTurn % 2 !== 0 && checkResults(playerOne.getMarker()) === false) {
+        } else if (checkResults(playerTwo.getMarker()) && _whoseTurn % 2 !== 0 && checkResults(playerOne.getMarker()) === undefined) {
             if (playerTwo.getName() === `computer`) {
                 alert(`computer win`)
                 displayController.showRestartBtn();
@@ -356,9 +357,12 @@ const displayController = (() => {
             let playerMarker = game.getPlayerMarker(playerNumber)
             turnSpace.textContent = playerMarker;
             gameboard.setBoard(index, playerMarker);
+            
             game.finalWinCheck();
+            console.log(`checked for win`)
             
             game.setTurn()
+            
         }
 
         for (let i = 0; i < gameboard.getBoard().length; i++) {
