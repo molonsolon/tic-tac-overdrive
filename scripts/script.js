@@ -32,15 +32,61 @@ const Player = (number, name, marker) => {
     const getNumber = () => number;
     const getName = () => name;
     const getMarker = () => marker;
-    const getScore = () => _score;
-    const setScore = () => _score++;
 
-    return {
+    const roundWinCheck = () => {
+        
+        if (game.checkResults(marker)) {
+            alert(`${name} wins`);
+            _score++
+            displayController.showRestartBtn();
+        } else if (game.getTurn() === 9) {
+            alert(`it's a tie!`);
+            displayController.showRestartBtn();
+        }
+        
+    }
+
+    const tieCheck = (value) => typeof value ===`string`;
+
+
+    const matchWinCheck = () => {
+        if (_score === 5) {
+            alert(`${name} wins the match!!!`)
+            displayController.showRestartBtn();
+        }
+    }
+
+    const computerTurn = () => {
+            
+            compChoice = game.compChoiceLogic();
+            let compSpace = document.querySelector(`#sector-${compChoice}`);
+            compSpace.textContent = marker;
+            gameboard.setBoard(compChoice, marker);
+            game.setTurn();
+            roundWinCheck();
+            matchWinCheck()
+    }
+
+    function playTurn(space, index) {
+        
+        space.textContent = marker;
+        gameboard.setBoard(index, marker);
+        
+        console.log(`checked for win`)
+        game.setTurn();
+        roundWinCheck();
+        matchWinCheck();
+    }
+
+    
+    return { 
         getNumber,
         getName,
         getMarker,
-        getScore,
-        setScore,
+        computerTurn,
+        playTurn, 
+        roundWinCheck,
+        matchWinCheck,
 
     }
 };
@@ -107,7 +153,7 @@ const game = (() => {
 
     let _whoseTurn = 0;
     let playerOne;
-    let playerTwo;
+    let playerTwo; 
     let result = null;
     let compDifficulty = `new on the job`;
 
@@ -126,21 +172,7 @@ const game = (() => {
         }
     }
 
-    function getPlayerName(playerNumber) {
-        if (playerNumber === 1) {
-            return playerOne.getName()
-        } else {
-            return playerTwo.getName()
-        }
-    }
 
-    function getPlayerMarker(playerNumber) {
-        if (playerNumber === 1) {
-            return playerOne.getMarker();
-        } else {
-            return playerTwo.getMarker();
-        }
-    }
 
     const getTurn = () => _whoseTurn;
     const setTurn = () => _whoseTurn++;
@@ -154,17 +186,20 @@ const game = (() => {
         return gameboard.getRemainingSectors(gameboard.getBoard())[Math.floor(Math.random() * gameboard.getRemainingSectors(gameboard.getBoard()).length)];
     }
 
-    const computerOpponent = () => {
-        compChoice = _compChoiceLogic();
-        let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
-        compChoiceSelector.textContent = playerTwo.getMarker();
-        gameboard.setBoard(compChoice, playerTwo.getMarker());
-        finalWinCheck();
-        console.log(`checked computer win`)
-        setTurn();
-    }
+    // const computerOpponent = () => {
+    //     compChoice = _compChoiceLogic();
+    //     let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
+    //     compChoiceSelector.textContent = playerTwo.getMarker();
+    //     gameboard.setBoard(compChoice, playerTwo.getMarker());
+    //     playerTwo.matchWinCheck()
+    //     if (whoseTurn > 4) {
+    //         playerTwo.matchWinCheck()
+    //     }
+    //     console.log(`checked computer win`)
+    //     setTurn();
+    // }
 
-    const _compChoiceLogic = () => {
+    const compChoiceLogic = () => {
 
         console.log(compDifficulty)
 
@@ -217,44 +252,48 @@ const game = (() => {
 
     }
 
-    const tieCheck = (value) => typeof value ===`string`;
-
+    
     // game is checking for win in the wrong place somewhere, if p1 wins and p2 wins in 
     // the next turn, p2 is marker as winner. 
-    const finalWinCheck = () => {
-        if (checkResults(playerOne.getMarker()) && _whoseTurn % 2 === 0) {
-            alert(`player 1 win`);
-            displayController.showRestartBtn();
-            playerOne.setScore();
 
-        } else if (checkResults(playerTwo.getMarker()) && _whoseTurn % 2 !== 0 && checkResults(playerOne.getMarker()) === undefined) {
-            if (playerTwo.getName() === `computer`) {
-                alert(`computer win`)
-                displayController.showRestartBtn();
-                playerTwo.setScore();
-            } else {
-                alert(`player 2 win`)
-                displayController.showRestartBtn();
-                playerTwo.setScore();
-            }
-        } else if (gameboard.getBoard().every(tieCheck)) {
-            alert(`it's a tie!`);
-            displayController.showRestartBtn();
-        } else if ((playerOne.getScore() === 4 || playerTwo.getScore() === 4) && gameboard.getBoard().every(tieCheck) === false) {
-            if (playerOne.getScore() === 4) {
-                alert(`player 1 wins the match!`)
-            } else if (playerTwo.getScore() === 4) {
-                if(playerTwo.getName() === `computer`) {
-                    alert(`computer wins the match!`)
-                } else {
-                    alert(`player 2 wins the match!`)
-                }
-            }
-        } else {
+
+
+    // const finalWinCheck = () => {
+    //     if (checkResults(playerOne.getMarker()) && _whoseTurn % 2 === 0) {
+    //         alert(`player 1 win`);
+    //         displayController.showRestartBtn();
+    //         playerOne.setScore();
+    //         console.log(`playerOne score: ${playerOne.getScore()}`)
+
+    //     } else if (checkResults(playerTwo.getMarker()) && _whoseTurn % 2 !== 0 && checkResults(playerOne.getMarker()) === undefined) {
+    //         if (playerTwo.getName() === `computer`) {
+    //             alert(`computer win`)
+    //             displayController.showRestartBtn();
+    //             playerTwo.setScore();
+    //             console.log(`playerTwo score: ${playerTwo.getScore()}`)
+    //         } else {
+    //             alert(`player 2 win`)
+    //             displayController.showRestartBtn();
+    //             playerTwo.setScore();
+    //         }
+    //     } else if (gameboard.getBoard().every(tieCheck)) {
+    //         alert(`it's a tie!`);
+    //         displayController.showRestartBtn();
+    //     } else if ((playerOne.getScore() === 4 || playerTwo.getScore() === 4) && gameboard.getBoard().every(tieCheck) === false) {
+    //         if (playerOne.getScore() === 4) { 
+    //             alert(`player 1 wins the match!`)
+    //         } else if (playerTwo.getScore() === 4) {
+    //             if(playerTwo.getName() === `computer`) {
+    //                 alert(`computer wins the match!`)
+    //             } else {
+    //                 alert(`player 2 wins the match!`)
+    //             }
+    //         }
+    //     } else {
             
-            return false
-        }
-    }
+    //         return false
+    //     }
+    // }
 
     function minimax(boardState, playerMarker) {
 
@@ -315,16 +354,14 @@ const game = (() => {
     return {
         checkResults,
         setCompDifficulty,
-        computerOpponent,
         getTurn,
         setTurn,
         resetTurns,
-        getPlayerName,
-        getPlayerMarker,
+        compChoiceLogic,
         setPlayer,
         playerOne,
         playerTwo,
-        finalWinCheck,
+        
     }
 })();
 
@@ -353,19 +390,8 @@ const displayController = (() => {
 
     function displayBoard() {
 
-        function playTurn(playerNumber, turnSpace, index) {
-            let playerMarker = game.getPlayerMarker(playerNumber)
-            turnSpace.textContent = playerMarker;
-            gameboard.setBoard(index, playerMarker);
-            
-            game.finalWinCheck();
-            console.log(`checked for win`)
-            
-            game.setTurn()
-            
-        }
 
-        for (let i = 0; i < gameboard.getBoard().length; i++) {
+        for (let i = 0; i < 9; i++) {
             const boardSpace = document.createElement(`div`);
             boardSpace.classList.add(`board-space`);
             boardSpace.setAttribute(`id`, `sector-${i}`);
@@ -373,18 +399,22 @@ const displayController = (() => {
 
             boardSpace.addEventListener(`click`, () => {
                 if (boardSpace.textContent !== `x` && boardSpace.textContent !== `o`) {
-                    if (game.getTurn() % 2 === 0 && game.getPlayerName(2) === `computer`) {
-                        playTurn(1, boardSpace, i)
-                        game.computerOpponent();
+                    if (game.getTurn() % 2 === 0 && playerTwo.getName() === `computer`) {
+                        playerOne.playTurn(boardSpace, i);
+                        
+                        if (!playerOne.roundWinCheck()) {
+                            playerTwo.computerTurn();
+                        }
 
 
 
                     } else if (game.getTurn() % 2 === 0) {
-                        playTurn(1, boardSpace, i);
+                        playerOne.playTurn(boardSpace, i);
+                        
 
 
                     } else {
-                        playTurn(2, boardSpace, i);
+                        playerTwo.playTurn(boardSpace, i)
                     }
                 }
 
@@ -503,14 +533,10 @@ const displayController = (() => {
 
         playerSelectForm.addEventListener(`submit`, function (event) {
             event.preventDefault();
-            playerOneMarker = setPlayerMarker(`player-one-radio`);
-            playerTwoMarker = setPlayerMarker(`player-two-radio`);
-            p1Name = playerOneName.value;
-            p2Name = playerTwoName.value
 
-            playerOne = Player(1, p1Name, playerOneMarker);
+            playerOne = Player(1, playerOneName.value, setPlayerMarker(`player-one-radio`));
 
-            playerTwo = Player(2, p2Name, playerTwoMarker);
+            playerTwo = Player(2, playerTwoName.value, setPlayerMarker(`player-two-radio`));
 
             game.setPlayer(playerOne);
 
