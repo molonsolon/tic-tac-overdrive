@@ -86,7 +86,6 @@ css-doodle {
 .g-btn_label {
   height: 7vh;
   min-width: 15vw;
-  max-width: 14%;
   font-size: 2.8rem;
   font-family: 'Kanit', sans-serif;
   color: white;
@@ -256,20 +255,55 @@ css-doodle {
   font-size: 2rem;
   margin-top: -11vh;
   font-family: 'Kanit', sans-serif;
+  visibility: hidden;
+  -ms-grid-column-align: center;
+      justify-self: center;
 }
 
 #difficulty-selector {
   font-size: 2rem;
   color: white;
+  -ms-grid-column-align: center;
+      justify-self: center;
   background-color: rgba(65, 153, 6, 0.61);
   color: white;
   border: 3px greenyellow solid;
   border-radius: 3px;
   font-family: 'Exo 2', sans-serif;
+  visibility: hidden;
 }
 
 .player-toggle label {
   padding-top: 1vh;
+}
+
+#time-mode-btn {
+  margin-top: -80vh;
+  width: 30vw;
+  height: 7vh;
+}
+
+#mode-selector {
+  margin-top: -73vh;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (7vh)[5];
+      grid-template-rows: repeat(5, 7vh);
+  -ms-grid-columns: 15vw 15vw;
+      grid-template-columns: 15vw 15vw;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.time-toggle {
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 2;
+  grid-column: 1 / span 2;
+}
+
+.time-label {
+  width: 30vw;
 }
 
 .countdown-timer {
@@ -279,6 +313,16 @@ css-doodle {
   font-size: 5rem;
   color: white;
   font-family: 'Exo 2', sans-serif;
+}
+
+#timer {
+  z-index: 10;
+  position: fixed;
+  margin-top: 800px;
+  font-size: 5rem;
+  color: white;
+  font-family: 'Exo 2', sans-serif;
+  visibility: hidden;
 }
 
 #game-container {
@@ -309,6 +353,8 @@ css-doodle {
   margin-top: 1000px;
   z-index: 0;
   visibility: hidden;
+  -webkit-box-shadow: rgba(126, 255, 46, 0.85) 10px 10px 8px;
+          box-shadow: rgba(126, 255, 46, 0.85) 10px 10px 8px;
 }
 
 .board-space {

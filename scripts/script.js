@@ -1,9 +1,30 @@
 /* 
                 To-Do
 
+
+    Features:
+    [ ] score keeping UI
+    [ ] game win / lose / draw announcements (render animated announcements on true checkwin function call)
+        [x] work out draw logic as it's not written into check results yet.
+    [ ] play again / main menu button under results announcement;
+    [ ] form validation + lock other radio buttons when choice is made.
+    [ ] Purely aesthetic UI completion (backgrounds, animations, music, sound effects)
+        [x] animate background of gameboard to cycle through each color of my Hyperdrive
+            pallete on coolors.co (fast loop), adjust opacity!
+        [ ] change font + UI to have more sharp angles
+
+    
+
+    Bug:
+    [ ] win match check is being called twice on winning turn completion, once on restart after.
+
+
+    Completed:
+
+
     [x] Try switching row/column/diagonal functions into game module.
     [x] Figure out object of row/column/diagonal functions, loop through for results check.
-    [ ] Make game.checkResults() return finalResult, have displayController check when this value
+    [x] Make game.checkResults() return finalResult, have displayController check when this value
         equals something other than undefined then display that result via a div toggle with
         win message in body.
         --- returning finalResult from game module gets a referenceError: finalResult is not defined..
@@ -11,16 +32,7 @@
     [x] game.checkResult function isn't detecting correctly after creating successful minimax ai
         figure out WHY this is happening before throwing solutions @ it all slap-dash.
     [x] minimax function isn't working, only returning first possible value instead of using recursion
-    [ ] score keeping UI
-    [ ] game win / lose / draw announcements (render animated announcements on true checkwin function call)
-        [x] work out draw logic as it's not written into check results yet.
-    [ ] play again / main menu button under results announcement;
-    [ ] form validation + lock other radio buttons when choice is made.
     [x] game difficulty selector  
-    [ ] Purely aesthetic UI completion (backgrounds, animations, music, sound effects)
-        [x] animate background of gameboard to cycle through each color of my Hyperdrive
-            pallete on coolors.co (fast loop), adjust opacity!
-        [ ] change font + UI to have more sharp angles
     [x] Put get player info functions in Player factory possibly?
  
 */
@@ -32,16 +44,23 @@ const Player = (number, name, marker) => {
     const getNumber = () => number;
     const getName = () => name;
     const getMarker = () => marker;
-
+    const resetScore = () => _score = 0;
+    const getScore = () => _score;
+    
     const roundWinCheck = () => {
         
         if (game.checkResults(marker)) {
             alert(`${name} wins`);
-            _score++
+            console.log(`${name} wins`)
+            _score++;
             displayController.showRestartBtn();
+            return true
         } else if (game.getTurn() === 9) {
             alert(`it's a tie!`);
             displayController.showRestartBtn();
+            return true
+        } else {
+            return false
         }
         
     }
@@ -49,10 +68,11 @@ const Player = (number, name, marker) => {
     const tieCheck = (value) => typeof value ===`string`;
 
 
-    const matchWinCheck = () => {
+    function matchWinCheck() {
         if (_score === 5) {
             alert(`${name} wins the match!!!`)
             displayController.showRestartBtn();
+            return true
         }
     }
 
@@ -64,7 +84,8 @@ const Player = (number, name, marker) => {
             gameboard.setBoard(compChoice, marker);
             game.setTurn();
             roundWinCheck();
-            matchWinCheck()
+            matchWinCheck();
+            console.log(`checked for computer win`)
     }
 
     function playTurn(space, index) {
@@ -72,7 +93,7 @@ const Player = (number, name, marker) => {
         space.textContent = marker;
         gameboard.setBoard(index, marker);
         
-        console.log(`checked for win`)
+        console.log(`checked for win player1`)
         game.setTurn();
         roundWinCheck();
         matchWinCheck();
@@ -87,6 +108,8 @@ const Player = (number, name, marker) => {
         playTurn, 
         roundWinCheck,
         matchWinCheck,
+        resetScore,
+        getScore,
 
     }
 };
@@ -95,9 +118,7 @@ const Player = (number, name, marker) => {
 
 const gameboard = (() => {
 
-    let _board = [0, 1, 2,
-        3, 4, 5,
-        6, 7, 8];
+    let _board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 
     const _resultCheckSectors = {
@@ -125,9 +146,7 @@ const gameboard = (() => {
     }
 
     const clearBoard = () =>  {
-        _board = [0, 1, 2,
-                  3, 4, 5,
-                  6, 7, 8];
+        _board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         const boardSpaces = document.querySelectorAll(`.board-space`);
         for (let i = 0; i < boardSpaces.length; i++) {
             boardSpaces[i].textContent = ``;
@@ -156,6 +175,7 @@ const game = (() => {
     let playerTwo; 
     let result = null;
     let compDifficulty = `new on the job`;
+    
 
     const setCompDifficulty = (value) => {
         compDifficulty = value;
@@ -173,7 +193,38 @@ const game = (() => {
     }
 
 
+    
 
+    // i need to be able to pass in a timer set from game selection form 
+    // the function will accept an element id and time in seconds
+    // the timer will run a setinterval function thats fed a function
+    // that iterates a -- on the countdown variable
+    // 
+    const startTimer = (id, countdown) => {
+        const timerSpan = document.querySelector(id);
+        
+        function updateTimer() {
+                
+                timerSpan.textContent = countdown;
+                countdown --;
+                console.log(countdown);
+            if (countdown === 0) {
+                clearInterval(timerInterval);
+                console.log(`interval cleared`)
+                displayController.showRestartBtn();
+            } else if (playerOne.matchWinCheck() === true|| playerTwo.matchWinCheck() === true){
+                clearInterval(timerInterval);
+                console.log(`interval cleared`)
+                
+                
+            }
+        }
+        updateTimer();
+        let timerInterval = setInterval(updateTimer, 1000);
+         
+    }
+
+    
     const getTurn = () => _whoseTurn;
     const setTurn = () => _whoseTurn++;
     const resetTurns = () => _whoseTurn = 0;
@@ -186,18 +237,7 @@ const game = (() => {
         return gameboard.getRemainingSectors(gameboard.getBoard())[Math.floor(Math.random() * gameboard.getRemainingSectors(gameboard.getBoard()).length)];
     }
 
-    // const computerOpponent = () => {
-    //     compChoice = _compChoiceLogic();
-    //     let compChoiceSelector = document.querySelector(`#sector-${compChoice}`);
-    //     compChoiceSelector.textContent = playerTwo.getMarker();
-    //     gameboard.setBoard(compChoice, playerTwo.getMarker());
-    //     playerTwo.matchWinCheck()
-    //     if (whoseTurn > 4) {
-    //         playerTwo.matchWinCheck()
-    //     }
-    //     console.log(`checked computer win`)
-    //     setTurn();
-    // }
+
 
     const compChoiceLogic = () => {
 
@@ -252,48 +292,6 @@ const game = (() => {
 
     }
 
-    
-    // game is checking for win in the wrong place somewhere, if p1 wins and p2 wins in 
-    // the next turn, p2 is marker as winner. 
-
-
-
-    // const finalWinCheck = () => {
-    //     if (checkResults(playerOne.getMarker()) && _whoseTurn % 2 === 0) {
-    //         alert(`player 1 win`);
-    //         displayController.showRestartBtn();
-    //         playerOne.setScore();
-    //         console.log(`playerOne score: ${playerOne.getScore()}`)
-
-    //     } else if (checkResults(playerTwo.getMarker()) && _whoseTurn % 2 !== 0 && checkResults(playerOne.getMarker()) === undefined) {
-    //         if (playerTwo.getName() === `computer`) {
-    //             alert(`computer win`)
-    //             displayController.showRestartBtn();
-    //             playerTwo.setScore();
-    //             console.log(`playerTwo score: ${playerTwo.getScore()}`)
-    //         } else {
-    //             alert(`player 2 win`)
-    //             displayController.showRestartBtn();
-    //             playerTwo.setScore();
-    //         }
-    //     } else if (gameboard.getBoard().every(tieCheck)) {
-    //         alert(`it's a tie!`);
-    //         displayController.showRestartBtn();
-    //     } else if ((playerOne.getScore() === 4 || playerTwo.getScore() === 4) && gameboard.getBoard().every(tieCheck) === false) {
-    //         if (playerOne.getScore() === 4) { 
-    //             alert(`player 1 wins the match!`)
-    //         } else if (playerTwo.getScore() === 4) {
-    //             if(playerTwo.getName() === `computer`) {
-    //                 alert(`computer wins the match!`)
-    //             } else {
-    //                 alert(`player 2 wins the match!`)
-    //             }
-    //         }
-    //     } else {
-            
-    //         return false
-    //     }
-    // }
 
     function minimax(boardState, playerMarker) {
 
@@ -361,6 +359,7 @@ const game = (() => {
         setPlayer,
         playerOne,
         playerTwo,
+        startTimer,
         
     }
 })();
@@ -381,6 +380,20 @@ const displayController = (() => {
     let difficulty;
     const appContainer = document.querySelector(`#app-container`)
     const restartBtn = document.querySelector(`#restart-btn`);
+    const timeModeBtn = document.querySelector(`#time-mode-btn`);
+    const timeModeSelector = document.querySelector(`#mode-selector`);
+    const timerDiv = document.querySelector(`#timer`);
+    timeModeSelector.style.visibility = `hidden`;
+
+    let modeSet;
+
+    timeModeBtn.addEventListener(`click`, () => {
+        if (timeModeSelector.style.visibility === `hidden`) {
+            timeModeSelector.style.visibility = `visible`
+        } else {
+            timeModeSelector.style.visibility = `hidden`
+        }
+    })
 
     const showRestartBtn = () => {
         restartBtn.style.visibility = "visible";
@@ -400,11 +413,19 @@ const displayController = (() => {
             boardSpace.addEventListener(`click`, () => {
                 if (boardSpace.textContent !== `x` && boardSpace.textContent !== `o`) {
                     if (game.getTurn() % 2 === 0 && playerTwo.getName() === `computer`) {
-                        playerOne.playTurn(boardSpace, i);
                         
-                        if (!playerOne.roundWinCheck()) {
+                        playerOne.playTurn(boardSpace, i);
+                        console.log(`player1 turn played`)
+                        
+                        if (game.checkResults(playerOne.getMarker()) !== true) {
                             playerTwo.computerTurn();
+                            console.log(`player2 turn played`)
                         }
+                        
+                        // if (playerOne.roundWinCheck() === false) {
+                        //     playerTwo.computerTurn();
+                        //     console.log(`player2 turn played`)
+                        // }
 
 
 
@@ -416,6 +437,8 @@ const displayController = (() => {
                     } else {
                         playerTwo.playTurn(boardSpace, i)
                     }
+                } else if (game.checkResults(playerOne.getMarker()) || game.checkResults(playerTwo.getMarker())) {
+                    console.log(`round over`)
                 }
 
 
@@ -424,7 +447,7 @@ const displayController = (() => {
         }
     };
 
-    function setPlayerMarker(radioGroup) {
+    function setRadioValue(radioGroup) {
         let element = document.getElementsByClassName(radioGroup);
 
         for (const elements of element) {
@@ -441,7 +464,12 @@ const displayController = (() => {
 
     function menuController() {
 
-
+        const showElement = (element) => {
+            element.style.visibility = `visible`
+        }
+        const hideElement = (element) => {
+            element.style.visibility = `hidden`
+        }
 
         enterBtn.addEventListener(`click`, () => {
             const introToPlayerSelect = gsap.timeline();
@@ -470,10 +498,8 @@ const displayController = (() => {
                     console.log(elements.checked)
                     value = elements.value;
                     if (value === `player`) {
-                        if (startGameContainer.childNodes.length > 1) {
-                            startGameContainer.removeChild(difficultySelector);
-                            startGameContainer.removeChild(difficultySelectorLabel)
-                        }
+                        difficultySelector.style.visibility = `hidden`;
+                        difficultySelectorLabel.style.visibility = `hidden`;
                         playerTwoIcon.src = "/images/player-two-icon.png";
                         playerTwoName.value = ``;
                         playerTwoName.disabled = false;
@@ -481,14 +507,11 @@ const displayController = (() => {
                         playerTwoIcon.src = "/images/ai-icon.png"
                         playerTwoName.value = `computer`;
                         playerTwoName.disabled = true;
-                        difficultySelectorLabel = document.createElement(`p`);
-                        difficultySelectorLabel.textContent = `Difficulty`;
-                        difficultySelectorLabel.classList.add(`selector-label`)
-                        difficultySelector = document.createElement(`button`);
-                        difficultySelector.setAttribute(`id`, `difficulty-selector`);
+                        difficultySelectorLabel = document.querySelector(`.selector-label`);
+                        difficultySelector = document.querySelector(`#difficulty-selector`);
                         difficultySelector.textContent = `new on the job`
-                        startGameContainer.insertBefore(difficultySelector, startGameBtn);
-                        startGameContainer.insertBefore(difficultySelectorLabel, difficultySelector)
+                        difficultySelector.style.visibility = `visible`
+                        difficultySelectorLabel.style.visibility = `visible`
                         let count = 0;
                         
                         difficultySelector.addEventListener(`click`, () => {
@@ -511,9 +534,11 @@ const displayController = (() => {
                 } else {
                     continue
                 }
-            }
+            }    let coutdown;
+
         }
 
+        
 
         computerSwitch.forEach(function (element) {
             element.addEventListener(`change`, () => playerToggle())
@@ -522,9 +547,20 @@ const displayController = (() => {
         })
 
         restartBtn.addEventListener(`click`, () => {
-            gameboard.clearBoard();
-            game.resetTurns();
-            restartBtn.style.visibility = `hidden`;
+            
+            if (playerOne.matchWinCheck() !== undefined|| playerTwo.matchWinCheck() !== undefined) {
+                gameboard.clearBoard();
+                playerOne.resetScore();
+                playerTwo.resetScore();
+                game.resetTurns();
+                console.log(`match reset`)
+                restartBtn.style.visibility = `hidden`;
+                game.startTimer(`.seconds`, timerSet);
+            } else {
+                gameboard.clearBoard();
+                game.resetTurns();
+                restartBtn.style.visibility = `hidden`;
+            }
         })
 
 
@@ -534,10 +570,11 @@ const displayController = (() => {
         playerSelectForm.addEventListener(`submit`, function (event) {
             event.preventDefault();
 
-            playerOne = Player(1, playerOneName.value, setPlayerMarker(`player-one-radio`));
+            playerOne = Player(1, playerOneName.value, setRadioValue(`player-one-radio`));
 
-            playerTwo = Player(2, playerTwoName.value, setPlayerMarker(`player-two-radio`));
+            playerTwo = Player(2, playerTwoName.value, setRadioValue(`player-two-radio`));
 
+        
             game.setPlayer(playerOne);
 
             game.setPlayer(playerTwo);
@@ -547,10 +584,15 @@ const displayController = (() => {
         });
 
 
-
+        
 
         startGameBtn.addEventListener(`click`, () => {
-             
+            
+            timerSet = setRadioValue(`time-radio`);
+            console.log(timerSet)
+            modeSet = setRadioValue(`extreme-radio`);
+            console.log(modeSet)
+            console.log(`${timerSet} on click`)
             
             function playGameTheme() {
                 const gameTheme = new Audio(`audio/lightwave - game -theme.wav`);
@@ -593,8 +635,23 @@ const displayController = (() => {
             })
 
             const spaceDuration = 60 / 130;
-
             
+            const timerDisplay = (value) => {
+                if (value === `endless`) {
+                    boardEnter
+                    .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
+                    .call(playGameTheme, null, 3 + (spaceDuration / 4))
+                } else if (value != `endless`) {
+                    console.log(`timer initialized`)
+                    boardEnter
+                    .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
+                    .call(playGameTheme, null, 3 + (spaceDuration / 4))
+                    .call(game.startTimer, [".seconds", value], null, 3 + (spaceDuration / 4))
+                    .call(showElement, [timerDiv], null, 3 + (spaceDuration / 4));
+                };
+            }
+            
+            timerDisplay(timerSet);
 
 
             playerSelectExit
@@ -609,11 +666,10 @@ const displayController = (() => {
                         delimiter: " "
                     }
                 })
-                .to(".countdown-timer", {duration: 0, autoAlpha: 0})
+                .to(".countdown-timer", {duration: 0, autoAlpha: 0});
             
-            boardEnter
-                .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
-                .call(playGameTheme, null, 3 + (spaceDuration / 4));
+            
+            
             
             
             boardSpaceAnimation
@@ -631,10 +687,10 @@ const displayController = (() => {
 
             boardSpinAnimation
 
-                .to("#gameboard-container", { rotation: 90 }, 2)
-                .to("#gameboard-container", { rotation: 180 }, 4)
-                .to("#gameboard-container", { rotation: 270 }, 6)
-                .to("#gameboard-container", { rotation: 360 }, 8)
+                .to("#gameboard-container", { rotation: 90, boxShadow: "hsla(82, 100%, 55%, .85) -10px 10px 8px"}, 2)
+                .to("#gameboard-container", { rotation: 180, boxShadow: "hsla(43, 100%, 53%, .85) -10px -10px 8px" }, 4)
+                .to("#gameboard-container", { rotation: 270, boxShadow: "hsla(30, 100%, 54%, .85) 10px -10px 8px" }, 6)
+                .to("#gameboard-container", { rotation: 360, boxShadow: "hsla(13, 100%, 55%, .85) 10px 10px 8px" }, 8)
                 .totalDuration(spaceDuration * 16);
 
 
@@ -650,7 +706,7 @@ const displayController = (() => {
         getDifficulty,
         displayBoard,
         menuController,
-        setPlayerMarker,
+        setRadioValue,
         showRestartBtn,
     }
 })();

@@ -124,7 +124,44 @@
                 </div>
             </div>
 
+    <!-- finish switching around the ids and such for these radios, they're freshly copied -->
             <div id="start-game-container">
+                <button id="time-mode-btn" class="g-btn_label">Timed Modes</button>
+                <div id="mode-selector">
+                    <div class="g-btn_container extreme-toggle" >  
+                        <input type="radio" class="extreme-radio" name="mode-toggle"
+                            id="normal-toggle" value="normal" checked>
+                        <label class="g-btn_label" for="normal-toggle">normal</label>
+                    </div>
+                    <div class="g-btn_container extreme-toggle">
+                        <input type="radio" class="extreme-radio" name="mode-toggle"
+                            id="extreme-toggle" value="extreme">
+                        <label class="g-btn_label" for="extreme-toggle">extreme</label>
+                    </div>
+                    <div class="g-btn_container time-toggle">
+                        <input type="radio" class="time-radio" name="time-toggle"
+                            id="time-endless" value="endless" checked>
+                        <label class="g-btn_label time-label" for="time-endless">endless</label>
+                    </div>
+                    <div class="g-btn_container time-toggle">
+                        <input type="radio" class="time-radio" name="time-toggle"
+                            id="time-60" value="60">
+                        <label class="g-btn_label time-label" for="time-60">60 seconds</label>
+                    </div>
+                    <div class="g-btn_container time-toggle">
+                        <input type="radio" class="time-radio" name="time-toggle"
+                            id="time-45" value="45">
+                        <label class="g-btn_label time-label" for="time-45">45 seconds</label>
+                    </div>
+                    <div class="g-btn_container time-toggle">
+                        <input type="radio" class="time-radio" name="time-toggle"
+                            id="time-30" value="30">
+                        <label class="g-btn_label time-label" for="time-30">30 seconds</label>
+                    </div>
+                    
+                </div>
+                <p class="selector-label">Difficulty</p>
+                <button id="difficulty-selector"></button>
                 <button id="start-btn" class="g-btn_label" type="submit">Begin</button>
             </div>
         </form>
@@ -136,6 +173,9 @@
 
             <div id="gameboard-container"></div>
             <button id="restart-btn" class="g-btn_label">Restart</button>
+            <div id="timer">
+                Time Remaining: <span class="seconds"></span>
+            </div>
         </div>
     </div>
 

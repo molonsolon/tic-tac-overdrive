@@ -104,7 +104,7 @@ css-doodle {
 .g-btn_label {
     height: 7vh;
     min-width: 15vw;
-    max-width: 14%;
+    // max-width: 14%;
     font-size: 2.8rem;
     font-family: 'Kanit', sans-serif;
     color: white;
@@ -256,26 +256,55 @@ css-doodle {
     font-size: 2rem;
     margin-top: -11vh;
     font-family: 'Kanit', sans-serif;
-
+    visibility: hidden;
+    justify-self: center;
 }
     
 
 #difficulty-selector {
     font-size: 2rem;
     color: white;
-    
+    justify-self: center;
     background-color:rgba(65, 153, 6, 0.61);
     color: white;
     border: 3px greenyellow solid;
     border-radius: 3px;
     font-family: 'Exo 2', sans-serif;
-
+    visibility: hidden;
 
 }
 
 .player-toggle label {
     padding-top: 1vh;
 }
+
+#time-mode-btn {
+    margin-top: -80vh;
+    width: 30vw;
+    height: 7vh;
+    
+    
+}
+
+#mode-selector {
+    margin-top: -73vh;
+    display: grid;
+    grid-template-rows: repeat(5, 7vh) ;
+    grid-template-columns: 15vw 15vw;
+    align-items: center;
+    
+
+}
+
+.time-toggle {
+    grid-column: 1 / span 2;
+}
+
+.time-label {
+    width: 30vw;
+}
+
+
 
 .countdown-timer {
     z-index: 10;
@@ -284,6 +313,16 @@ css-doodle {
     font-size: 5rem;
     color: white;
     font-family: 'Exo 2', sans-serif;
+}
+
+#timer {
+    z-index: 10;
+    position: fixed;
+    margin-top: 800px;
+    font-size: 5rem;
+    color: white;
+    font-family: 'Exo 2', sans-serif;
+    visibility: hidden;
 }
 
 #game-container {
@@ -308,6 +347,7 @@ css-doodle {
     margin-top: 1000px;
     z-index: 0;
     visibility: hidden;
+    box-shadow: hsla(97, 100%, 59%, .85) 10px 10px 8px;
 }
 
 .board-space {
