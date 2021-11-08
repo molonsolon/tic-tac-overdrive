@@ -353,8 +353,8 @@ css-doodle {
   margin-top: 1000px;
   z-index: 0;
   visibility: hidden;
-  -webkit-box-shadow: rgba(126, 255, 46, 0.85) 10px 10px 8px;
-          box-shadow: rgba(126, 255, 46, 0.85) 10px 10px 8px;
+  -webkit-box-shadow: rgba(126, 255, 46, 0.85) 10px 0px;
+          box-shadow: rgba(126, 255, 46, 0.85) 10px 0px;
 }
 
 .board-space {

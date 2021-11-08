@@ -634,20 +634,20 @@ const displayController = (() => {
                 }
             })
 
-            const spaceDuration = 60 / 130;
+            const beatDuration = 60 / 130;
             
             const timerDisplay = (value) => {
                 if (value === `endless`) {
                     boardEnter
                     .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
-                    .call(playGameTheme, null, 3 + (spaceDuration / 4))
+                    .call(playGameTheme, null, 3 + (beatDuration / 4))
                 } else if (value != `endless`) {
                     console.log(`timer initialized`)
                     boardEnter
                     .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
-                    .call(playGameTheme, null, 3 + (spaceDuration / 4))
-                    .call(game.startTimer, [".seconds", value], null, 3 + (spaceDuration / 4))
-                    .call(showElement, [timerDiv], null, 3 + (spaceDuration / 4));
+                    .call(playGameTheme, null, 3 + (beatDuration / 4))
+                    .call(game.startTimer, [".seconds", value], null, 3 + (beatDuration / 4))
+                    .call(showElement, [timerDiv], null, 3 + (beatDuration / 4));
                 };
             }
             
@@ -678,20 +678,20 @@ const displayController = (() => {
                 .to(".board-space", { background: "hsla(30, 100%, 54%, .85)" })
                 .to(".board-space", { background: "hsla(20, 100%, 55%, .85)" })
                 .to(".board-space", { background: "hsla(13, 100%, 55%, .85)" })
-                .totalDuration(spaceDuration * 8);
+                .totalDuration(beatDuration * 8);
 
             boardScaleAnimation
                 .to("#gameboard-container", { scale: 1.1 })
-                .totalDuration(spaceDuration);
+                .totalDuration(beatDuration);
 
 
             boardSpinAnimation
 
-                .to("#gameboard-container", { rotation: 90, boxShadow: "hsla(82, 100%, 55%, .85) -10px 10px 8px"}, 2)
-                .to("#gameboard-container", { rotation: 180, boxShadow: "hsla(43, 100%, 53%, .85) -10px -10px 8px" }, 4)
-                .to("#gameboard-container", { rotation: 270, boxShadow: "hsla(30, 100%, 54%, .85) 10px -10px 8px" }, 6)
-                .to("#gameboard-container", { rotation: 360, boxShadow: "hsla(13, 100%, 55%, .85) 10px 10px 8px" }, 8)
-                .totalDuration(spaceDuration * 16);
+                .to("#gameboard-container", { rotation: 90, boxShadow: "hsla(82, 100%, 55%, .85) -10px 5px"}, 2)
+                .to("#gameboard-container", { rotation: 180, boxShadow: "hsla(43, 100%, 53%, .85) -10px 5px" }, 4)
+                .to("#gameboard-container", { rotation: 270, boxShadow: "hsla(30, 100%, 54%, .85) 10px 5px" }, 6)
+                .to("#gameboard-container", { rotation: 360, boxShadow: "hsla(13, 100%, 55%, .85) 10px 5px" }, 8)
+                .totalDuration(beatDuration * 16);
 
 
         })
