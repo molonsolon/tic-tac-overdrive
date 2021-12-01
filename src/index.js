@@ -34,6 +34,10 @@
 
 */
 
+import './css/style.scss';
+import gsap from 'gsap';
+import TextPlugin from 'gsap/TextPlugin';
+
 gsap.registerPlugin(TextPlugin);
 
 const Player = (number, name, marker) => {
@@ -332,6 +336,7 @@ const game = (() => {
 })();
 
 const displayController = (() => {
+
   const gameboardContainer = document.querySelector('#gameboard-container');
   const enterBtn = document.querySelector('#enter-btn');
   const startGameBtn = document.querySelector('#start-btn');
