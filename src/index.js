@@ -14,7 +14,7 @@
 
     Bug:
     [ ] win match check is being called twice on winning turn completion, once on restart after.
-
+    [ ] webpack is calling functions twice, messing with time mode dropdown
     Completed:
 
     [x] Try switching row/column/diagonal functions into game module.
@@ -34,9 +34,9 @@
 
 */
 
-import './css/style.scss';
-import gsap from 'gsap';
-import TextPlugin from 'gsap/TextPlugin';
+import "./css/style.scss";
+import gsap from "gsap";
+import TextPlugin from "gsap/TextPlugin";
 
 gsap.registerPlugin(TextPlugin);
 
@@ -59,14 +59,14 @@ const Player = (number, name, marker) => {
       return true;
     }
     if (game.getTurn() === 9) {
-      alert(`it's a tie!`); //eslint-disable-line quotes
+      alert(`it's a tie!`); // eslint-disable-line quotes
       displayController.showRestartBtn();
       return true;
     }
     return false;
   };
 
-//   const tieCheck = (value) => typeof value === 'string';
+  //   const tieCheck = (value) => typeof value === 'string';
 
   function matchWinCheck() {
     if (score === 5) {
@@ -84,14 +84,14 @@ const Player = (number, name, marker) => {
     game.setTurn();
     roundWinCheck();
     matchWinCheck();
-    console.log('checked for computer win');
+    console.log("checked for computer win");
   };
 
   function playTurn(space, index) {
     space.textContent = marker; // eslint-disable-line no-param-reassign
     gameboard.setBoard(index, marker);
 
-    console.log('checked for win player1');
+    console.log("checked for win player1");
     game.setTurn();
     roundWinCheck();
     matchWinCheck();
@@ -129,7 +129,7 @@ const gameboard = (() => {
   const getResultCheckSectors = () => resultCheckSectors;
 
   function getRemainingSectors(boardState) {
-    return boardState.filter((i) => i !== 'o' && i !== 'x');
+    return boardState.filter((i) => i !== "o" && i !== "x");
   }
 
   function setBoard(index, marker) {
@@ -138,10 +138,10 @@ const gameboard = (() => {
 
   const clearBoard = () => {
     board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-    const boardSpaces = document.querySelectorAll('.board-space');
+    const boardSpaces = document.querySelectorAll(".board-space");
     for (let i = 0; i < boardSpaces.length; i++) {
-      boardSpaces[i].textContent = '';
-      console.log('board cleared');
+      boardSpaces[i].textContent = "";
+      console.log("board cleared");
     }
   };
 
@@ -159,7 +159,7 @@ const game = (() => {
   let playerOne;
   let playerTwo;
   const result = null; // eslint-disable-line no-unused-vars
-  let compDifficulty = 'new on the job';
+  let compDifficulty = "new on the job";
 
   const setCompDifficulty = (value) => {
     compDifficulty = value;
@@ -192,14 +192,14 @@ const game = (() => {
       console.log(countdown);
       if (countdown === 0) {
         clearInterval(timerInterval);
-        console.log('interval cleared');
+        console.log("interval cleared");
         displayController.showRestartBtn();
       } else if (
-        playerOne.matchWinCheck() === true
-        || playerTwo.matchWinCheck() === true
+        playerOne.matchWinCheck() === true ||
+        playerTwo.matchWinCheck() === true
       ) {
         clearInterval(timerInterval);
-        console.log('interval cleared');
+        console.log("interval cleared");
       }
     }
     updateTimer();
@@ -207,8 +207,12 @@ const game = (() => {
   };
 
   const getTurn = () => whoseTurn;
-  const setTurn = () => { whoseTurn += 1; };
-  const resetTurns = () => { whoseTurn = 0; };
+  const setTurn = () => {
+    whoseTurn += 1;
+  };
+  const resetTurns = () => {
+    whoseTurn = 0;
+  };
 
   const compMM = () =>
     minimax(gameboard.getBoard(), playerTwo.getMarker()).index;
@@ -216,35 +220,35 @@ const game = (() => {
   const compR = () =>
     gameboard.getRemainingSectors(gameboard.getBoard())[
       Math.floor(
-        Math.random()
-        * gameboard.getRemainingSectors(gameboard.getBoard()).length,
+        Math.random() *
+          gameboard.getRemainingSectors(gameboard.getBoard()).length
       )
     ];
 
   const compChoiceLogic = () => {
     console.log(compDifficulty);
 
-    if (compDifficulty === 'unstoppable') {
+    if (compDifficulty === "unstoppable") {
       return compMM();
     }
-    if (compDifficulty !== 'unstoppable') {
+    if (compDifficulty !== "unstoppable") {
       const rNum = Math.random() * 100;
 
-      if (compDifficulty === 'highly skilled') {
+      if (compDifficulty === "highly skilled") {
         if (rNum < 75) {
           return compMM();
         }
 
         return compR();
       }
-      if (compDifficulty === 'in training') {
+      if (compDifficulty === "in training") {
         if (rNum < 50) {
           return compMM();
         }
 
         return compR();
       }
-      if (compDifficulty === 'new on the job') {
+      if (compDifficulty === "new on the job") {
         if (rNum < 25) {
           return compMM();
         }
@@ -258,7 +262,7 @@ const game = (() => {
   function checkResults(playerMarker) {
     for (const key in gameboard.getResultCheckSectors()) {
       if (
-        gameboard.getResultCheckSectors()[`${key}`]().join(',') ===
+        gameboard.getResultCheckSectors()[`${key}`]().join(",") ===
         `${playerMarker},${playerMarker},${playerMarker}`
       ) {
         return true;
@@ -336,56 +340,60 @@ const game = (() => {
 })();
 
 const displayController = (() => {
-
-  const gameboardContainer = document.querySelector('#gameboard-container');
-  const enterBtn = document.querySelector('#enter-btn');
-  const startGameBtn = document.querySelector('#start-btn');
-  const playerSelectForm = document.querySelector('#player-select-form');
-  const computerSwitch = document.querySelectorAll('.switch-radio');
-  const playerTwoIcon = document.querySelector('#player-two-icon');
-  const playerOneName = document.querySelector('#player-one-name');
-  const playerTwoName = document.querySelector('#player-two-name');
-  const startGameContainer = document.querySelector('#start-game-container');
+  const gameboardContainer = document.querySelector("#gameboard-container");
+  const enterBtn = document.querySelector("#enter-btn");
+  const startGameBtn = document.querySelector("#start-btn");
+  const playerSelectForm = document.querySelector("#player-select-form");
+  const computerSwitch = document.querySelectorAll(".switch-radio");
+  const playerTwoIcon = document.querySelector("#player-two-icon");
+  const playerOneName = document.querySelector("#player-one-name");
+  const playerTwoName = document.querySelector("#player-two-name");
+  const startGameContainer = document.querySelector("#start-game-container");
   let difficulty;
-  const appContainer = document.querySelector('#app-container');
-  const restartBtn = document.querySelector('#restart-btn');
-  const timeModeBtn = document.querySelector('#time-mode-btn');
-  const timeModeSelector = document.querySelector('#mode-selector');
-  const timerDiv = document.querySelector('#timer');
+  const appContainer = document.querySelector("#app-container");
+  const restartBtn = document.querySelector("#restart-btn");
+  const timeModeBtn = document.querySelector("#time-mode-btn");
+  const timeModeSelector = document.querySelector("#mode-selector");
   timeModeSelector.style.visibility = 'hidden';
+  const timerDiv = document.querySelector("#timer");
+  const difficultySelectorLabel = document.querySelector(".selector-label");
+  const difficultySelector = document.querySelector("#difficulty-selector");
 
   let modeSet;
 
-  timeModeBtn.addEventListener('click', () => {
-    if (timeModeSelector.style.visibility === 'hidden') {
-      timeModeSelector.style.visibility = 'visible';
+  timeModeBtn.addEventListener("click", () => {
+    if (timeModeSelector.style.visibility === "hidden") {
+      console.log(timeModeSelector);
+      timeModeSelector.style.visibility = "visible";
+      console.log(timeModeSelector);
     } else {
-      timeModeSelector.style.visibility = 'hidden';
+      console.log('err!')
+      timeModeSelector.style.visibility = "hidden";
     }
   });
 
   const showRestartBtn = () => {
-    restartBtn.style.visibility = 'visible';
+    restartBtn.style.visibility = "visible";
   };
 
   const getDifficulty = () => difficulty;
 
   function displayBoard() {
     for (let i = 0; i < 9; i++) {
-      const boardSpace = document.createElement('div');
-      boardSpace.classList.add('board-space');
-      boardSpace.setAttribute('id', `sector-${i}`);
+      const boardSpace = document.createElement("div");
+      boardSpace.classList.add("board-space");
+      boardSpace.setAttribute("id", `sector-${i}`);
       gameboardContainer.appendChild(boardSpace);
 
-      boardSpace.addEventListener('click', () => {
-        if (boardSpace.textContent !== 'x' && boardSpace.textContent !== 'o') {
-          if (game.getTurn() % 2 === 0 && playerTwo.getName() === 'computer') {
+      boardSpace.addEventListener("click", () => {
+        if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
+          if (game.getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
             playerOne.playTurn(boardSpace, i);
-            console.log('player1 turn played');
+            console.log("player1 turn played");
 
             if (game.checkResults(playerOne.getMarker()) !== true) {
               playerTwo.computerTurn();
-              console.log('player2 turn played');
+              console.log("player2 turn played");
             }
 
             // if (playerOne.roundWinCheck() === false) {
@@ -401,7 +409,7 @@ const displayController = (() => {
           game.checkResults(playerOne.getMarker()) ||
           game.checkResults(playerTwo.getMarker())
         ) {
-          console.log('round over');
+          console.log("round over");
         }
       });
     }
@@ -415,19 +423,18 @@ const displayController = (() => {
         console.log(elements.checked);
         return elements.value;
       }
-      continue;
     }
   }
 
   function menuController() {
     const showElement = (element) => {
-      element.style.visibility = 'visible';
+      element.style.visibility = "visible";
     };
     const hideElement = (element) => {
-      element.style.visibility = 'hidden';
+      element.style.visibility = "hidden";
     };
 
-    enterBtn.addEventListener('click', () => {
+    enterBtn.addEventListener("click", () => {
       const introToPlayerSelect = gsap.timeline();
 
       introToPlayerSelect
@@ -456,34 +463,32 @@ const displayController = (() => {
 
     const playerToggle = () => {
       let value;
-      console.log('run');
+      console.log("run");
       for (const elements of computerSwitch) {
         if (elements.checked) {
           console.log(elements.checked);
           value = elements.value;
-          if (value === 'player') {
-            difficultySelector.style.visibility = 'hidden';
-            difficultySelectorLabel.style.visibility = 'hidden';
-            playerTwoIcon.src = '/images/player-two-icon.png';
-            playerTwoName.value = '';
+          if (value === "player") {
+            difficultySelector.style.visibility = "hidden";
+            difficultySelectorLabel.style.visibility = "hidden";
+            playerTwoIcon.src = "/images/player-two-icon.png";
+            playerTwoName.value = "";
             playerTwoName.disabled = false;
-          } else if (value === 'computer') {
-            playerTwoIcon.src = '/images/ai-icon.png';
-            playerTwoName.value = 'computer';
+          } else if (value === "computer") {
+            playerTwoIcon.src = "/images/ai-icon.png";
+            playerTwoName.value = "computer";
             playerTwoName.disabled = true;
-            difficultySelectorLabel = document.querySelector('.selector-label');
-            difficultySelector = document.querySelector('#difficulty-selector');
-            difficultySelector.textContent = 'new on the job';
-            difficultySelector.style.visibility = 'visible';
-            difficultySelectorLabel.style.visibility = 'visible';
+            difficultySelector.textContent = "new on the job";
+            difficultySelector.style.visibility = "visible";
+            difficultySelectorLabel.style.visibility = "visible";
             let count = 0;
 
-            difficultySelector.addEventListener('click', () => {
+            difficultySelector.addEventListener("click", () => {
               const difficulties = [
-                'new on the job',
-                'in training',
-                'highly skilled',
-                'unstoppable',
+                "new on the job",
+                "in training",
+                "highly skilled",
+                "unstoppable",
               ];
               console.log(count);
               if (count < 3) {
@@ -500,19 +505,17 @@ const displayController = (() => {
               game.setCompDifficulty(difficulty);
             });
           }
-        } else {
-          continue;
         }
       }
       let coutdown;
     };
 
     computerSwitch.forEach((element) => {
-      element.addEventListener('change', () => playerToggle());
+      element.addEventListener("change", () => playerToggle());
       console.log(element);
     });
 
-    restartBtn.addEventListener('click', () => {
+    restartBtn.addEventListener("click", () => {
       if (
         playerOne.matchWinCheck() !== undefined ||
         playerTwo.matchWinCheck() !== undefined
@@ -521,29 +524,29 @@ const displayController = (() => {
         playerOne.resetScore();
         playerTwo.resetScore();
         game.resetTurns();
-        console.log('match reset');
-        restartBtn.style.visibility = 'hidden';
-        game.startTimer('.seconds', timerSet);
+        console.log("match reset");
+        restartBtn.style.visibility = "hidden";
+        game.startTimer(".seconds", timerSet);
       } else {
         gameboard.clearBoard();
         game.resetTurns();
-        restartBtn.style.visibility = 'hidden';
+        restartBtn.style.visibility = "hidden";
       }
     });
 
-    playerSelectForm.addEventListener('submit', (event) => {
+    playerSelectForm.addEventListener("submit", (event) => {
       event.preventDefault();
 
-      playerOne = Player(
+      const playerOne = Player(
         1,
         playerOneName.value,
-        setRadioValue('player-one-radio')
+        setRadioValue("player-one-radio")
       );
 
-      playerTwo = Player(
+      const playerTwo = Player(
         2,
         playerTwoName.value,
-        setRadioValue('player-two-radio')
+        setRadioValue("player-two-radio")
       );
 
       game.setPlayer(playerOne);
@@ -551,21 +554,21 @@ const displayController = (() => {
       game.setPlayer(playerTwo);
     });
 
-    startGameBtn.addEventListener('click', () => {
-      timerSet = setRadioValue('time-radio');
+    startGameBtn.addEventListener("click", () => {
+      timerSet = setRadioValue("time-radio");
       console.log(timerSet);
-      modeSet = setRadioValue('extreme-radio');
+      modeSet = setRadioValue("extreme-radio");
       console.log(modeSet);
       console.log(`${timerSet} on click`);
 
       function playGameTheme() {
-        const gameTheme = new Audio('audio/lightwave - game -theme.wav');
-        if (typeof gameTheme.loop === 'boolean') {
+        const gameTheme = new Audio("audio/lightwave - game -theme.wav");
+        if (typeof gameTheme.loop === "boolean") {
           gameTheme.loop = true;
           gameTheme.play();
         } else {
           gameTheme.addEventListener(
-            'ended',
+            "ended",
             function () {
               this.currentTime = 0;
               this.play();
@@ -603,12 +606,12 @@ const displayController = (() => {
       const beatDuration = 60 / 130;
 
       const timerDisplay = (value) => {
-        if (value === 'endless') {
+        if (value === "endless") {
           boardEnter
             .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
             .call(playGameTheme, null, 3 + beatDuration / 4);
-        } else if (value != 'endless') {
-          console.log('timer initialized');
+        } else if (value != "endless") {
+          console.log("timer initialized");
           boardEnter
             .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
             .call(playGameTheme, null, 3 + beatDuration / 4)
