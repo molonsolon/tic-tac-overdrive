@@ -14,7 +14,9 @@
 
     Bug:
     [ ] win match check is being called twice on winning turn completion, once on restart after.
-    [ ] webpack is calling functions twice, messing with time mode dropdown
+    [x] webpack is calling functions twice, messing with time mode dropdown
+    [ ] index.js is not able to locate audio source
+    [ ] playerOne + Two are not getting defined on form submit
     Completed:
 
     [x] Try switching row/column/diagonal functions into game module.
@@ -367,7 +369,7 @@ const displayController = (() => {
       timeModeSelector.style.visibility = "visible";
       console.log(timeModeSelector);
     } else {
-      console.log('err!')
+      console.log('err!');
       timeModeSelector.style.visibility = "hidden";
     }
   });
@@ -555,9 +557,9 @@ const displayController = (() => {
     });
 
     startGameBtn.addEventListener("click", () => {
-      timerSet = setRadioValue("time-radio");
+      let timerSet = setRadioValue("time-radio");
       console.log(timerSet);
-      modeSet = setRadioValue("extreme-radio");
+      let modeSet = setRadioValue("extreme-radio");
       console.log(modeSet);
       console.log(`${timerSet} on click`);
 
