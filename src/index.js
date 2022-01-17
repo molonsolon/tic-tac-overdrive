@@ -171,10 +171,12 @@ const game = (() => {
   function setPlayer(player) {
     if (player.getNumber() === 1) {
       playerOne = player;
+      console.log(playerOne.getName());
       return playerOne;
     }
     if (player.getNumber() === 2) {
       playerTwo = player;
+      console.log(playerTwo);
       return playerTwo;
     }
     return undefined;
@@ -197,8 +199,8 @@ const game = (() => {
         console.log("interval cleared");
         displayController.showRestartBtn();
       } else if (
-        playerOne.matchWinCheck() === true ||
-        playerTwo.matchWinCheck() === true
+        playerOne.matchWinCheck() === true
+        || playerTwo.matchWinCheck() === true
       ) {
         clearInterval(timerInterval);
         console.log("interval cleared");
@@ -216,16 +218,14 @@ const game = (() => {
     whoseTurn = 0;
   };
 
-  const compMM = () =>
-    minimax(gameboard.getBoard(), playerTwo.getMarker()).index;
+  const compMM = () => minimax(gameboard.getBoard(), playerTwo.getMarker()).index;
 
-  const compR = () =>
-    gameboard.getRemainingSectors(gameboard.getBoard())[
-      Math.floor(
-        Math.random() *
-          gameboard.getRemainingSectors(gameboard.getBoard()).length
-      )
-    ];
+  const compR = () => gameboard.getRemainingSectors(gameboard.getBoard())[
+    Math.floor(
+      Math.random()
+          * gameboard.getRemainingSectors(gameboard.getBoard()).length,
+    )
+  ];
 
   const compChoiceLogic = () => {
     console.log(compDifficulty);
@@ -264,8 +264,8 @@ const game = (() => {
   function checkResults(playerMarker) {
     for (const key in gameboard.getResultCheckSectors()) {
       if (
-        gameboard.getResultCheckSectors()[`${key}`]().join(",") ===
-        `${playerMarker},${playerMarker},${playerMarker}`
+        gameboard.getResultCheckSectors()[`${key}`]().join(",")
+        === `${playerMarker},${playerMarker},${playerMarker}`
       ) {
         return true;
       }
@@ -352,6 +352,8 @@ const displayController = (() => {
   const playerTwoName = document.querySelector("#player-two-name");
   const startGameContainer = document.querySelector("#start-game-container");
   let difficulty;
+  let playerOne;
+  let playerTwo;
   const appContainer = document.querySelector("#app-container");
   const restartBtn = document.querySelector("#restart-btn");
   const timeModeBtn = document.querySelector("#time-mode-btn");
@@ -360,8 +362,6 @@ const displayController = (() => {
   const timerDiv = document.querySelector("#timer");
   const difficultySelectorLabel = document.querySelector(".selector-label");
   const difficultySelector = document.querySelector("#difficulty-selector");
-
-  let modeSet;
 
   timeModeBtn.addEventListener("click", () => {
     if (timeModeSelector.style.visibility === "hidden") {
@@ -408,8 +408,8 @@ const displayController = (() => {
             playerTwo.playTurn(boardSpace, i);
           }
         } else if (
-          game.checkResults(playerOne.getMarker()) ||
-          game.checkResults(playerTwo.getMarker())
+          game.checkResults(playerOne.getMarker())
+          || game.checkResults(playerTwo.getMarker())
         ) {
           console.log("round over");
         }
@@ -445,7 +445,7 @@ const displayController = (() => {
         .to(
           "#player-select-form",
           { duration: 1, xPercent: -150.2, yPercent: 0 },
-          1
+          1,
         )
         .to("#intro-container", { autoAlpha: 0, delay: 3 });
     });
@@ -519,8 +519,8 @@ const displayController = (() => {
 
     restartBtn.addEventListener("click", () => {
       if (
-        playerOne.matchWinCheck() !== undefined ||
-        playerTwo.matchWinCheck() !== undefined
+        playerOne.matchWinCheck() !== undefined
+        || playerTwo.matchWinCheck() !== undefined
       ) {
         gameboard.clearBoard();
         playerOne.resetScore();
@@ -539,16 +539,16 @@ const displayController = (() => {
     playerSelectForm.addEventListener("submit", (event) => {
       event.preventDefault();
 
-      const playerOne = Player(
+      playerOne = Player(
         1,
         playerOneName.value,
-        setRadioValue("player-one-radio")
+        setRadioValue("player-one-radio"),
       );
-
-      const playerTwo = Player(
+      
+      playerTwo = Player(
         2,
         playerTwoName.value,
-        setRadioValue("player-two-radio")
+        setRadioValue("player-two-radio"),
       );
 
       game.setPlayer(playerOne);
@@ -557,9 +557,9 @@ const displayController = (() => {
     });
 
     startGameBtn.addEventListener("click", () => {
-      let timerSet = setRadioValue("time-radio");
+      const timerSet = setRadioValue("time-radio");
       console.log(timerSet);
-      let modeSet = setRadioValue("extreme-radio");
+      const modeSet = setRadioValue("extreme-radio");
       console.log(modeSet);
       console.log(`${timerSet} on click`);
 
@@ -575,7 +575,7 @@ const displayController = (() => {
               this.currentTime = 0;
               this.play();
             },
-            false
+            false,
           );
         }
       }
@@ -612,7 +612,7 @@ const displayController = (() => {
           boardEnter
             .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
             .call(playGameTheme, null, 3 + beatDuration / 4);
-        } else if (value != "endless") {
+        } else if (value !== "endless") {
           console.log("timer initialized");
           boardEnter
             .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
@@ -621,7 +621,7 @@ const displayController = (() => {
               game.startTimer,
               [".seconds", value],
               null,
-              3 + beatDuration / 4
+              3 + beatDuration / 4,
             )
             .call(showElement, [timerDiv], null, 3 + beatDuration / 4);
         }
@@ -661,22 +661,22 @@ const displayController = (() => {
         .to(
           "#gameboard-container",
           { rotation: 90, boxShadow: "hsla(82, 100%, 55%, .85) -10px 5px" },
-          2
+          2,
         )
         .to(
           "#gameboard-container",
           { rotation: 180, boxShadow: "hsla(43, 100%, 53%, .85) -10px 5px" },
-          4
+          4,
         )
         .to(
           "#gameboard-container",
           { rotation: 270, boxShadow: "hsla(30, 100%, 54%, .85) 10px 5px" },
-          6
+          6,
         )
         .to(
           "#gameboard-container",
           { rotation: 360, boxShadow: "hsla(13, 100%, 55%, .85) 10px 5px" },
-          8
+          8,
         )
         .totalDuration(beatDuration * 16);
     });
