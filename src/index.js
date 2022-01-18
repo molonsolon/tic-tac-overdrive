@@ -566,9 +566,7 @@ const displayController = (() => {
       console.log(`${timerSet} on click`);
 
       function playGameTheme() {
-        const gameTheme = new Audio(
-          "../audio/lightwave-game-theme.wav",
-        );
+        const gameTheme = new Audio("../audio/lightwave-game-theme.wav");
         if (typeof gameTheme.loop === "boolean") {
           gameTheme.loop = true;
           gameTheme.play();
