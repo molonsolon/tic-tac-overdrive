@@ -268,11 +268,11 @@ const game = (() => {
 
     const playerResult = resultArray.some(
       (element) =>
-        element().join(',') === `${playerMarker},${playerMarker},${playerMarker}`
+        element().join(",") ===
+        `${playerMarker},${playerMarker},${playerMarker}`
     );
-    
-    return playerResult
-    
+
+    return playerResult;
   }
 
   function minimax(boardState, playerMarker) {
@@ -382,52 +382,125 @@ const displayController = (() => {
 
   const getDifficulty = () => difficulty;
 
-  function displayBoard() {
-    for (let i = 0; i < 9; i++) {
-      const boardSpace = document.createElement("div");
-      boardSpace.classList.add("board-space");
-      boardSpace.setAttribute("id", `sector-${i}`);
-      gameboardContainer.appendChild(boardSpace);
+  // in order to get the addEventListener working without declaring functions
+  // within a loop, I need to assign the event listener with a function sans ()
+  // this means that i need to have access to the boardSpace and i properties from
+  // outside the loop... HOWEVER, i wouldn't need access to the i if it wasn't a loop,
+  // which ideally it shoudn't be so that works.
+  function playAllTurns(boardSpace, i) {
+    if (game.getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
+      playerOne.playTurn(boardSpace, i);
+      console.log("player1 turn played");
 
-      boardSpace.addEventListener("click", () => {
-        if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
-          if (game.getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
-            playerOne.playTurn(boardSpace, i);
-            console.log("player1 turn played");
-
-            if (game.checkResults(playerOne.getMarker()) !== true) {
-              playerTwo.computerTurn();
-              console.log("player2 turn played");
-            }
-
-            // if (playerOne.roundWinCheck() === false) {
-            //     playerTwo.computerTurn();
-            //     console.log(`player2 turn played`)
-            // }
-          } else if (game.getTurn() % 2 === 0) {
-            playerOne.playTurn(boardSpace, i);
-          } else {
-            playerTwo.playTurn(boardSpace, i);
-          }
-        } else if (
-          game.checkResults(playerOne.getMarker()) ||
-          game.checkResults(playerTwo.getMarker())
-        ) {
-          console.log("round over");
-        }
-      });
+      if (game.checkResults(playerOne.getMarker()) !== true) {
+        playerTwo.computerTurn();
+        console.log("player2 turn played");
+      }
+    } else if (game.getTurn() % 2 === 0) {
+      playerOne.playTurn(boardSpace, i);
+    } else {
+      playerTwo.playTurn(boardSpace, i);
     }
   }
 
+  const addBoardListeners = (boardSpace, i) => {
+    if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
+      playAllTurns(boardSpace, i);
+    } else if (
+      game.checkResults(playerOne.getMarker()) ||
+      game.checkResults(playerTwo.getMarker())
+    ) {
+      console.log("round over");
+    }
+  };
+
+  const boardSpaceArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+  function displayBoard() {
+    boardSpaceArray.forEach((index) => {
+    const boardSpace = document.createElement("div");
+    boardSpace.classList.add("board-space");
+    boardSpace.setAttribute("id", `sector-${index}`);
+    gameboardContainer.appendChild(boardSpace);
+
+    boardSpace.addEventListener("click", () => {
+      if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
+        if (game.getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
+          playerOne.playTurn(boardSpace, index);
+          console.log("player1 turn played");
+
+          if (game.checkResults(playerOne.getMarker()) !== true) {
+            playerTwo.computerTurn();
+            console.log("player2 turn played");
+          }
+        } else if (game.getTurn() % 2 === 0) {
+          playerOne.playTurn(boardSpace, index);
+        } else {
+          playerTwo.playTurn(boardSpace, index);
+        }
+      } else if (
+        game.checkResults(playerOne.getMarker()) ||
+        game.checkResults(playerTwo.getMarker())
+      ) {
+        console.log("round over");
+      }
+    });
+  });
+  }
+
+  // function displayBoard() {
+  //   for (let i = 0; i < 9; i++) {
+  //     const boardSpace = document.createElement("div");
+  //     boardSpace.classList.add("board-space");
+  //     boardSpace.setAttribute("id", `sector-${i}`);
+  //     gameboardContainer.appendChild(boardSpace);
+
+  //     boardSpace.addEventListener("click", addBoardListeners(boardSpace, i));
+
+  //     boardSpace.addEventListener("click", () => {
+  //       if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
+  //         if (game.getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
+  //           playerOne.playTurn(boardSpace, i);
+  //           console.log("player1 turn played");
+
+  //           if (game.checkResults(playerOne.getMarker()) !== true) {
+  //             playerTwo.computerTurn();
+  //             console.log("player2 turn played");
+  //           }
+  //         } else if (game.getTurn() % 2 === 0) {
+  //           playerOne.playTurn(boardSpace, i);
+  //         } else {
+  //           playerTwo.playTurn(boardSpace, i);
+  //         }
+  //       } else if (
+  //         game.checkResults(playerOne.getMarker()) ||
+  //         game.checkResults(playerTwo.getMarker())
+  //       ) {
+  //         console.log("round over");
+  //       }
+  //     });
+  //   }
+  // }
+
   function setRadioValue(radioGroup) {
     const element = document.getElementsByClassName(radioGroup);
-
-    for (const elements of element) {
-      if (elements.checked) {
-        console.log(elements.checked);
-        return elements.value;
+    const array = [...element];
+    let value;
+    console.log(array)
+    return array.forEach((e) => {
+      if (e.checked) {
+         
+         return e.value
       }
-    }
+      return value
+    })
+    
+    // for (const elements of element) {
+    //   if (elements.checked) {
+    //     console.log(elements.checked);
+    //     return elements.value;
+    //   }
+    // }
   }
 
   function menuController() {
