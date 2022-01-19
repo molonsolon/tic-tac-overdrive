@@ -141,10 +141,10 @@ const gameboard = (() => {
   const clearBoard = () => {
     board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     const boardSpaces = document.querySelectorAll(".board-space");
-    for (let i = 0; i < boardSpaces.length; i++) {
-      boardSpaces[i].textContent = "";
-      console.log("board cleared");
-    }
+    boardSpaces.forEach((index) => {
+      // eslint-disable-next-line no-param-reassign
+      index.textContent = "";
+    });
   };
 
   return {
@@ -264,18 +264,20 @@ const game = (() => {
   };
 
   function checkResults(playerMarker) {
-    for (const key in gameboard.getResultCheckSectors()) {
-      if (
-        gameboard.getResultCheckSectors()[`${key}`]().join(",") ===
-        `${playerMarker},${playerMarker},${playerMarker}`
-      ) {
-        return true;
-      }
-    }
+    const resultArray = Object.values(gameboard.getResultCheckSectors());
+
+    const playerResult = resultArray.some(
+      (element) =>
+        element().join(',') === `${playerMarker},${playerMarker},${playerMarker}`
+    );
+    
+    return playerResult
+    
   }
 
   function minimax(boardState, playerMarker) {
     const getEmptySectors = gameboard.getRemainingSectors(boardState);
+    // eslint-disable-next-line no-unused-vars
     let score;
 
     if (checkResults(playerOne.getMarker())) {
@@ -352,11 +354,9 @@ const displayController = (() => {
   const playerTwoIcon = document.querySelector("#player-two-icon");
   const playerOneName = document.querySelector("#player-one-name");
   const playerTwoName = document.querySelector("#player-two-name");
-  const startGameContainer = document.querySelector("#start-game-container");
   let difficulty;
   let playerOne;
   let playerTwo;
-  const appContainer = document.querySelector("#app-container");
   const restartBtn = document.querySelector("#restart-btn");
   const timeModeBtn = document.querySelector("#time-mode-btn");
   const timeModeSelector = document.querySelector("#mode-selector");
