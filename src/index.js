@@ -14,11 +14,11 @@
             pallete on coolors.co (fast loop), adjust opacity!
         [ ] change font + UI to have more sharp angles
 
-    Bug:
-    [ ] win match check is being called twice on winning turn completion, once on restart after.
+    Bugs:
+    [x] win match check is being called twice on winning turn completion, once on restart after.
     [x] webpack is calling functions twice, messing with time mode dropdown
-    [ ] index.js is not able to locate audio source
-    [ ] playerOne + Two are not getting defined on form submit
+    [x] index.js is not able to locate audio source
+    [x] playerOne + Two are not getting defined on form submit
     Completed:
 
     [x] Try switching row/column/diagonal functions into game module.
@@ -69,8 +69,6 @@ const Player = (number, name, marker) => {
     }
     return false;
   };
-
-  //   const tieCheck = (value) => typeof value === 'string';
 
   function matchWinCheck() {
     if (game.getTurn === 0) {
@@ -172,6 +170,9 @@ const game = (() => {
 
   const getTimer = () => setTimer;
 
+  // eslint-disable-next-line no-unused-vars
+  const getCompDifficulty = () => compDifficulty;
+
   const setCompDifficulty = (value) => {
     compDifficulty = value;
     console.log(compDifficulty);
@@ -191,28 +192,21 @@ const game = (() => {
     return undefined;
   }
 
-  // i need to be able to pass in a timer set from game selection form
-  // the function will accept an element id and time in seconds
-  // the timer will run a setinterval function thats fed a function
-  // that iterates a -- on the countdown variable
-  //
-
   const startTimer = (id, countdown) => {
     const timerSpan = document.querySelector(id);
     setTimer = countdown;
 
     function updateTimer() {
       timerSpan.textContent = countdown;
-      countdown -= 1; // eslint-disable-line no-param-reassign
+      countdown -= 1.0; // eslint-disable-line no-param-reassign
       console.log(countdown);
+
       if (countdown === 0) {
         clearInterval(timerInterval);
         console.log("interval cleared");
+        alert(`time's up!`);
         displayController.showRestartBtn();
-      } else if (
-        playerOne.matchWinCheck === true ||
-        playerTwo.matchWinCheck === true
-      ) {
+      } else if (playerOne.getScore() === 5 || playerTwo.getScore() === 5) {
         clearInterval(timerInterval);
         console.log("interval cleared");
       }
@@ -480,50 +474,45 @@ const displayController = (() => {
       .from("#enter-btn", { duration: 1, x: 1000 });
 
     const playerToggle = () => {
-      let value;
       console.log("run");
-      for (const elements of computerSwitch) {
-        if (elements.checked) {
-          console.log(elements.checked);
-          value = elements.value;
-          if (value === "player") {
-            difficultySelector.style.visibility = "hidden";
-            difficultySelectorLabel.style.visibility = "hidden";
-            playerTwoIcon.src = "/images/player-two-icon.png";
-            playerTwoName.value = "";
-            playerTwoName.disabled = false;
-          } else if (value === "computer") {
-            playerTwoIcon.src = "/images/ai-icon.png";
-            playerTwoName.value = "computer";
-            playerTwoName.disabled = true;
-            difficultySelector.textContent = "new on the job";
-            difficultySelector.style.visibility = "visible";
-            difficultySelectorLabel.style.visibility = "visible";
-            let count = 0;
+      const nodeListArray = [...computerSwitch].filter((x) => x.checked);
 
-            difficultySelector.addEventListener("click", () => {
-              const difficulties = [
-                "new on the job",
-                "in training",
-                "highly skilled",
-                "unstoppable",
-              ];
-              console.log(count);
-              if (count < 3) {
-                count += 1;
-                difficulty = difficulties[count];
-                difficultySelector.textContent = difficulty;
-                console.log(count);
-              } else {
-                count = 0;
-                difficulty = difficulties[count];
-                difficultySelector.textContent = difficulty;
-                console.log(count);
-              }
-              game.setCompDifficulty(difficulty);
-            });
+      if (nodeListArray[0].value === "player") {
+        difficultySelector.style.visibility = "hidden";
+        difficultySelectorLabel.style.visibility = "hidden";
+        playerTwoIcon.src = "/images/player-two-icon.png";
+        playerTwoName.value = "";
+        playerTwoName.disabled = false;
+      } else if (nodeListArray[0].value === "computer") {
+        playerTwoIcon.src = "/images/ai-icon.png";
+        playerTwoName.value = "computer";
+        playerTwoName.disabled = true;
+        difficultySelector.textContent = "new on the job";
+        difficultySelector.style.visibility = "visible";
+        difficultySelectorLabel.style.visibility = "visible";
+        let count = 0;
+
+        difficultySelector.addEventListener("click", () => {
+          const difficulties = [
+            "new on the job",
+            "in training",
+            "highly skilled",
+            "unstoppable",
+          ];
+          console.log(count);
+          if (count < 3) {
+            count += 1;
+            difficulty = difficulties[count];
+            difficultySelector.textContent = difficulty;
+            console.log(count);
+          } else {
+            count = 0;
+            difficulty = difficulties[count];
+            difficultySelector.textContent = difficulty;
+            console.log(count);
           }
-        }
+          game.setCompDifficulty(difficulty);
+        });
       }
     };
 
@@ -577,7 +566,7 @@ const displayController = (() => {
       console.log(`${timerSet} on click`);
 
       function playGameTheme() {
-        const gameTheme = new Audio("../audio/lightwave-game-theme.wav");
+        const gameTheme = new Audio("../audio/lightwave-game-theme.mp3");
         if (typeof gameTheme.loop === "boolean") {
           gameTheme.loop = true;
           gameTheme.play();
