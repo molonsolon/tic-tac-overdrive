@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
 /*
 
     Features:
@@ -71,11 +73,15 @@ const Player = (number, name, marker) => {
   //   const tieCheck = (value) => typeof value === 'string';
 
   function matchWinCheck() {
+    if (game.getTurn === 0) {
+      return false;
+    }
     if (score === 5) {
       alert(`${name} wins the match!!!`);
       displayController.showRestartBtn();
       return true;
     }
+    return false;
   }
 
   const computerTurn = () => {
@@ -162,6 +168,9 @@ const game = (() => {
   let playerTwo;
   const result = null; // eslint-disable-line no-unused-vars
   let compDifficulty = "new on the job";
+  let setTimer;
+
+  const getTimer = () => setTimer;
 
   const setCompDifficulty = (value) => {
     compDifficulty = value;
@@ -187,8 +196,10 @@ const game = (() => {
   // the timer will run a setinterval function thats fed a function
   // that iterates a -- on the countdown variable
   //
+
   const startTimer = (id, countdown) => {
     const timerSpan = document.querySelector(id);
+    setTimer = countdown;
 
     function updateTimer() {
       timerSpan.textContent = countdown;
@@ -199,8 +210,8 @@ const game = (() => {
         console.log("interval cleared");
         displayController.showRestartBtn();
       } else if (
-        playerOne.matchWinCheck() === true ||
-        playerTwo.matchWinCheck() === true
+        playerOne.matchWinCheck === true ||
+        playerTwo.matchWinCheck === true
       ) {
         clearInterval(timerInterval);
         console.log("interval cleared");
@@ -292,19 +303,24 @@ const game = (() => {
 
     const testHistory = [];
 
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < getEmptySectors.length; i++) {
       const currentTest = [];
       currentTest.index = boardState[getEmptySectors[i]];
+      // eslint-disable-next-line no-param-reassign
       boardState[getEmptySectors[i]] = playerMarker;
 
       if (playerMarker === playerTwo.getMarker()) {
+        // eslint-disable-next-line no-shadow
         const result = minimax(boardState, playerOne.getMarker());
         currentTest.score = result.score;
       } else {
+        // eslint-disable-next-line no-shadow
         const result = minimax(boardState, playerTwo.getMarker());
         currentTest.score = result.score;
       }
 
+      // eslint-disable-next-line no-param-reassign
       boardState[getEmptySectors[i]] = currentTest.index;
       testHistory.push(currentTest);
     }
@@ -313,6 +329,7 @@ const game = (() => {
 
     if (playerMarker === playerTwo.getMarker()) {
       let bestScore = -Infinity;
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < testHistory.length; i++) {
         if (testHistory[i].score > bestScore) {
           bestScore = testHistory[i].score;
@@ -321,6 +338,7 @@ const game = (() => {
       }
     } else {
       let bestScore = Infinity;
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < testHistory.length; i++) {
         if (testHistory[i].score < bestScore) {
           bestScore = testHistory[i].score;
@@ -342,6 +360,7 @@ const game = (() => {
     playerOne,
     playerTwo,
     startTimer,
+    getTimer,
   };
 })();
 
@@ -382,134 +401,56 @@ const displayController = (() => {
 
   const getDifficulty = () => difficulty;
 
-  // in order to get the addEventListener working without declaring functions
-  // within a loop, I need to assign the event listener with a function sans ()
-  // this means that i need to have access to the boardSpace and i properties from
-  // outside the loop... HOWEVER, i wouldn't need access to the i if it wasn't a loop,
-  // which ideally it shoudn't be so that works.
-  function playAllTurns(boardSpace, i) {
-    if (game.getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
-      playerOne.playTurn(boardSpace, i);
-      console.log("player1 turn played");
-
-      if (game.checkResults(playerOne.getMarker()) !== true) {
-        playerTwo.computerTurn();
-        console.log("player2 turn played");
-      }
-    } else if (game.getTurn() % 2 === 0) {
-      playerOne.playTurn(boardSpace, i);
-    } else {
-      playerTwo.playTurn(boardSpace, i);
-    }
-  }
-
-  const addBoardListeners = (boardSpace, i) => {
-    if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
-      playAllTurns(boardSpace, i);
-    } else if (
-      game.checkResults(playerOne.getMarker()) ||
-      game.checkResults(playerTwo.getMarker())
-    ) {
-      console.log("round over");
-    }
-  };
-
   const boardSpaceArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   function displayBoard() {
     boardSpaceArray.forEach((index) => {
-    const boardSpace = document.createElement("div");
-    boardSpace.classList.add("board-space");
-    boardSpace.setAttribute("id", `sector-${index}`);
-    gameboardContainer.appendChild(boardSpace);
+      const boardSpace = document.createElement("div");
+      boardSpace.classList.add("board-space");
+      boardSpace.setAttribute("id", `sector-${index}`);
+      gameboardContainer.appendChild(boardSpace);
 
-    boardSpace.addEventListener("click", () => {
-      if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
-        if (game.getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
-          playerOne.playTurn(boardSpace, index);
-          console.log("player1 turn played");
+      boardSpace.addEventListener("click", () => {
+        if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
+          if (game.getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
+            playerOne.playTurn(boardSpace, index);
+            console.log("player1 turn played");
 
-          if (game.checkResults(playerOne.getMarker()) !== true) {
-            playerTwo.computerTurn();
-            console.log("player2 turn played");
+            if (game.checkResults(playerOne.getMarker()) !== true) {
+              playerTwo.computerTurn();
+              console.log("player2 turn played");
+            }
+          } else if (game.getTurn() % 2 === 0) {
+            playerOne.playTurn(boardSpace, index);
+          } else {
+            playerTwo.playTurn(boardSpace, index);
           }
-        } else if (game.getTurn() % 2 === 0) {
-          playerOne.playTurn(boardSpace, index);
-        } else {
-          playerTwo.playTurn(boardSpace, index);
+        } else if (
+          game.checkResults(playerOne.getMarker()) ||
+          game.checkResults(playerTwo.getMarker())
+        ) {
+          console.log("round over");
         }
-      } else if (
-        game.checkResults(playerOne.getMarker()) ||
-        game.checkResults(playerTwo.getMarker())
-      ) {
-        console.log("round over");
-      }
+      });
     });
-  });
   }
-
-  // function displayBoard() {
-  //   for (let i = 0; i < 9; i++) {
-  //     const boardSpace = document.createElement("div");
-  //     boardSpace.classList.add("board-space");
-  //     boardSpace.setAttribute("id", `sector-${i}`);
-  //     gameboardContainer.appendChild(boardSpace);
-
-  //     boardSpace.addEventListener("click", addBoardListeners(boardSpace, i));
-
-  //     boardSpace.addEventListener("click", () => {
-  //       if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
-  //         if (game.getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
-  //           playerOne.playTurn(boardSpace, i);
-  //           console.log("player1 turn played");
-
-  //           if (game.checkResults(playerOne.getMarker()) !== true) {
-  //             playerTwo.computerTurn();
-  //             console.log("player2 turn played");
-  //           }
-  //         } else if (game.getTurn() % 2 === 0) {
-  //           playerOne.playTurn(boardSpace, i);
-  //         } else {
-  //           playerTwo.playTurn(boardSpace, i);
-  //         }
-  //       } else if (
-  //         game.checkResults(playerOne.getMarker()) ||
-  //         game.checkResults(playerTwo.getMarker())
-  //       ) {
-  //         console.log("round over");
-  //       }
-  //     });
-  //   }
-  // }
 
   function setRadioValue(radioGroup) {
     const element = document.getElementsByClassName(radioGroup);
-    const array = [...element];
-    let value;
-    console.log(array)
-    return array.forEach((e) => {
-      if (e.checked) {
-         
-         return e.value
-      }
-      return value
-    })
-    
-    // for (const elements of element) {
-    //   if (elements.checked) {
-    //     console.log(elements.checked);
-    //     return elements.value;
-    //   }
-    // }
+    const array = [...element].filter((x) => x.checked);
+
+    return array[0].value;
   }
 
   function menuController() {
     const showElement = (element) => {
+      // eslint-disable-next-line no-param-reassign
       element.style.visibility = "visible";
     };
-    const hideElement = (element) => {
-      element.style.visibility = "hidden";
-    };
+    // const hideElement = (element) => {
+    //   // eslint-disable-next-line no-param-reassign
+    //   element.style.visibility = "hidden";
+    // };
 
     enterBtn.addEventListener("click", () => {
       const introToPlayerSelect = gsap.timeline();
@@ -584,7 +525,6 @@ const displayController = (() => {
           }
         }
       }
-      let coutdown;
     };
 
     computerSwitch.forEach((element) => {
@@ -593,17 +533,15 @@ const displayController = (() => {
     });
 
     restartBtn.addEventListener("click", () => {
-      if (
-        playerOne.matchWinCheck() !== undefined ||
-        playerTwo.matchWinCheck() !== undefined
-      ) {
+      if (playerOne.getScore() === 5 || playerTwo.getScore() === 5) {
         gameboard.clearBoard();
         playerOne.resetScore();
         playerTwo.resetScore();
         game.resetTurns();
         console.log("match reset");
         restartBtn.style.visibility = "hidden";
-        game.startTimer(".seconds", timerSet);
+        game.startTimer(".seconds", game.getTimer());
+        console.log(game.getTimer());
       } else {
         gameboard.clearBoard();
         game.resetTurns();
@@ -646,6 +584,7 @@ const displayController = (() => {
         } else {
           gameTheme.addEventListener(
             "ended",
+            // eslint-disable-next-line func-names
             function () {
               this.currentTime = 0;
               this.play();
@@ -756,8 +695,6 @@ const displayController = (() => {
         .totalDuration(beatDuration * 16);
     });
   }
-
-  function animationController() {}
 
   return {
     getDifficulty,
