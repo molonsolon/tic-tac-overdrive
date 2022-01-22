@@ -1,20 +1,20 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
   },
-  mode: 'development',
+  mode: "development",
   plugins: [
     new HtmlWebpackPlugin({
       inject: false,
       template: path.join(__dirname, "./src/index.html"),
     }),
   ],
-  devtool: 'inline-source-map',
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
@@ -31,7 +31,7 @@ module.exports = {
       },
       {
         test: /\.(ogg|mp3|wav|mpe?g)$/i,
-        use: 'file-loader',
+        use: "file-loader",
       },
     ],
   },

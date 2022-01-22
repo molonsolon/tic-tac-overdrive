@@ -1,6 +1,8 @@
-import game from "./game";
+import Game from "./Game";
+import Gameboard from "./Gameboard";
+import DisplayController from "./DisplayController";
 
-const Player = (number, name, marker) => {
+export default function Player({ number, name, marker }) {
   let score = 0;
   const getNumber = () => number;
   const getName = () => name;
@@ -11,38 +13,39 @@ const Player = (number, name, marker) => {
   const getScore = () => score;
 
   const roundWinCheck = () => {
-    if (game.checkResults(marker)) {
+    if (Game.checkResults(marker)) {
       alert(`${name} wins`);
       console.log(`${name} wins`);
       score += 1;
-      displayController.showRestartBtn();
+      DisplayController.showRestartBtn();
       return true;
     }
-    if (game.getTurn() === 9) {
+    if (Game.getTurn() === 9) {
       alert(`it's a tie!`); // eslint-disable-line quotes
-      displayController.showRestartBtn();
+      DisplayController.showRestartBtn();
       return true;
     }
     return false;
   };
 
-  //   const tieCheck = (value) => typeof value === 'string';
-
   function matchWinCheck() {
+    if (Game.getTurn === 0) {
+      return false;
+    }
     if (score === 5) {
       alert(`${name} wins the match!!!`);
-      displayController.showRestartBtn();
+      DisplayController.showRestartBtn();
       return true;
     }
     return false;
   }
 
   const computerTurn = () => {
-    const compChoice = game.compChoiceLogic();
+    const compChoice = Game.compChoiceLogic();
     const compSpace = document.querySelector(`#sector-${compChoice}`);
     compSpace.textContent = marker;
-    gameboard.setBoard(compChoice, marker);
-    game.setTurn();
+    Gameboard.setBoard(compChoice, marker);
+    Game.setTurn();
     roundWinCheck();
     matchWinCheck();
     console.log("checked for computer win");
@@ -50,10 +53,10 @@ const Player = (number, name, marker) => {
 
   function playTurn(space, index) {
     space.textContent = marker; // eslint-disable-line no-param-reassign
-    gameboard.setBoard(index, marker);
+    Gameboard.setBoard(index, marker);
 
     console.log("checked for win player1");
-    game.setTurn();
+    Game.setTurn();
     roundWinCheck();
     matchWinCheck();
   }
@@ -69,4 +72,4 @@ const Player = (number, name, marker) => {
     resetScore,
     getScore,
   };
-};
+}

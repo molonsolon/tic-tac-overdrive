@@ -1,11 +1,17 @@
-import displayController from "./displayController";
+import Gameboard from './Gameboard'; 
 
-const game = (() => {
+export default function Game() {
   let whoseTurn = 0;
   let playerOne;
   let playerTwo;
   const result = null; // eslint-disable-line no-unused-vars
   let compDifficulty = "new on the job";
+  let setTimer;
+
+  const getTimer = () => setTimer;
+
+  // eslint-disable-next-line no-unused-vars
+  const getCompDifficulty = () => compDifficulty;
 
   const setCompDifficulty = (value) => {
     compDifficulty = value;
@@ -15,35 +21,32 @@ const game = (() => {
   function setPlayer(player) {
     if (player.getNumber() === 1) {
       playerOne = player;
+      console.log(playerOne.getName());
       return playerOne;
     }
     if (player.getNumber() === 2) {
       playerTwo = player;
+      console.log(playerTwo);
       return playerTwo;
     }
     return undefined;
   }
 
-  // i need to be able to pass in a timer set from game selection form
-  // the function will accept an element id and time in seconds
-  // the timer will run a setinterval function thats fed a function
-  // that iterates a -- on the countdown variable
-  //
   const startTimer = (id, countdown) => {
     const timerSpan = document.querySelector(id);
+    setTimer = countdown;
 
     function updateTimer() {
       timerSpan.textContent = countdown;
-      countdown -= 1; // eslint-disable-line no-param-reassign
+      countdown -= 1.0; // eslint-disable-line no-param-reassign
       console.log(countdown);
+
       if (countdown === 0) {
         clearInterval(timerInterval);
         console.log("interval cleared");
-        displayController.showRestartBtn();
-      } else if (
-        playerOne.matchWinCheck() === true ||
-        playerTwo.matchWinCheck() === true
-      ) {
+        alert(`time's up!`);
+        // DisplayController.showRestartBtn();
+      } else if (playerOne.getScore() === 5 || playerTwo.getScore() === 5) {
         clearInterval(timerInterval);
         console.log("interval cleared");
       }
@@ -60,16 +63,12 @@ const game = (() => {
     whoseTurn = 0;
   };
 
-  const compMM = () =>
-    minimax(gameboard.getBoard(), playerTwo.getMarker()).index;
+  const compMM = () => minimax(Gameboard.getBoard(), playerTwo.getMarker()).index;
 
-  const compR = () =>
-    gameboard.getRemainingSectors(gameboard.getBoard())[
-      Math.floor(
-        Math.random() *
-          gameboard.getRemainingSectors(gameboard.getBoard()).length
-      )
-    ];
+  const compR = () => Gameboard.getRemainingSectors(Gameboard.getBoard())[Math.floor(
+    Math.random() *
+    Gameboard.getRemainingSectors(Gameboard.getBoard()).length
+  )];
 
   const compChoiceLogic = () => {
     console.log(compDifficulty);
@@ -106,18 +105,19 @@ const game = (() => {
   };
 
   function checkResults(playerMarker) {
-    for (const key in gameboard.getResultCheckSectors()) {
-      if (
-        gameboard.getResultCheckSectors()[`${key}`]().join(",") ===
+    const resultArray = Object.values(Gameboard.getResultCheckSectors());
+
+    const playerResult = resultArray.some(
+      (element) => element().join(",") ===
         `${playerMarker},${playerMarker},${playerMarker}`
-      ) {
-        return true;
-      }
-    }
+    );
+
+    return playerResult;
   }
 
   function minimax(boardState, playerMarker) {
-    const getEmptySectors = gameboard.getRemainingSectors(boardState);
+    const getEmptySectors = Gameboard.getRemainingSectors(boardState);
+    // eslint-disable-next-line no-unused-vars
     let score;
 
     if (checkResults(playerOne.getMarker())) {
@@ -132,19 +132,24 @@ const game = (() => {
 
     const testHistory = [];
 
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < getEmptySectors.length; i++) {
       const currentTest = [];
       currentTest.index = boardState[getEmptySectors[i]];
+      // eslint-disable-next-line no-param-reassign
       boardState[getEmptySectors[i]] = playerMarker;
 
       if (playerMarker === playerTwo.getMarker()) {
+        // eslint-disable-next-line no-shadow
         const result = minimax(boardState, playerOne.getMarker());
         currentTest.score = result.score;
       } else {
+        // eslint-disable-next-line no-shadow
         const result = minimax(boardState, playerTwo.getMarker());
         currentTest.score = result.score;
       }
 
+      // eslint-disable-next-line no-param-reassign
       boardState[getEmptySectors[i]] = currentTest.index;
       testHistory.push(currentTest);
     }
@@ -153,6 +158,7 @@ const game = (() => {
 
     if (playerMarker === playerTwo.getMarker()) {
       let bestScore = -Infinity;
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < testHistory.length; i++) {
         if (testHistory[i].score > bestScore) {
           bestScore = testHistory[i].score;
@@ -161,6 +167,7 @@ const game = (() => {
       }
     } else {
       let bestScore = Infinity;
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < testHistory.length; i++) {
         if (testHistory[i].score < bestScore) {
           bestScore = testHistory[i].score;
@@ -182,5 +189,6 @@ const game = (() => {
     playerOne,
     playerTwo,
     startTimer,
+    getTimer,
   };
-})();
+}

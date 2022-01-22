@@ -1,4 +1,4 @@
-const gameboard = (() => {
+export default function Gameboard() {
   let board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   const resultCheckSectors = {
@@ -27,10 +27,10 @@ const gameboard = (() => {
   const clearBoard = () => {
     board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     const boardSpaces = document.querySelectorAll(".board-space");
-    for (let i = 0; i < boardSpaces.length; i++) {
-      boardSpaces[i].textContent = "";
-      console.log("board cleared");
-    }
+    boardSpaces.forEach((index) => {
+      // eslint-disable-next-line no-param-reassign
+      index.textContent = "";
+    });
   };
 
   return {
@@ -40,4 +40,4 @@ const gameboard = (() => {
     setBoard,
     clearBoard,
   };
-})();
+}
