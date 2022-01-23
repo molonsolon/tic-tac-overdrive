@@ -6,7 +6,8 @@
 
     Optimization: 
     [ ] Code-splitting
-
+        [ ] Figure out how to make a factory function with ES6 modules... research seems to
+            say that you can use factory functions as normal but i'm not sure how to get this working
     Features:
     [ ] score keeping UI
     [ ] game win / lose / draw announcements (render animated announcements on true checkwin
@@ -46,7 +47,7 @@
 import "./css/style.scss";
 // import gsap from "gsap";
 // import TextPlugin from "gsap/TextPlugin";
-import displayController from './DisplayController'
+import { displayBoard, menuController } from './DisplayController'
 
 // gsap.registerPlugin(TextPlugin);
 
@@ -699,6 +700,5 @@ import displayController from './DisplayController'
 //     showRestartBtn,
 //   };
 // })();
-
-displayController.displayBoard();
-displayController.menuController();
+displayBoard();
+menuController();
