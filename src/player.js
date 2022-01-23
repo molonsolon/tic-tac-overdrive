@@ -1,34 +1,31 @@
 import { checkResults, getTurn, compChoiceLogic, setTurn } from "./Game";
-import Gameboard from "./Gameboard";
-import {showRestartBtn} from "./DisplayController";
+import { setBoard } from "./Gameboard";
 
 const playerActions = {
   getNumber() {
-    return this.number
+    return this.number;
   },
   getName() {
-    return this.name
+    return this.name;
   },
   resetScore() {
-    return this.score === 0
+    this.score = 0;
   },
   getScore() {
-    return this.score
+    return this.score;
   },
   getMarker() {
-    return this.marker
+    return this.marker;
   },
   roundWinCheck() {
     if (checkResults(this.marker)) {
       alert(`${this.name} wins`);
       console.log(`${this.name} wins`);
       this.score += 1;
-      showRestartBtn();
       return true;
     }
     if (getTurn() === 9) {
       alert(`it's a tie!`); // eslint-disable-line quotes
-      showRestartBtn();
       return true;
     }
     return false;
@@ -39,38 +36,34 @@ const playerActions = {
     }
     if (this.score === 5) {
       alert(`${this.name} wins the match!!!`);
-      showRestartBtn();
       return true;
     }
-    return false
+    return false;
   },
   computerTurn() {
     const compChoice = compChoiceLogic();
     const compSpace = document.querySelector(`#sector-${compChoice}`);
     compSpace.textContent = this.marker;
-    Gameboard.setBoard(compChoice, this.marker);
+    setBoard(compChoice, this.marker);
     setTurn();
-    roundWinCheck();
-    matchWinCheck();
     console.log("checked for computer win");
   },
   playTurn: function playTurn(space, index) {
     space.textContent = this.marker; // eslint-disable-line no-param-reassign
-    Gameboard.setBoard(index, this.marker);
+    setBoard(index, this.marker);
 
     console.log("checked for win player1");
     setTurn();
-    roundWinCheck();
-    matchWinCheck();
-  }
-}
+  },
+};
 
-function createPlayer(number, name, marker, score) {
-  let player = Object.create(playerActions);
+// eslint-disable-next-line import/prefer-default-export
+export function createPlayer(number, name, marker) {
+  const player = Object.create(playerActions);
   player.name = name;
   player.number = number;
   player.marker = marker;
-  player.score = score;
+  player.score = 0;
   return player;
 }
 

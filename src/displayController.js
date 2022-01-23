@@ -1,8 +1,16 @@
 import gsap from "gsap";
 import TextPlugin from "gsap/TextPlugin";
-import {getTurn, checkResults, setCompDifficulty, startTimer, getTimer, resetTurns, setPlayer } from "./Game";
-import Gameboard from "./Gameboard";
-import Player from './Player'
+import {
+  getTurn,
+  checkResults,
+  setCompDifficulty,
+  startTimer,
+  getTimer,
+  resetTurns,
+  setPlayer,
+} from "./Game";
+import { clearBoard } from "./Gameboard";
+import { createPlayer } from "./Player";
 
 gsap.registerPlugin(TextPlugin);
 
@@ -11,6 +19,7 @@ export const showRestartBtn = () => {
 };
 
 export const getDifficulty = () => difficulty;
+
 export function displayBoard() {
   boardSpaceArray.forEach((index) => {
     const boardSpace = document.createElement("div");
@@ -19,19 +28,38 @@ export function displayBoard() {
     gameboardContainer.appendChild(boardSpace);
 
     boardSpace.addEventListener("click", () => {
-      if (boardSpace.textContent !== "x" && boardSpace.textContent !== "o") {
+      if (
+        boardSpace.textContent !== "x" &&
+        boardSpace.textContent !== "o" &&
+        playerOne.roundWinCheck() !== true &&
+        playerTwo.roundWinCheck() !== true
+      ) {
         if (getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
           playerOne.playTurn(boardSpace, index);
+
+          if (playerOne.roundWinCheck()) {
+            showRestartBtn();
+          }
+          playerOne.matchWinCheck();
           console.log("player1 turn played");
 
           if (checkResults(playerOne.getMarker()) !== true) {
             playerTwo.computerTurn();
+            playerTwo.roundWinCheck();
+            if (playerTwo.roundWinCheck()) {
+              showRestartBtn();
+            }
+            playerTwo.matchWinCheck();
             console.log("player2 turn played");
           }
         } else if (getTurn() % 2 === 0) {
           playerOne.playTurn(boardSpace, index);
+          playerOne.roundWinCheck();
+          playerOne.matchWinCheck();
         } else {
           playerTwo.playTurn(boardSpace, index);
+          playerTwo.roundWinCheck();
+          playerTwo.matchWinCheck();
         }
       } else if (
         checkResults(playerOne.getMarker()) ||
@@ -135,16 +163,17 @@ export function menuController() {
 
   restartBtn.addEventListener("click", () => {
     if (playerOne.getScore() === 5 || playerTwo.getScore() === 5) {
-      Gameboard.clearBoard();
+      clearBoard();
       playerOne.resetScore();
       playerTwo.resetScore();
+      console.log(playerOne.getScore());
       resetTurns();
       console.log("match reset");
       restartBtn.style.visibility = "hidden";
       startTimer(".seconds", getTimer());
       console.log(getTimer());
     } else {
-      Gameboard.clearBoard();
+      clearBoard();
       resetTurns();
       restartBtn.style.visibility = "hidden";
     }
@@ -153,13 +182,13 @@ export function menuController() {
   playerSelectForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    playerOne = Player(
+    playerOne = createPlayer(
       1,
       playerOneName.value,
       setRadioValue("player-one-radio")
     );
-
-    playerTwo = Player(
+    console.log(playerOne);
+    playerTwo = createPlayer(
       2,
       playerTwoName.value,
       setRadioValue("player-two-radio")
@@ -232,12 +261,7 @@ export function menuController() {
         boardEnter
           .to("#gameboard-container", { duration: 0, delay: 3, autoAlpha: 1 })
           .call(playGameTheme, null, 3 + beatDuration / 4)
-          .call(
-            startTimer,
-            [".seconds", value],
-            null,
-            3 + beatDuration / 4
-          )
+          .call(startTimer, [".seconds", value], null, 3 + beatDuration / 4)
           .call(showElement, [timerDiv], null, 3 + beatDuration / 4);
       }
     };
@@ -332,4 +356,3 @@ timeModeBtn.addEventListener("click", () => {
 });
 
 const boardSpaceArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-

@@ -1,10 +1,15 @@
-import Gameboard from "./Gameboard";
+import {  getResultCheckSectors,
+  getRemainingSectors,
+  getBoard,
+  } from "./Gameboard";
 
 let whoseTurn = 0;
 
 const result = null; // eslint-disable-line no-unused-vars
 let compDifficulty = "new on the job";
 let setTimer;
+let playerOne;
+let playerTwo;
 
 export const getTimer = () => setTimer;
 
@@ -18,12 +23,12 @@ export const setCompDifficulty = (value) => {
 
 export function setPlayer(player) {
   if (player.getNumber() === 1) {
-    const playerOne = player;
+    playerOne = player;
     console.log(playerOne.getName());
     return playerOne;
   }
   if (player.getNumber() === 2) {
-    const playerTwo = player;
+    playerTwo = player;
     console.log(playerTwo);
     return playerTwo;
   }
@@ -61,12 +66,12 @@ export const resetTurns = () => {
   whoseTurn = 0;
 };
 
-const compMM = () => minimax(Gameboard.getBoard(), playerTwo.getMarker()).index;
+const compMM = () => minimax(getBoard(), playerTwo.getMarker()).index;
 
 const compR = () =>
-  Gameboard.getRemainingSectors(Gameboard.getBoard())[
+  getRemainingSectors(getBoard())[
     Math.floor(
-      Math.random() * Gameboard.getRemainingSectors(Gameboard.getBoard()).length
+      Math.random() * getRemainingSectors(getBoard()).length
     )
   ];
 
@@ -105,7 +110,7 @@ export const compChoiceLogic = () => {
 };
 
 export function checkResults(playerMarker) {
-  const resultArray = Object.values(Gameboard.getResultCheckSectors());
+  const resultArray = Object.values(getResultCheckSectors());
 
   const playerResult = resultArray.some(
     (element) =>
@@ -116,7 +121,7 @@ export function checkResults(playerMarker) {
 }
 
 function minimax(boardState, playerMarker) {
-  const getEmptySectors = Gameboard.getRemainingSectors(boardState);
+  const getEmptySectors = getRemainingSectors(boardState);
   // eslint-disable-next-line no-unused-vars
   let score;
 
