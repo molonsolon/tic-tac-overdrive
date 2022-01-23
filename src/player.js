@@ -66,4 +66,3 @@ export function createPlayer(number, name, marker) {
   player.score = 0;
   return player;
 }
-
