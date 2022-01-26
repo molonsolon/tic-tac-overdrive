@@ -5,11 +5,15 @@
   TO - DOs
 
     Optimization: 
-    [ ] Code-splitting
-        [ ] Figure out how to make a factory function with ES6 modules... research seems to
+    [x] Code-splitting
+        [x] Figure out how to make a factory function with ES6 modules... research seems to
             say that you can use factory functions as normal but i'm not sure how to get this working
     Features:
     [ ] score keeping UI
+        -- I need to make an efficient function that will take a prerendered div and
+            containing divs that will change in color as the score increases. In order to
+            do this, I would need to make an array of divs contained within the player one/two
+            score container. 
     [ ] game win / lose / draw announcements (render animated announcements on true checkwin
         function call)
         [x] work out draw logic as it's not written into check results yet.
@@ -21,6 +25,7 @@
         [ ] change font + UI to have more sharp angles
 
     Bugs:
+    [ ] Computer win check is triggering twice, where is this happening?
     [x] win match check is being called twice on winning turn completion, once on restart after.
     [x] webpack is calling functions twice, messing with time mode dropdown
     [x] index.js is not able to locate audio source
@@ -45,7 +50,7 @@
 */
 
 import "./css/style.scss";
-import { displayBoard, menuController } from './DisplayController'
+import { displayBoard, menuController } from "./DisplayController";
 
 displayBoard();
 menuController();

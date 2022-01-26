@@ -14,6 +14,30 @@ import { createPlayer } from "./Player";
 
 gsap.registerPlugin(TextPlugin);
 
+const boardSpaceArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+const gameboardContainer = document.querySelector("#gameboard-container");
+const enterBtn = document.querySelector("#enter-btn");
+const startGameBtn = document.querySelector("#start-btn");
+const playerSelectForm = document.querySelector("#player-select-form");
+const computerSwitch = document.querySelectorAll(".switch-radio");
+const playerTwoIcon = document.querySelector("#player-two-icon");
+const playerOneName = document.querySelector("#player-one-name");
+const playerTwoName = document.querySelector("#player-two-name");
+let difficulty;
+let playerOne;
+let playerTwo;
+const restartBtn = document.querySelector("#restart-btn");
+const timeModeBtn = document.querySelector("#time-mode-btn");
+const timeModeSelector = document.querySelector("#mode-selector");
+timeModeSelector.style.visibility = "hidden";
+const timerDiv = document.querySelector("#timer");
+const difficultySelectorLabel = document.querySelector(".selector-label");
+const difficultySelector = document.querySelector("#difficulty-selector");
+const playerOneScoreContainer = document.querySelector("#player-one-score");
+const playerTwoScoreContainer = document.querySelector("#player-two-score");
+const playerOneScoreArray = [0, 1, 2, 3, 4];
+const playerTwoScoreArray = [0, 1, 2, 3, 4];
+
 export const showRestartBtn = () => {
   restartBtn.style.visibility = "visible";
 };
@@ -71,6 +95,23 @@ export function displayBoard() {
   });
 }
 
+// i need to set the attribute to match each point in the index but also
+// need to have a function that will listen for when the score is updated.
+// ... SO current plan is:
+//      - create CSS to display score containers and each div representing
+//        each point as it score changes
+//      - in displayBoard, there are conditionals for showing the restart button,
+//        run the scoreDisplay function to create a new div that represents a point.
+//      - create a funciton that clears the scoreboard if a new match is started
+//      - get rid of those horrible alert placeholders!!!!!
+
+// export function scoreDisplay(score) {
+//   const playerOnePoint = document.createElement("div");
+//   playerOnePoint.classList.add("player-one-point");
+
+//   playerOneScoreContainer.appendChild(playerOnePoint);
+// }
+
 export function setRadioValue(radioGroup) {
   const element = document.getElementsByClassName(radioGroup);
   const array = [...element].filter((x) => x.checked);
@@ -83,10 +124,7 @@ export function menuController() {
     // eslint-disable-next-line no-param-reassign
     element.style.visibility = "visible";
   };
-  // const hideElement = (element) => {
-  //   // eslint-disable-next-line no-param-reassign
-  //   element.style.visibility = "hidden";
-  // };
+
   enterBtn.addEventListener("click", () => {
     const introToPlayerSelect = gsap.timeline();
 
@@ -325,25 +363,6 @@ export function menuController() {
   });
 }
 
-const gameboardContainer = document.querySelector("#gameboard-container");
-const enterBtn = document.querySelector("#enter-btn");
-const startGameBtn = document.querySelector("#start-btn");
-const playerSelectForm = document.querySelector("#player-select-form");
-const computerSwitch = document.querySelectorAll(".switch-radio");
-const playerTwoIcon = document.querySelector("#player-two-icon");
-const playerOneName = document.querySelector("#player-one-name");
-const playerTwoName = document.querySelector("#player-two-name");
-let difficulty;
-let playerOne;
-let playerTwo;
-const restartBtn = document.querySelector("#restart-btn");
-const timeModeBtn = document.querySelector("#time-mode-btn");
-const timeModeSelector = document.querySelector("#mode-selector");
-timeModeSelector.style.visibility = "hidden";
-const timerDiv = document.querySelector("#timer");
-const difficultySelectorLabel = document.querySelector(".selector-label");
-const difficultySelector = document.querySelector("#difficulty-selector");
-
 timeModeBtn.addEventListener("click", () => {
   if (timeModeSelector.style.visibility === "hidden") {
     console.log(timeModeSelector);
@@ -354,5 +373,3 @@ timeModeBtn.addEventListener("click", () => {
     timeModeSelector.style.visibility = "hidden";
   }
 });
-
-const boardSpaceArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];

@@ -1,7 +1,8 @@
-import {  getResultCheckSectors,
+import {
+  getResultCheckSectors,
   getRemainingSectors,
   getBoard,
-  } from "./Gameboard";
+} from "./Gameboard";
 
 let whoseTurn = 0;
 
@@ -70,9 +71,7 @@ const compMM = () => minimax(getBoard(), playerTwo.getMarker()).index;
 
 const compR = () =>
   getRemainingSectors(getBoard())[
-    Math.floor(
-      Math.random() * getRemainingSectors(getBoard()).length
-    )
+    Math.floor(Math.random() * getRemainingSectors(getBoard()).length)
   ];
 
 export const compChoiceLogic = () => {
