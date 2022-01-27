@@ -60,8 +60,11 @@ export function displayBoard() {
       ) {
         if (getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
           playerOne.playTurn(boardSpace, index);
-
-          if (playerOne.roundWinCheck()) {
+          const turnResult = playerOne.roundWinCheck()
+          if (turnResult !== false) {
+            if (turnResult === true) {
+              scoreDisplay(playerOneScoreContainer);
+            }
             showRestartBtn();
           }
           playerOne.matchWinCheck();
@@ -69,8 +72,11 @@ export function displayBoard() {
 
           if (checkResults(playerOne.getMarker()) !== true) {
             playerTwo.computerTurn();
-            playerTwo.roundWinCheck();
-            if (playerTwo.roundWinCheck()) {
+            const computerTurnResults = playerTwo.roundWinCheck()
+            if (computerTurnResults !== false) {
+              if (computerTurnResults === true) {
+                scoreDisplay(playerTwoScoreContainer);
+              }
               showRestartBtn();
             }
             playerTwo.matchWinCheck();
@@ -78,11 +84,24 @@ export function displayBoard() {
           }
         } else if (getTurn() % 2 === 0) {
           playerOne.playTurn(boardSpace, index);
-          playerOne.roundWinCheck();
+          const turnResult = playerOne.roundWinCheck()
+          if (turnResult !== false) {
+            if (turnResult === true) {
+              scoreDisplay(playerOneScoreContainer);
+            }
+            showRestartBtn();
+          }
           playerOne.matchWinCheck();
         } else {
           playerTwo.playTurn(boardSpace, index);
-          playerTwo.roundWinCheck();
+
+          const turnResult = playerTwo.roundWinCheck()
+            if (turnResult !== false) {
+              if (turnResult === true) {
+                scoreDisplay(playerTwoScoreContainer);
+              }
+              showRestartBtn();
+            }
           playerTwo.matchWinCheck();
         }
       } else if (
@@ -95,22 +114,21 @@ export function displayBoard() {
   });
 }
 
-// i need to set the attribute to match each point in the index but also
-// need to have a function that will listen for when the score is updated.
-// ... SO current plan is:
-//      - create CSS to display score containers and each div representing
-//        each point as it score changes
-//      - in displayBoard, there are conditionals for showing the restart button,
-//        run the scoreDisplay function to create a new div that represents a point.
-//      - create a funciton that clears the scoreboard if a new match is started
-//      - get rid of those horrible alert placeholders!!!!!
 
-// export function scoreDisplay(score) {
-//   const playerOnePoint = document.createElement("div");
-//   playerOnePoint.classList.add("player-one-point");
 
-//   playerOneScoreContainer.appendChild(playerOnePoint);
-// }
+function scoreDisplay(container) {
+  const playerPoint = document.createElement("div");
+  playerPoint.classList.add("player-point");
+  container.appendChild(playerPoint);
+}
+function clearScoreboard() {
+  while (playerOneScoreContainer.firstChild) {
+    playerOneScoreContainer.removeChild(playerOneScoreContainer.lastChild);
+  }
+  while (playerTwoScoreContainer.firstChild) {
+    playerTwoScoreContainer.removeChild(playerTwoScoreContainer.lastChild);
+  }
+}
 
 export function setRadioValue(radioGroup) {
   const element = document.getElementsByClassName(radioGroup);
@@ -152,7 +170,6 @@ export function menuController() {
     .from("#enter-btn", { duration: 1, x: 1000 });
 
   const playerToggle = () => {
-    console.log("run");
     const nodeListArray = [...computerSwitch].filter((x) => x.checked);
 
     if (nodeListArray[0].value === "player") {
@@ -177,17 +194,14 @@ export function menuController() {
           "highly skilled",
           "unstoppable",
         ];
-        console.log(count);
         if (count < 3) {
           count += 1;
           difficulty = difficulties[count];
           difficultySelector.textContent = difficulty;
-          console.log(count);
         } else {
           count = 0;
           difficulty = difficulties[count];
           difficultySelector.textContent = difficulty;
-          console.log(count);
         }
         setCompDifficulty(difficulty);
       });
@@ -201,15 +215,13 @@ export function menuController() {
 
   restartBtn.addEventListener("click", () => {
     if (playerOne.getScore() === 5 || playerTwo.getScore() === 5) {
+      clearScoreboard();
       clearBoard();
       playerOne.resetScore();
       playerTwo.resetScore();
-      console.log(playerOne.getScore());
       resetTurns();
-      console.log("match reset");
       restartBtn.style.visibility = "hidden";
       startTimer(".seconds", getTimer());
-      console.log(getTimer());
     } else {
       clearBoard();
       resetTurns();

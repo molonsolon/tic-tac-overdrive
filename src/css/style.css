@@ -78,16 +78,16 @@ css-doodle {
 }
 
 .g-h1 {
-  font-size: .2rem;
+  font-size: 0.2rem;
   color: rgba(255, 255, 255, 0.85);
-  font-family: 'Exo 2', sans-serif;
+  font-family: "Exo 2", sans-serif;
 }
 
 .g-btn_label {
   height: 7vh;
   min-width: 15vw;
   font-size: 2.8rem;
-  font-family: 'Kanit', sans-serif;
+  font-family: "Kanit", sans-serif;
   color: white;
   border-radius: 2%;
   border-style: solid;
@@ -188,8 +188,8 @@ css-doodle {
       -ms-flex-align: center;
           align-items: center;
   row-gap: 3vh;
-  -webkit-column-gap: .8vw;
-          column-gap: .8vw;
+  -webkit-column-gap: 0.8vw;
+          column-gap: 0.8vw;
 }
 
 .player-select > img {
@@ -254,7 +254,7 @@ css-doodle {
   color: white;
   font-size: 2rem;
   margin-top: -11vh;
-  font-family: 'Kanit', sans-serif;
+  font-family: "Kanit", sans-serif;
   visibility: hidden;
   -ms-grid-column-align: center;
       justify-self: center;
@@ -269,7 +269,7 @@ css-doodle {
   color: white;
   border: 3px greenyellow solid;
   border-radius: 3px;
-  font-family: 'Exo 2', sans-serif;
+  font-family: "Exo 2", sans-serif;
   visibility: hidden;
 }
 
@@ -312,7 +312,7 @@ css-doodle {
   margin-top: 1000px;
   font-size: 5rem;
   color: white;
-  font-family: 'Exo 2', sans-serif;
+  font-family: "Exo 2", sans-serif;
 }
 
 #timer {
@@ -321,7 +321,7 @@ css-doodle {
   margin-top: 800px;
   font-size: 5rem;
   color: white;
-  font-family: 'Exo 2', sans-serif;
+  font-family: "Exo 2", sans-serif;
   visibility: hidden;
 }
 
@@ -372,6 +372,32 @@ css-doodle {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+#player-one-score {
+  margin-left: -60vw;
+}
+
+#player-two-score {
+  margin-left: 60vw;
+}
+
+.score-containers {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 5px;
+  border: solid white 3px;
+  position: fixed;
+  height: 100px;
+  width: 30vw;
+  margin-top: 1600px;
+}
+
+.player-point {
+  height: 80px;
+  width: 4vw;
+  background-color: green;
 }
 
 .win-announce {

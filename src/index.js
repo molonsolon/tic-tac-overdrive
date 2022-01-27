@@ -10,10 +10,8 @@
             say that you can use factory functions as normal but i'm not sure how to get this working
     Features:
     [ ] score keeping UI
-        -- I need to make an efficient function that will take a prerendered div and
-            containing divs that will change in color as the score increases. In order to
-            do this, I would need to make an array of divs contained within the player one/two
-            score container. 
+        [x] basic layout and functionality
+        [ ] add labels, animations, make pretty
     [ ] game win / lose / draw announcements (render animated announcements on true checkwin
         function call)
         [x] work out draw logic as it's not written into check results yet.

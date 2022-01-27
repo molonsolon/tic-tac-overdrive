@@ -19,14 +19,13 @@ const playerActions = {
   },
   roundWinCheck() {
     if (checkResults(this.marker)) {
-      alert(`${this.name} wins`);
       console.log(`${this.name} wins`);
       this.score += 1;
+      console.log(`${this.name} score: ${this.score}`)
       return true;
     }
     if (getTurn() === 9) {
-      alert(`it's a tie!`); // eslint-disable-line quotes
-      return true;
+      return 'tie game';
     }
     return false;
   },
@@ -35,7 +34,6 @@ const playerActions = {
       return false;
     }
     if (this.score === 5) {
-      alert(`${this.name} wins the match!!!`);
       return true;
     }
     return false;
