@@ -21,11 +21,11 @@ const playerActions = {
     if (checkResults(this.marker)) {
       console.log(`${this.name} wins`);
       this.score += 1;
-      console.log(`${this.name} score: ${this.score}`)
+      console.log(`${this.name} score: ${this.score}`);
       return true;
     }
     if (getTurn() === 9) {
-      return 'tie game';
+      return "tie game";
     }
     return false;
   },

@@ -35,14 +35,37 @@ const difficultySelectorLabel = document.querySelector(".selector-label");
 const difficultySelector = document.querySelector("#difficulty-selector");
 const playerOneScoreContainer = document.querySelector("#player-one-score");
 const playerTwoScoreContainer = document.querySelector("#player-two-score");
-const playerOneScoreArray = [0, 1, 2, 3, 4];
-const playerTwoScoreArray = [0, 1, 2, 3, 4];
+const gameContainer = document.querySelector("#game-container");
 
 export const showRestartBtn = () => {
   restartBtn.style.visibility = "visible";
 };
 
 export const getDifficulty = () => difficulty;
+
+const resultAnnounce = (string) => {
+  const resultText = document.createElement("h2");
+  resultText.classList.add("g-h2");
+  resultText.setAttribute("id", "result-announce");
+  resultText.textContent = string;
+  gameContainer.appendChild(resultText);
+
+  const resultAnimation = gsap.timeline();
+  resultAnimation
+    .to("#result-announce", {
+      duration: 0.75,
+      scale: 7,
+      ease: "back.out",
+    })
+    .to("#result-announce", {
+      duration: 0.75,
+      opacity: 0,
+      // eslint-disable-next-line func-names
+      onComplete() {
+        gameContainer.removeChild(resultText);
+      },
+    });
+};
 
 export function displayBoard() {
   boardSpaceArray.forEach((index) => {
@@ -60,34 +83,35 @@ export function displayBoard() {
       ) {
         if (getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
           playerOne.playTurn(boardSpace, index);
-          const turnResult = playerOne.roundWinCheck()
+          const turnResult = playerOne.roundWinCheck();
           if (turnResult !== false) {
             if (turnResult === true) {
               scoreDisplay(playerOneScoreContainer);
+              resultAnnounce("player one wins!");
             }
             showRestartBtn();
           }
           playerOne.matchWinCheck();
-          console.log("player1 turn played");
 
           if (checkResults(playerOne.getMarker()) !== true) {
             playerTwo.computerTurn();
-            const computerTurnResults = playerTwo.roundWinCheck()
+            const computerTurnResults = playerTwo.roundWinCheck();
             if (computerTurnResults !== false) {
               if (computerTurnResults === true) {
                 scoreDisplay(playerTwoScoreContainer);
+                resultAnnounce("computer wins!");
               }
               showRestartBtn();
             }
             playerTwo.matchWinCheck();
-            console.log("player2 turn played");
           }
         } else if (getTurn() % 2 === 0) {
           playerOne.playTurn(boardSpace, index);
-          const turnResult = playerOne.roundWinCheck()
+          const turnResult = playerOne.roundWinCheck();
           if (turnResult !== false) {
             if (turnResult === true) {
               scoreDisplay(playerOneScoreContainer);
+              resultAnnounce("player one wins!");
             }
             showRestartBtn();
           }
@@ -95,16 +119,20 @@ export function displayBoard() {
         } else {
           playerTwo.playTurn(boardSpace, index);
 
-          const turnResult = playerTwo.roundWinCheck()
-            if (turnResult !== false) {
-              if (turnResult === true) {
-                scoreDisplay(playerTwoScoreContainer);
-              }
-              showRestartBtn();
+          const turnResult = playerTwo.roundWinCheck();
+          if (turnResult !== false) {
+            if (turnResult === true) {
+              scoreDisplay(playerTwoScoreContainer);
+              resultAnnounce("player two wins!");
             }
+            showRestartBtn();
+          }
           playerTwo.matchWinCheck();
         }
-      } else if (
+      }
+      //  CHECK IF THIS IS NECESSARY! I don't think it is, don't remember seeing this console log
+      // ever and the roundWinCheck functions already use checkResults
+      else if (
         checkResults(playerOne.getMarker()) ||
         checkResults(playerTwo.getMarker())
       ) {
@@ -113,8 +141,6 @@ export function displayBoard() {
     });
   });
 }
-
-
 
 function scoreDisplay(container) {
   const playerPoint = document.createElement("div");

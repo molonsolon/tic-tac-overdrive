@@ -91,6 +91,11 @@ css-doodle {
   font-family: "Exo 2", sans-serif;
 }
 
+.g-h2 {
+  font-size: 1rem;
+  
+}
+
 .g-btn_label {
   height: 7vh;
   min-width: 15vw;
@@ -329,9 +334,15 @@ css-doodle {
   margin-left: 60vw;
 }
 
+#result-announce {
+  position: absolute;
+  color: white;
+  margin-top: 100vh;
+}
+
 .score-containers {
-    display: flex;
-    gap: 5px;
+  display: flex;
+  gap: 5px;
   border: solid white 3px;
   position: fixed;
   height: 100px;

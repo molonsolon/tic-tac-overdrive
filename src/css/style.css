@@ -83,6 +83,10 @@ css-doodle {
   font-family: "Exo 2", sans-serif;
 }
 
+.g-h2 {
+  font-size: 1rem;
+}
+
 .g-btn_label {
   height: 7vh;
   min-width: 15vw;
@@ -380,6 +384,12 @@ css-doodle {
 
 #player-two-score {
   margin-left: 60vw;
+}
+
+#result-announce {
+  position: absolute;
+  color: white;
+  margin-top: 100vh;
 }
 
 .score-containers {
