@@ -70,14 +70,14 @@ const resultAnnounce = (string) => {
 function playerTurn(player, scoreContainer, playerTitle) {
   const turnResult = player.roundWinCheck();
   const matchResult = player.matchWinCheck();
-  console.log(matchResult)
+  console.log(matchResult);
   if (turnResult !== false && matchResult !== true) {
     if (turnResult === true) {
       scoreDisplay(scoreContainer);
       resultAnnounce(`${playerTitle} wins!`);
     }
     if (turnResult === "tie") {
-      resultAnnounce("It's a tie!")
+      resultAnnounce("It's a tie!");
     }
   }
   if (matchResult === true) {
@@ -85,7 +85,6 @@ function playerTurn(player, scoreContainer, playerTitle) {
     resultAnnounce(`${playerTitle} wins the match!`);
   }
   showRestartBtn();
-  
 }
 
 export function displayBoard() {
@@ -104,22 +103,18 @@ export function displayBoard() {
       ) {
         if (getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
           playerOne.playTurn(boardSpace, index);
-          playerTurn(playerOne, playerOneScoreContainer, "Player One")
+          playerTurn(playerOne, playerOneScoreContainer, "Player One");
 
           if (checkResults(playerOne.getMarker()) !== true) {
             playerTwo.computerTurn();
-            playerTurn(playerTwo, playerTwoScoreContainer, "Player Two")
-
+            playerTurn(playerTwo, playerTwoScoreContainer, "Player Two");
           }
         } else if (getTurn() % 2 === 0) {
           playerOne.playTurn(boardSpace, index);
-          playerTurn(playerOne, playerOneScoreContainer, "Player One")
-
-          
+          playerTurn(playerOne, playerOneScoreContainer, "Player One");
         } else {
           playerTwo.playTurn(boardSpace, index);
-          playerTurn(playerTwo, playerTwoScoreContainer, "Player Two")
-
+          playerTurn(playerTwo, playerTwoScoreContainer, "Player Two");
         }
       }
       //  CHECK IF THIS IS NECESSARY! I don't think it is, don't remember seeing this console log
