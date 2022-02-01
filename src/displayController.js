@@ -67,6 +67,26 @@ const resultAnnounce = (string) => {
     });
 };
 
+function playerTurn(player, scoreContainer, playerTitle) {
+  const turnResult = player.roundWinCheck();
+  const matchResult = player.matchWinCheck();
+  if (turnResult !== false && matchResult !== true) {
+    if (turnResult === true) {
+      scoreDisplay(scoreContainer);
+      resultAnnounce(`${playerTitle} wins!`);
+    }
+    if (turnResult === "tie") {
+      resultAnnounce("It's a tie!")
+    }
+  }
+  if (matchResult === true) {
+    scoreDisplay(scoreContainer);
+    resultAnnounce(`${playerTitle} wins the match!`);
+  }
+  showRestartBtn();
+  
+}
+
 export function displayBoard() {
   boardSpaceArray.forEach((index) => {
     const boardSpace = document.createElement("div");
@@ -87,7 +107,10 @@ export function displayBoard() {
           if (turnResult !== false) {
             if (turnResult === true) {
               scoreDisplay(playerOneScoreContainer);
-              resultAnnounce("player one wins!");
+              resultAnnounce("Player one wins!");
+            }
+            if (turnResult === "tie") {
+              resultAnnounce("It's a tie!")
             }
             showRestartBtn();
           }

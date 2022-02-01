@@ -25,7 +25,7 @@ const playerActions = {
       return true;
     }
     if (getTurn() === 9) {
-      return "tie game";
+      return "tie";
     }
     return false;
   },
