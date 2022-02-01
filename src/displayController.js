@@ -70,6 +70,7 @@ const resultAnnounce = (string) => {
 function playerTurn(player, scoreContainer, playerTitle) {
   const turnResult = player.roundWinCheck();
   const matchResult = player.matchWinCheck();
+  console.log(matchResult)
   if (turnResult !== false && matchResult !== true) {
     if (turnResult === true) {
       scoreDisplay(scoreContainer);
@@ -103,54 +104,22 @@ export function displayBoard() {
       ) {
         if (getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
           playerOne.playTurn(boardSpace, index);
-          const turnResult = playerOne.roundWinCheck();
-          if (turnResult !== false) {
-            if (turnResult === true) {
-              scoreDisplay(playerOneScoreContainer);
-              resultAnnounce("Player one wins!");
-            }
-            if (turnResult === "tie") {
-              resultAnnounce("It's a tie!")
-            }
-            showRestartBtn();
-          }
-          playerOne.matchWinCheck();
+          playerTurn(playerOne, playerOneScoreContainer, "Player One")
 
           if (checkResults(playerOne.getMarker()) !== true) {
             playerTwo.computerTurn();
-            const computerTurnResults = playerTwo.roundWinCheck();
-            if (computerTurnResults !== false) {
-              if (computerTurnResults === true) {
-                scoreDisplay(playerTwoScoreContainer);
-                resultAnnounce("computer wins!");
-              }
-              showRestartBtn();
-            }
-            playerTwo.matchWinCheck();
+            playerTurn(playerTwo, playerTwoScoreContainer, "Player Two")
+
           }
         } else if (getTurn() % 2 === 0) {
           playerOne.playTurn(boardSpace, index);
-          const turnResult = playerOne.roundWinCheck();
-          if (turnResult !== false) {
-            if (turnResult === true) {
-              scoreDisplay(playerOneScoreContainer);
-              resultAnnounce("player one wins!");
-            }
-            showRestartBtn();
-          }
-          playerOne.matchWinCheck();
+          playerTurn(playerOne, playerOneScoreContainer, "Player One")
+
+          
         } else {
           playerTwo.playTurn(boardSpace, index);
+          playerTurn(playerTwo, playerTwoScoreContainer, "Player Two")
 
-          const turnResult = playerTwo.roundWinCheck();
-          if (turnResult !== false) {
-            if (turnResult === true) {
-              scoreDisplay(playerTwoScoreContainer);
-              resultAnnounce("player two wins!");
-            }
-            showRestartBtn();
-          }
-          playerTwo.matchWinCheck();
         }
       }
       //  CHECK IF THIS IS NECESSARY! I don't think it is, don't remember seeing this console log

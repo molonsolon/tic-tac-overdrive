@@ -12,7 +12,7 @@
     [ ] score keeping UI
         [x] basic layout and functionality
         [ ] add labels, animations, make pretty
-    [ ] game win / lose / draw announcements (render animated announcements on true checkwin
+    [x] game win / lose / draw announcements (render animated announcements on true checkwin
         function call)
         [x] work out draw logic as it's not written into check results yet.
     [ ] play again / main menu button under results announcement;
@@ -23,7 +23,8 @@
         [ ] change font + UI to have more sharp angles
 
     Bugs:
-    [ ] Computer win check is triggering twice, where is this happening?
+    [ ] Timer start is called when endless mode is selected, disable this
+    [x] Computer win check is triggering twice, where is this happening?
     [x] win match check is being called twice on winning turn completion, once on restart after.
     [x] webpack is calling functions twice, messing with time mode dropdown
     [x] index.js is not able to locate audio source

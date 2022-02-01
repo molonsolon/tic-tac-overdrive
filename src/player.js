@@ -30,7 +30,7 @@ const playerActions = {
     return false;
   },
   matchWinCheck() {
-    if (getTurn === 0) {
+    if (getTurn() === 0) {
       return false;
     }
     if (this.score === 5) {
@@ -44,13 +44,11 @@ const playerActions = {
     compSpace.textContent = this.marker;
     setBoard(compChoice, this.marker);
     setTurn();
-    console.log("checked for computer win");
   },
   playTurn: function playTurn(space, index) {
     space.textContent = this.marker; // eslint-disable-line no-param-reassign
     setBoard(index, this.marker);
 
-    console.log("checked for win player1");
     setTurn();
   },
 };
