@@ -39,7 +39,12 @@ const gameContainer = document.querySelector("#game-container");
 
 export const showRestartBtn = () => {
   restartBtn.style.visibility = "visible";
-};
+  if (playerOne.getScore() === 5 || playerTwo.getScore() === 5) {
+    restartBtn.textContent = "New Game"
+  } else {
+    restartBtn.textContent = "Next Round"
+  };
+}
 
 export const getDifficulty = () => difficulty;
 
@@ -67,25 +72,32 @@ const resultAnnounce = (string) => {
     });
 };
 
-function playerTurn(player, scoreContainer, playerTitle) {
+function playerTurn(player, scoreContainer) {
   const turnResult = player.roundWinCheck();
   const matchResult = player.matchWinCheck();
   console.log(matchResult);
   if (turnResult !== false && matchResult !== true) {
     if (turnResult === true) {
       scoreDisplay(scoreContainer);
-      resultAnnounce(`${playerTitle} wins!`);
+      resultAnnounce(`${player.getName()} wins!`);
+      showRestartBtn();
+
     }
     if (turnResult === "tie") {
       resultAnnounce("It's a tie!");
+      showRestartBtn();
+
     }
   }
   if (matchResult === true) {
     scoreDisplay(scoreContainer);
-    resultAnnounce(`${playerTitle} wins the match!`);
+    resultAnnounce(`${player.getName()} wins the match!`);
+    showRestartBtn();
+
   }
-  showRestartBtn();
 }
+
+
 
 export function displayBoard() {
   boardSpaceArray.forEach((index) => {
@@ -103,18 +115,18 @@ export function displayBoard() {
       ) {
         if (getTurn() % 2 === 0 && playerTwo.getName() === "computer") {
           playerOne.playTurn(boardSpace, index);
-          playerTurn(playerOne, playerOneScoreContainer, "Player One");
+          playerTurn(playerOne, playerOneScoreContainer);
 
           if (checkResults(playerOne.getMarker()) !== true) {
             playerTwo.computerTurn();
-            playerTurn(playerTwo, playerTwoScoreContainer, "Player Two");
+            playerTurn(playerTwo, playerTwoScoreContainer);
           }
         } else if (getTurn() % 2 === 0) {
           playerOne.playTurn(boardSpace, index);
-          playerTurn(playerOne, playerOneScoreContainer, "Player One");
+          playerTurn(playerOne, playerOneScoreContainer);
         } else {
           playerTwo.playTurn(boardSpace, index);
-          playerTurn(playerTwo, playerTwoScoreContainer, "Player Two");
+          playerTurn(playerTwo, playerTwoScoreContainer);
         }
       }
       //  CHECK IF THIS IS NECESSARY! I don't think it is, don't remember seeing this console log

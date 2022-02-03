@@ -23,6 +23,7 @@
         [ ] change font + UI to have more sharp angles
 
     Bugs:
+    [ ] Fix Time's up and timer restart functionality.
     [ ] Timer start is called when endless mode is selected, disable this
     [x] Computer win check is triggering twice, where is this happening?
     [x] win match check is being called twice on winning turn completion, once on restart after.
