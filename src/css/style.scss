@@ -1,47 +1,5 @@
-$xs: "480px";
-$sm: "600px";
-$md: "799px";
-$lg: "1010px";
-$xl: "1280px";
-
-$media-expressions: (
-  screen: "screen",
-  handheld: "handheld",
-  retina2x: (
-    "(-webkit-min-device-pixel-ratio: 2)",
-    "(min-resolution: 192dpi)",
-  ),
-) !default;
-
-@mixin media-min($size) {
-  @media (min-width: $size) {
-    @content;
-  }
-}
-@mixin media-max($size) {
-  @media (max-width: $size) {
-    @content;
-  }
-}
-
-@include media-max($sm) {
-  #player-two-container > .player-select {
-    display: grid;
-    grid-template-rows: 5vh 20vh 10vh 5vh;
-    grid-row-gap: 5vh;
-    margin-top: -10vh;
-  }
-
-  #player-one-container > .player-select {
-    display: grid;
-    grid-template-rows: 5vh 10vh 10vh 5vh;
-    grid-row-gap: 5vh;
-  }
-
-  .player-select > img {
-    width: 180px;
-  }
-}
+---
+---
 
 html {
   height: 100vh;
