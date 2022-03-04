@@ -1,3 +1,24 @@
+@media (max-width: 600px) {
+  #player-two-container > .player-select {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-rows: 5vh 20vh 10vh 5vh;
+        grid-template-rows: 5vh 20vh 10vh 5vh;
+    grid-row-gap: 5vh;
+    margin-top: -10vh;
+  }
+  #player-one-container > .player-select {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-rows: 5vh 10vh 10vh 5vh;
+        grid-template-rows: 5vh 10vh 10vh 5vh;
+    grid-row-gap: 5vh;
+  }
+  .player-select > img {
+    width: 180px;
+  }
+}
+
 html {
   height: 100vh;
   width: 100vw;
