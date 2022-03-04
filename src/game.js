@@ -36,6 +36,14 @@ export function setPlayer(player) {
   return undefined;
 }
 
+
+
+// how can i get this timer to trigger an announcement saying "time's up?"
+// i would need to either be checking the updates (possible in vanilla js??)
+// or have the timer itself trigger an announcement function.
+// as it stands, however, i can't have the timer trigger it because
+// it would make the displaycontroller a cross-dependency. 
+// 
 export const startTimer = (id, countdown) => {
   const timerSpan = document.querySelector(id);
   setTimer = countdown;

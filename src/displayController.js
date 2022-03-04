@@ -36,15 +36,16 @@ const difficultySelector = document.querySelector("#difficulty-selector");
 const playerOneScoreContainer = document.querySelector("#player-one-score");
 const playerTwoScoreContainer = document.querySelector("#player-two-score");
 const gameContainer = document.querySelector("#game-container");
+const secondsDiv = document.querySelector(".seconds");
 
 export const showRestartBtn = () => {
   restartBtn.style.visibility = "visible";
   if (playerOne.getScore() === 5 || playerTwo.getScore() === 5) {
-    restartBtn.textContent = "New Game"
+    restartBtn.textContent = "New Game";
   } else {
-    restartBtn.textContent = "Next Round"
-  };
-}
+    restartBtn.textContent = "Next Round";
+  }
+};
 
 export const getDifficulty = () => difficulty;
 
@@ -81,23 +82,18 @@ function playerTurn(player, scoreContainer) {
       scoreDisplay(scoreContainer);
       resultAnnounce(`${player.getName()} wins!`);
       showRestartBtn();
-
     }
     if (turnResult === "tie") {
       resultAnnounce("It's a tie!");
       showRestartBtn();
-
     }
   }
   if (matchResult === true) {
     scoreDisplay(scoreContainer);
     resultAnnounce(`${player.getName()} wins the match!`);
     showRestartBtn();
-
   }
 }
-
-
 
 export function displayBoard() {
   boardSpaceArray.forEach((index) => {
@@ -162,6 +158,10 @@ export function setRadioValue(radioGroup) {
   return array[0].value;
 }
 
+const timerObserver = new MutationObserver((entries) => {
+  console.log(entries);
+});
+
 export function menuController() {
   const showElement = (element) => {
     // eslint-disable-next-line no-param-reassign
@@ -200,11 +200,11 @@ export function menuController() {
     if (nodeListArray[0].value === "player") {
       difficultySelector.style.visibility = "hidden";
       difficultySelectorLabel.style.visibility = "hidden";
-      playerTwoIcon.src = "/images/player-two-icon.png";
+      playerTwoIcon.src = "/src/player-two-icon.png";
       playerTwoName.value = "";
       playerTwoName.disabled = false;
     } else if (nodeListArray[0].value === "computer") {
-      playerTwoIcon.src = "/images/ai-icon.png";
+      playerTwoIcon.src = "/src/ai-icon.png";
       playerTwoName.value = "computer";
       playerTwoName.disabled = true;
       difficultySelector.textContent = "new on the job";
@@ -281,8 +281,15 @@ export function menuController() {
     console.log(modeSet);
     console.log(`${timerSet} on click`);
 
+    timerObserver.observe(timerDiv.children[0], {
+      characterData: false,
+      attributes: false,
+      childList: true,
+      subtree: false,
+    });
+
     function playGameTheme() {
-      const gameTheme = new Audio("../audio/lightwave-game-theme.mp3");
+      const gameTheme = new Audio("/src/lightwave-game-theme.mp3");
       if (typeof gameTheme.loop === "boolean") {
         gameTheme.loop = true;
         gameTheme.play();

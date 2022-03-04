@@ -405,8 +405,8 @@ css-doodle {
 }
 
 .player-point {
-  height: 80px;
-  width: 4vw;
+  height: 8vh;
+  width: 5vw;
   background-color: green;
 }
 

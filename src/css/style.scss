@@ -342,17 +342,18 @@ css-doodle {
 
 .score-containers {
   display: flex;
-  gap: 5px;
+  gap: 1vw;
   border: solid white 3px;
   position: fixed;
   height: 100px;
   width: 30vw;
+  padding: 10px;
   margin-top: 1600px;
 }
 
 .player-point {
-  height: 80px;
-  width: 4vw;
+  height: auto;
+  width: 17%;
   background-color: green;
 }
 
