@@ -200,11 +200,11 @@ export function menuController() {
     if (nodeListArray[0].value === "player") {
       difficultySelector.style.visibility = "hidden";
       difficultySelectorLabel.style.visibility = "hidden";
-      playerTwoIcon.src = "/public/player-two-icon.png";
+      playerTwoIcon.src = "/src/public/player-two-icon.png";
       playerTwoName.value = "";
       playerTwoName.disabled = false;
     } else if (nodeListArray[0].value === "computer") {
-      playerTwoIcon.src = "/public/ai-icon.png";
+      playerTwoIcon.src = "/src/public/ai-icon.png";
       playerTwoName.value = "computer";
       playerTwoName.disabled = true;
       difficultySelector.textContent = "new on the job";
@@ -289,7 +289,7 @@ export function menuController() {
     });
 
     function playGameTheme() {
-      const gameTheme = new Audio("/public/lightwave-game-theme.mp3");
+      const gameTheme = new Audio("/src/public/lightwave-game-theme.mp3");
       if (typeof gameTheme.loop === "boolean") {
         gameTheme.loop = true;
         gameTheme.play();
