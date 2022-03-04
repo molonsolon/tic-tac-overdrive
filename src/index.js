@@ -49,8 +49,8 @@
 
 */
 
-import "./css/style.scss";
-import { displayBoard, menuController } from "./DisplayController";
+import "./css/style.css";
+import { displayBoard, menuController } from "./displayController";
 
 displayBoard();
 menuController();
