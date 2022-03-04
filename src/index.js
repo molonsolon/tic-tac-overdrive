@@ -50,7 +50,7 @@
 */
 
 import "./css/style.scss";
-import { displayBoard, menuController } from "./DisplayController";
+import { displayBoard, menuController } from "./displayController";
 
 displayBoard();
 menuController();
