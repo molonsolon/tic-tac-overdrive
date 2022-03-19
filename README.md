@@ -1,4 +1,4 @@
-# Extreme Tic-Tac-Toe
+# Tic Tac Overdrive
 This assignment was completed for The Odin Project's Full-Stack Javascript course. Establishing the basic game elements was straight-forward, but creating and implementing an unbeatable AI made this project incredibly challenging. After wading through information on game theory and related algorithms, I came out the otherside with an unmatched foe. I then set to work on animating, designing, and writing music in order to make a time-tested game feel somewhat fresh and new. 
 
 ## Skills Learned ##
